@@ -13,7 +13,7 @@ Property | Inspector Name | Description
 
 Variable | Type | Description
 -------- | ---- | -----------
-`menuItems` | `array` | Array of `RainLab\Pages\Classes\MenuItemReference` objects representing the defined menu
+`menuItems` | `array` | Array of `Winter\Pages\Classes\MenuItemReference` objects representing the defined menu
 
 ## Default output
 
@@ -35,7 +35,7 @@ The default component partial outputs a simple nested unordered list for menus:
 </ul>
 ```
 
-You might want to render the menus with your own code. The `menuItems` variable is an array of the `RainLab\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
+You might want to render the menus with your own code. The `menuItems` variable is an array of the `Winter\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
 
 Property | Type | Description
 -------- | ---- | -----------

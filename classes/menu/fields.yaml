@@ -5,15 +5,15 @@
 fields:
     name:
         span: left
-        label: rainlab.pages::lang.menu.name
-        placeholder: rainlab.pages::lang.menu.new_name
+        label: winter.pages::lang.menu.name
+        placeholder: winter.pages::lang.menu.new_name
         attributes:
             default-focus: 1
 
     code:
         span: right
-        placeholder: rainlab.pages::lang.menu.new_code
-        label: rainlab.pages::lang.menu.code
+        placeholder: winter.pages::lang.menu.new_code
+        label: winter.pages::lang.menu.code
         preset:
             field: name
             type: file
@@ -29,5 +29,5 @@ tabs:
     fields:
         items:
             stretch: true
-            tab: rainlab.pages::lang.menu.items
-            type: RainLab\Pages\FormWidgets\MenuItems
+            tab: winter.pages::lang.menu.items
+            type: Winter\Pages\FormWidgets\MenuItems

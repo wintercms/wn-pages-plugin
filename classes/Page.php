@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Cms;
 use File;
@@ -8,32 +8,32 @@ use Event;
 use Route;
 use Config;
 use Validator;
-use RainLab\Pages\Classes\Router;
-use RainLab\Pages\Classes\Snippet;
-use RainLab\Pages\Classes\PageList;
+use Winter\Pages\Classes\Router;
+use Winter\Pages\Classes\Snippet;
+use Winter\Pages\Classes\PageList;
 use Cms\Classes\Theme;
 use Cms\Classes\Layout;
 use Cms\Classes\Content as ContentBase;
 use Cms\Classes\ComponentManager;
 use System\Helpers\View as ViewHelper;
-use October\Rain\Support\Str;
-use October\Rain\Router\Helper as RouterHelper;
-use October\Rain\Parse\Bracket as TextParser;
-use October\Rain\Parse\Syntax\Parser as SyntaxParser;
+use Winter\Storm\Support\Str;
+use Winter\Storm\Router\Helper as RouterHelper;
+use Winter\Storm\Parse\Bracket as TextParser;
+use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use ApplicationException;
 use Twig\Node\Node as TwigNode;
 
 /**
  * Represents a static page.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Page extends ContentBase
 {
     public $implement = [
-        '@RainLab.Translate.Behaviors.TranslatablePageUrl',
-        '@RainLab.Translate.Behaviors.TranslatableCmsObject'
+        '@Winter.Translate.Behaviors.TranslatablePageUrl',
+        '@Winter.Translate.Behaviors.TranslatableCmsObject'
     ];
 
     /**
@@ -90,7 +90,7 @@ class Page extends ContentBase
     /**
      * @var string Translation model used for translation, if available.
      */
-    public $translatableModel = 'RainLab\Translate\Classes\MLStaticPage';
+    public $translatableModel = 'Winter\Translate\Classes\MLStaticPage';
 
     /**
      * @var string Contains the page parent file name.
@@ -117,8 +117,8 @@ class Page extends ContentBase
         parent::__construct($attributes);
 
         $this->customMessages = [
-            'url.regex'      => 'rainlab.pages::lang.page.invalid_url',
-            'url.unique_url' => 'rainlab.pages::lang.page.url_not_unique',
+            'url.regex'      => 'winter.pages::lang.page.invalid_url',
+            'url.unique_url' => 'winter.pages::lang.page.url_not_unique',
         ];
     }
 
@@ -296,7 +296,7 @@ class Page extends ContentBase
 
     /**
      * Determine the default layout for a new page
-     * @param \RainLab\Pages\Classes\Page $parentPage
+     * @param \Winter\Pages\Classes\Page $parentPage
      */
     public function setDefaultLayout($parentPage)
     {
@@ -392,7 +392,7 @@ class Page extends ContentBase
         }
 
         if (!$result) {
-            $result[null] = Lang::get('rainlab.pages::lang.page.layouts_not_found');
+            $result[null] = Lang::get('winter.pages::lang.page.layouts_not_found');
         }
 
         return $result;
@@ -676,7 +676,7 @@ class Page extends ContentBase
         $key = crc32($theme->getPath()).'static-page-menu';
         /**
          * @event pages.page.getMenuCacheKey
-         * Enables modifying the key used to reference cached RainLab.Pages menu trees
+         * Enables modifying the key used to reference cached Winter.Pages menu trees
          *
          * Example usage:
          *
@@ -751,7 +751,7 @@ class Page extends ContentBase
      *   return all available records.
      * - items - an array of arrays with the same keys (url, isActive, items) + the title key.
      *   The items array should be added only if the $item's $nesting property value is TRUE.
-     * @param \RainLab\Pages\Classes\MenuItem $item Specifies the menu item.
+     * @param \Winter\Pages\Classes\MenuItem $item Specifies the menu item.
      * @param \Cms\Classes\Theme $theme Specifies the current theme.
      * @param string $url Specifies the current page URL, normalized, in lower case
      * The URL is specified relative to the website root, it includes the subdirectory name, if any.

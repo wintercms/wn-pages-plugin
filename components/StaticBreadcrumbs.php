@@ -1,9 +1,9 @@
-<?php namespace RainLab\Pages\Components;
+<?php namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
-use RainLab\Pages\Classes\Router;
-use RainLab\Pages\Classes\MenuItemReference;
-use RainLab\Pages\Classes\Page as StaticPageClass;
+use Winter\Pages\Classes\Router;
+use Winter\Pages\Classes\MenuItemReference;
+use Winter\Pages\Classes\Page as StaticPageClass;
 use Cms\Classes\Theme;
 use Request;
 use Url;
@@ -11,21 +11,21 @@ use Url;
 /**
  * The static breadcrumbs component.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class StaticBreadcrumbs extends ComponentBase
 {
     /**
-     * @var array An array of the RainLab\Pages\Classes\MenuItemReference class.
+     * @var array An array of the Winter\Pages\Classes\MenuItemReference class.
      */
     public $breadcrumbs = [];
 
     public function componentDetails()
     {
         return [
-            'name'        => 'rainlab.pages::lang.component.static_breadcrumbs_name',
-            'description' => 'rainlab.pages::lang.component.static_breadcrumbs_description'
+            'name'        => 'winter.pages::lang.component.static_breadcrumbs_name',
+            'description' => 'winter.pages::lang.component.static_breadcrumbs_description'
         ];
     }
 

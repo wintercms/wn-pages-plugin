@@ -237,7 +237,7 @@
         )
            this.updateObjectList(objectType)
 
-        if (context.handler == 'onSave' && (!data['X_OCTOBER_ERROR_FIELDS'] && !data['X_OCTOBER_ERROR_MESSAGE']))
+        if (context.handler == 'onSave' && (!data['X_WINTER_ERROR_FIELDS'] && !data['X_WINTER_ERROR_MESSAGE']))
             $form.trigger('unchange.oc.changeMonitor')
 
         // Reload the form if the server has requested it

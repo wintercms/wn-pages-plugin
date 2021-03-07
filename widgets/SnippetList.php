@@ -1,8 +1,8 @@
-<?php namespace RainLab\Pages\Widgets;
+<?php namespace Winter\Pages\Widgets;
 
 use Backend\Classes\WidgetBase;
-use RainLab\Pages\Classes\Snippet;
-use RainLab\Pages\Classes\SnippetManager;
+use Winter\Pages\Classes\Snippet;
+use Winter\Pages\Classes\SnippetManager;
 use Cms\Classes\Theme;
 use Input;
 use Response;
@@ -13,7 +13,7 @@ use Lang;
 /**
  * Snippet list widget.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class SnippetList extends WidgetBase
@@ -24,7 +24,7 @@ class SnippetList extends WidgetBase
 
     protected $dataIdPrefix;
 
-    public $noRecordsMessage = 'rainlab.pages::lang.snippet.no_records';
+    public $noRecordsMessage = 'winter.pages::lang.snippet.no_records';
 
     public function __construct($controller, $alias)
     {

@@ -1,13 +1,13 @@
-<?php namespace RainLab\Pages\FormWidgets;
+<?php namespace Winter\Pages\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use Cms\Classes\Theme;
-use RainLab\Pages\Classes\Page;
+use Winter\Pages\Classes\Page;
 
 /**
  * Static page picker widget
  *
- * @package october\backend
+ * @package winter\backend
  * @author Alexey Bobkov, Samuel Georges
  */
 class PagePicker extends FormWidgetBase

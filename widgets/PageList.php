@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\Widgets;
+<?php namespace Winter\Pages\Widgets;
 
 use Str;
 use Lang;
@@ -6,13 +6,13 @@ use Input;
 use Request;
 use Response;
 use Backend\Classes\WidgetBase;
-use RainLab\Pages\Classes\PageList as StaticPageList;
+use Winter\Pages\Classes\PageList as StaticPageList;
 use Cms\Classes\Theme;
 
 /**
  * Static page list widget.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class PageList extends WidgetBase
@@ -28,11 +28,11 @@ class PageList extends WidgetBase
     /**
      * @var string Message to display when the Delete button is clicked.
      */
-    public $deleteConfirmation = 'rainlab.pages::lang.page.delete_confirmation';
+    public $deleteConfirmation = 'winter.pages::lang.page.delete_confirmation';
 
-    public $noRecordsMessage = 'rainlab.pages::lang.page.no_records';
+    public $noRecordsMessage = 'winter.pages::lang.page.no_records';
 
-    public $addSubpageLabel = 'rainlab.pages::lang.page.add_subpage';
+    public $addSubpageLabel = 'winter.pages::lang.page.add_subpage';
 
 
     public function __construct($controller, $alias)

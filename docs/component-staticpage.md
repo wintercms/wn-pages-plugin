@@ -15,7 +15,7 @@ Property | Inspector Name | Description
 
 Variable | Type | Description
 -------- | ---- | -----------
-`page` | `RainLab\Pages\Classes\Page` | Reference to the current static page object
+`page` | `Winter\Pages\Classes\Page` | Reference to the current static page object
 `title` | `string` | The title of the current static page
 `extraData` | `array` | Any extra data defined in the page object (i.e. placeholders & variables defined in the layout)
 

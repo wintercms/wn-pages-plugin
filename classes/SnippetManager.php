@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Event;
 use Lang;
@@ -7,17 +7,17 @@ use Config;
 use Cms\Classes\Partial;
 use System\Classes\PluginManager;
 use SystemException;
-use RainLab\Pages\Classes\Snippet;
+use Winter\Pages\Classes\Snippet;
 
 /**
  * Returns information about snippets based on partials and components.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class SnippetManager
 {
-    use \October\Rain\Support\Traits\Singleton;
+    use \Winter\Storm\Support\Traits\Singleton;
 
     protected $snippets = null;
 
@@ -124,7 +124,7 @@ class SnippetManager
         $key = crc32($theme->getPath()).'snippet-partial-map';
         /**
          * @event pages.snippet.getPartialMapCacheKey
-         * Enables modifying the key used to reference cached RainLab.Pages partial maps
+         * Enables modifying the key used to reference cached Winter.Pages partial maps
          *
          * Example usage:
          *

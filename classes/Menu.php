@@ -1,16 +1,16 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Url;
 use Event;
 use Request;
 use SystemException;
 use Cms\Classes\Meta;
-use October\Rain\Support\Str;
+use Winter\Storm\Support\Str;
 
 /**
  * Represents a front-end menu.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Menu extends Meta
@@ -48,8 +48,8 @@ class Menu extends Meta
      * @var array The array of custom error messages.
      */
     public $customMessages = [
-        'required' => 'rainlab.pages::lang.menu.code_required',
-        'regex'    => 'rainlab.pages::lang.menu.invalid_code',
+        'required' => 'winter.pages::lang.menu.code_required',
+        'regex'    => 'winter.pages::lang.menu.invalid_code',
     ];
 
     /**
@@ -80,7 +80,7 @@ class Menu extends Meta
 
     /**
      * Returns a default value for items attribute.
-     * Items are objects of the \RainLab\Pages\Classes\MenuItem class.
+     * Items are objects of the \Winter\Pages\Classes\MenuItem class.
      * @return array
      */
     public function getItemsAttribute()
@@ -135,7 +135,7 @@ class Menu extends Meta
      * Returns the menu item references.
      * This function is used on the front-end.
      * @param Cms\Classes\Page $page The current page object.
-     * @return array Returns an array of the \RainLab\Pages\Classes\MenuItemReference objects.
+     * @return array Returns an array of the \Winter\Pages\Classes\MenuItemReference objects.
      */
     public function generateReferences($page)
     {
@@ -264,7 +264,7 @@ class Menu extends Meta
          * @event pages.menu.referencesGenerated
          * Provides opportunity to dynamically change menu entries right after reference generation.
          *
-         * For example you can use it to filter menu entries for user groups from RainLab.User
+         * For example you can use it to filter menu entries for user groups from Winter.User
          * Before doing so you have to add custom field 'group' to menu viewBag using backend.form.extendFields event
          * where the group can be selected by the user. See how to do this here:
          * https://octobercms.com/docs/backend/forms#extend-form-fields
