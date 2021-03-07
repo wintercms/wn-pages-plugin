@@ -38,7 +38,7 @@ Menus have two required properties - the menu **Name** and menu **Code**. The me
 
 ![image](https://raw.githubusercontent.com/winter/pages-plugin/master/docs/images/menu-management.png) {.img-responsive .frame}
 
-Menus can contain multiple **menu items**, and menu items can be nested. Each menu item has a number of properties. There are properties common for all menu item types, and some properties depend on the item type. The common menu item properties are **Title** and **Type**. The Title defines the menu item text. The Type is a drop-down list which displays all menu item types available in your Winter CMSCMS copy.
+Menus can contain multiple **menu items**, and menu items can be nested. Each menu item has a number of properties. There are properties common for all menu item types, and some properties depend on the item type. The common menu item properties are **Title** and **Type**. The Title defines the menu item text. The Type is a drop-down list which displays all menu item types available in your Winter CMS copy.
 
 ![image](https://raw.githubusercontent.com/winter/pages-plugin/master/docs/images/menu-item.png) {.img-responsive .frame}
 
