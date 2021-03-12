@@ -2,7 +2,7 @@
  * Handles the Pages main page.
  */
 +function ($) { "use strict";
-    var Base = $.oc.foundation.base,
+    var Base = $.wn.foundation.base,
         BaseProto = Base.prototype
 
     var PagesPage = function () {
@@ -19,7 +19,7 @@
         this.$sidePanel = $('#pages-side-panel')
         this.$pageTree = $('[data-control=treeview]', this.$sidePanel)
         this.masterTabsObj = this.$masterTabs.data('oc.tab')
-        this.snippetManager = new $.oc.pages.snippetManager(this.$masterTabs)
+        this.snippetManager = new $.wn.pages.snippetManager(this.$masterTabs)
 
         this.registerHandlers()
     }
@@ -114,16 +114,16 @@
          * Update tab
          */
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
         $form.request('onOpen', {
             data: data
         }).done(function(data) {
-            $.oc.stripeLoadIndicator.hide()
+            $.wn.stripeLoadIndicator.hide()
             self.$masterTabs.ocTab('updateTab', tab, data.tabTitle, data.tab)
             self.$masterTabs.ocTab('unmodifyTab', tab)
             self.updateModifiedCounter()
         }).always(function(){
-            $.oc.stripeLoadIndicator.hide()
+            $.wn.stripeLoadIndicator.hide()
         })
     }
 
@@ -143,7 +143,7 @@
         })
 
         $.each(counters, function(type, data){
-            $.oc.sideNav.setCounter('pages/' + data.menu, data.count);
+            $.wn.sideNav.setCounter('pages/' + data.menu, data.count);
         })
     }
 
@@ -257,7 +257,7 @@
      * Updates the browser title when an object is saved.
      */
     PagesPage.prototype.setPageTitle = function(title) {
-        $.oc.layout.setPageTitle(title.length ? (title + ' | ') : title)
+        $.wn.layout.setPageTitle(title.length ? (title + ' | ') : title)
     }
 
     /*
@@ -268,13 +268,13 @@
             objectList = objectType + 'List',
             self = this
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
         $form.request(objectList + '::onUpdate', {
             complete: function(data) {
                 $('button[data-control=delete-object], button[data-control=delete-template]', $form).trigger('oc.triggerOn.update')
             }
         }).always(function(){
-            $.oc.stripeLoadIndicator.hide()
+            $.wn.stripeLoadIndicator.hide()
         })
     }
 
@@ -325,13 +325,13 @@
          * Open a new tab
          */
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
         $form.request('onOpen', {
             data: data
         }).done(function(data) {
             self.$masterTabs.ocTab('addTab', data.tabTitle, data.tab, tabId, $form.data('type-icon'))
         }).always(function() {
-            $.oc.stripeLoadIndicator.hide()
+            $.wn.stripeLoadIndicator.hide()
         })
 
         return false
@@ -348,7 +348,7 @@
             type = $form.data('object-type') ? $form.data('object-type') : $form.data('template-type'),
             tabId = type + Math.random()
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
         $form.request('onCreateObject', {
             data: {
                type: type,
@@ -359,7 +359,7 @@
             $('#layout-side-panel').trigger('close.oc.sidePanel')
             self.setPageTitle(data.tabTitle)
         }).always(function(){
-            $.oc.stripeLoadIndicator.hide()
+            $.wn.stripeLoadIndicator.hide()
         })
 
         e.stopPropagation()
@@ -402,7 +402,7 @@
                 })
 
                 if (data.error !== undefined && $.type(data.error) === 'string' && data.error.length)
-                    $.oc.flashMsg({text: data.error, 'class': 'error'})
+                    $.wn.flashMsg({text: data.error, 'class': 'error'})
             },
             complete: function() {
                 self.updateObjectList(objectType)
@@ -431,7 +431,7 @@
         // $form.trigger('unchange.oc.changeMonitor')
         $form.changeMonitor('dispose')
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
 
         $form
             .request('onUpdatePageLayout', {
@@ -441,7 +441,7 @@
                 self.$masterTabs.ocTab('updateTab', tab, data.tabTitle, data.tab)
             })
             .always(function(){
-                $.oc.stripeLoadIndicator.hide()
+                $.wn.stripeLoadIndicator.hide()
                 $('form:first', $pane).changeMonitor().trigger('change')
             })
     }
@@ -588,7 +588,7 @@
                 editor.codeEditor('setContent', val)
             }
 
-            var modes = $.oc.codeEditorExtensionModes
+            var modes = $.wn.codeEditorExtensionModes
 
             if (modes[extension] !== undefined)
                 mode = modes[extension];
@@ -626,7 +626,7 @@
     }
 
     $(document).ready(function(){
-        $.oc.pagesPage = new PagesPage()
+        $.wn.pagesPage = new PagesPage()
     })
 
 }(window.jQuery);

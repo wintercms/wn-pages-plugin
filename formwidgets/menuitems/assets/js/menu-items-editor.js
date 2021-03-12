@@ -276,10 +276,10 @@
             return
         }
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
         this.$popupForm.request('onGetMenuItemTypeInfo')
             .always(function(){
-                $.oc.stripeLoadIndicator.hide()
+                $.wn.stripeLoadIndicator.hide()
             })
             .done(function(data){
                 self.typeInfo[type] = data.menuItemTypeInfo
@@ -441,7 +441,7 @@
 
                     if (typeInfo[typeInfoProperty] !== undefined) {
 
-                        $.oc.flashMsg({
+                        $.wn.flashMsg({
                             class: 'error',
                             text: self.$popupForm.attr('data-message-'+propertyName+'-required')
                         })
@@ -486,7 +486,7 @@
         }
 
         if ($.trim(data.title).length == 0) {
-            $.oc.flashMsg({
+            $.wn.flashMsg({
                 class: 'error',
                 text: self.$popupForm.data('messageTitleRequired')
             })
@@ -497,7 +497,7 @@
         }
 
         if (data.type == 'url' && $.trim(data.url).length == 0) {
-            $.oc.flashMsg({
+            $.wn.flashMsg({
                 class: 'error',
                 text: self.$popupForm.data('messageUrlRequired')
             })
