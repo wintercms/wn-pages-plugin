@@ -20,7 +20,8 @@ class Plugin extends PluginBase
             'description' => 'winter.pages::lang.plugin.description',
             'author'      => 'Alexey Bobkov, Samuel Georges',
             'icon'        => 'icon-files-o',
-            'homepage'    => 'https://github.com/winter/pages-plugin'
+            'homepage'    => 'https://github.com/winter/pages-plugin',
+            'replaces'    => 'RainLab.Pages'
         ];
     }
 
