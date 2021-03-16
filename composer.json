@@ -1,22 +1,32 @@
 {
-    "name": "winter/pages-plugin",
+    "name": "winter/wn-pages-plugin",
     "type": "winter-plugin",
     "description": "Pages plugin for Winter CMS",
     "homepage": "https://github.com/wintercms/wn-pages-plugin",
-    "keywords": ["wintercms", "cms", "pages"],
+    "keywords": ["winter cms", "winter", "plugin", "static", "cms", "pages"],
     "license": "MIT",
     "authors": [
         {
             "name": "Alexey Bobkov",
             "email": "aleksey.bobkov@gmail.com",
-            "role": "Co-founder"
+            "role": "Original Author"
         },
         {
             "name": "Samuel Georges",
             "email": "daftspunky@gmail.com",
-            "role": "Co-founder"
+            "role": "Original Author"
+        },
+        {
+            "name": "Winter CMS Maintainers",
+            "homepage": "https://wintercms.com",
+            "role": "Maintainer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/wintercms/wn-pages-plugin/issues",
+        "discord": "https://discord.gg/D5MFSPH6Ux",
+        "source": "https://github.com/wintercms/wn-pages-plugin"
+    },
     "require": {
         "php": ">=5.5.9",
         "composer/installers": "~1.0"
