@@ -98,7 +98,7 @@ class Index extends Controller
 
     public function index()
     {
-        $this->addJs('/modules/backend/assets/js/october.treeview.js', 'core');
+        $this->addJs('/modules/backend/assets/js/winter.treeview.js', 'core');
         $this->addJs('/plugins/winter/pages/assets/js/pages-page.js', 'Winter.Pages');
         $this->addJs('/plugins/winter/pages/assets/js/pages-snippets.js', 'Winter.Pages');
         $this->addCss('/plugins/winter/pages/assets/css/pages.css', 'Winter.Pages');

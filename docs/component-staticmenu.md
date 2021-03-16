@@ -55,7 +55,7 @@ Property | Type | Description
 
 ## Setting the active menu item explicitly
 
-In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](https://octobercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
+In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](https://wintercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
 
 ```php
 function onInit()

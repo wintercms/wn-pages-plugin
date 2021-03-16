@@ -14,7 +14,7 @@ Optional properties of static pages are **Hidden** and **Hide in navigation**. T
 
 ## Placeholders
 
-If a static layout contains [placeholders](https://octobercms.com/docs/cms/layouts#placeholders), the static page editor will show tabs for editing the placeholder contents. The plugin automatically detects text and HTML placeholders and displays a corresponding editor for them - the WYSIWYG editor for HTML placeholders and a text editor for text placeholders.
+If a static layout contains [placeholders](https://wintercms.com/docs/cms/layouts#placeholders), the static page editor will show tabs for editing the placeholder contents. The plugin automatically detects text and HTML placeholders and displays a corresponding editor for them - the WYSIWYG editor for HTML placeholders and a text editor for text placeholders.
 
 ## Snippets
 
@@ -86,6 +86,6 @@ The Code field allows to assign the API code that you can use to set the active 
 
 ## See also
 
-Read the [Getting started with Static Pages](https://octobercms.com/blog/post/getting-started-static-pages) tutorial in the Blog.
+Read the [Getting started with Static Pages](https://wintercms.com/blog/post/getting-started-static-pages) tutorial in the Blog.
 
 Read the [documentation](/docs/documentation.md).

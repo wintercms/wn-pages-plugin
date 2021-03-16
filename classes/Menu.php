@@ -267,7 +267,7 @@ class Menu extends Meta
          * For example you can use it to filter menu entries for user groups from Winter.User
          * Before doing so you have to add custom field 'group' to menu viewBag using backend.form.extendFields event
          * where the group can be selected by the user. See how to do this here:
-         * https://octobercms.com/docs/backend/forms#extend-form-fields
+         * https://wintercms.com/docs/backend/forms#extend-form-fields
          *
          * Parameter provided is `$items` - a collection of the MenuItemReference objects passed by reference
          *

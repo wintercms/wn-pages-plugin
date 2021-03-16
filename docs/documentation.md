@@ -2,7 +2,7 @@ The plugin currently includes three components: Static Page, Static Menu and Sta
 
 ### Integrating the Static Pages plugin
 
-In the simplest case you could create a [layout](https://octobercms.com/docs/cms/layouts) in the CMS area and include the plugin's components to its body. The next example layout outputs a menu, breadcrumbs and a static page:
+In the simplest case you could create a [layout](https://wintercms.com/docs/cms/layouts) in the CMS area and include the plugin's components to its body. The next example layout outputs a menu, breadcrumbs and a static page:
 
     <html>
         <head>
@@ -19,7 +19,7 @@ In the simplest case you could create a [layout](https://octobercms.com/docs/cms
 
 ##### Static pages
 
-Include the Static Page [component](http://octobercms.com/docs/cms/components) to the layout. The Static Page component has two public properties:
+Include the Static Page [component](https://wintercms.com/docs/cms/components) to the layout. The Static Page component has two public properties:
 
 * `title` - specifies the static page title.
 * `content` - the static page content.
@@ -71,7 +71,7 @@ The component injects the `breadcrumbs` page variable that contains an array of 
 
 ##### Setting the active menu item explicitly
 
-In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](http://octobercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
+In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](https://wintercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
 
     function onInit()
     {
@@ -107,7 +107,7 @@ The field's assigned value will be the static page's file name, which can be use
 
 ### Placeholders
 
-[Placeholders](https://octobercms.com/docs/cms/layouts#placeholders) defined in the layout are automatically detected by the Static Pages plugin. The Edit Static Page form displays a tab for each placeholder defined in the layout used by the page. Placeholders are defined in the layout in the usual way:
+[Placeholders](https://wintercms.com/docs/cms/layouts#placeholders) defined in the layout are automatically detected by the Static Pages plugin. The Edit Static Page form displays a tab for each placeholder defined in the layout used by the page. Placeholders are defined in the layout in the usual way:
 
     {% placeholder ordering %}
 
@@ -133,7 +133,7 @@ To prevent a placeholder from appearing in the editor set the `ignore` attribute
 
 ### Creating new menu item types
 
-Plugins can extend the Static Pages plugin with new menu item types. Please refer to the [Blog plugin](https://github.com/wintercms/wn-blog-plugin) for the integration example. New item types are registered with the API events triggered by the Static Pages plugin. The event handlers should be defined in the `boot()` method of the [plugin registration file](https://octobercms.com/docs/plugin/registration#registration-file). There are three events that should be handled in the plugin.
+Plugins can extend the Static Pages plugin with new menu item types. Please refer to the [Blog plugin](https://github.com/wintercms/wn-blog-plugin) for the integration example. New item types are registered with the API events triggered by the Static Pages plugin. The event handlers should be defined in the `boot()` method of the [plugin registration file](https://wintercms.com/docs/plugin/registration#registration-file). There are three events that should be handled in the plugin.
 
 * `pages.menuitem.listType` event handler should return a list of new menu item types supported by the plugin.
 * `pages.menuitem.getTypeInfo` event handler returns detailed information about a menu item type.
@@ -330,11 +330,11 @@ Any property defined in the property list can be accessed within the partial mar
 
     The country name is {{ country }}
 
-In addition, properties can be passed to the partial components using an [external property value](http://octobercms.com/docs/cms/components#external-property-values).
+In addition, properties can be passed to the partial components using an [external property value](http://wintercms.com/docs/cms/components#external-property-values).
 
 ###### Snippets created from components
 
-Any component can be registered as a snippet and be used in Static Pages. To register a snippet, add the `registerPageSnippets()` method to your plugin class in the [registration file](https://octobercms.com/docs/plugin/registration#registration-file). The API for registering a snippet is similar to the one for [registering  components](https://octobercms.com/docs/plugin/registration#component-registration) - the method should return an array with class names in keys and aliases in values:
+Any component can be registered as a snippet and be used in Static Pages. To register a snippet, add the `registerPageSnippets()` method to your plugin class in the [registration file](https://wintercms.com/docs/plugin/registration#registration-file). The API for registering a snippet is similar to the one for [registering  components](https://wintercms.com/docs/plugin/registration#component-registration) - the method should return an array with class names in keys and aliases in values:
 
     public function registerPageSnippets()
     {
@@ -379,7 +379,7 @@ You may also use the `{repeater}` tag for repeating content:
         </div>
     {/repeater}
 
-For more details on syntax fields, see the [Parser section](https://octobercms.com/docs/services/parser#dynamic-syntax-parser) of the Winter CMS documentation.
+For more details on syntax fields, see the [Parser section](https://wintercms.com/docs/services/parser#dynamic-syntax-parser) of the Winter CMS documentation.
 
 ##### Custom menu item form fields
 
