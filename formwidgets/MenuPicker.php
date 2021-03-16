@@ -1,9 +1,9 @@
-<?php namespace RainLab\Pages\FormWidgets;
+<?php namespace Winter\Pages\FormWidgets;
 
 use Cms\Classes\Theme;
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
-use RainLab\Pages\Classes\Menu;
+use Winter\Pages\Classes\Menu;
 
 /**
  * MenuPicker allows the user to pick from available menus
