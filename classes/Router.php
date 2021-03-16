@@ -1,18 +1,18 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Lang;
 use Cache;
 use Event;
 use Config;
 use Cms\Classes\Theme;
-use RainLab\Pages\Classes\Page;
-use October\Rain\Support\Str;
-use October\Rain\Router\Helper as RouterHelper;
+use Winter\Pages\Classes\Page;
+use Winter\Storm\Support\Str;
+use Winter\Storm\Router\Helper as RouterHelper;
 
 /**
  * A router for static pages.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Router
@@ -44,7 +44,7 @@ class Router
     /**
      * Finds a static page by its URL.
      * @param string $url The requested URL string.
-     * @return \RainLab\Pages\Classes\Page Returns \RainLab\Pages\Classes\Page object or null if the page cannot be found.
+     * @return \Winter\Pages\Classes\Page Returns \Winter\Pages\Classes\Page object or null if the page cannot be found.
      */
     public function findByUrl($url)
     {
@@ -154,7 +154,7 @@ class Router
         $key = crc32($this->theme->getPath()).$keyName;
         /**
          * @event pages.router.getCacheKey
-         * Enables modifying the key used to reference cached RainLab.Pages routes
+         * Enables modifying the key used to reference cached Winter.Pages routes
          *
          * Example usage:
          *

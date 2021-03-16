@@ -7,7 +7,7 @@ Outputs a breadcrumb navigation for the current static page
 
 Variable | Type | Description
 -------- | ---- | -----------
-`breadcrumbs` | `array` | Array of `RainLab\Pages\Classes\MenuItemReference` objects representing the defined menu
+`breadcrumbs` | `array` | Array of `Winter\Pages\Classes\MenuItemReference` objects representing the defined menu
 
 ## Default output
 
@@ -25,7 +25,7 @@ The default component partial outputs a simple unordered list for breadcrumbs:
 {% endif %}
 ```
 
-You might want to render the breadcrumbs with your own code. The `breadcrumbs` variable is an array of the `RainLab\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
+You might want to render the breadcrumbs with your own code. The `breadcrumbs` variable is an array of the `Winter\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
 
 Property | Type | Description
 -------- | ---- | -----------

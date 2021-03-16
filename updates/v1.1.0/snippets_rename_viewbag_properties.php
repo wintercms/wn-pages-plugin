@@ -1,8 +1,8 @@
-<?php namespace RainLab\User\Updates;
+<?php namespace Winter\User\Updates;
 
 use File;
 use Schema;
-use October\Rain\Database\Updates\Migration;
+use Winter\Storm\Database\Updates\Migration;
 use Cms\Classes\Theme;
 use Cms\Classes\Partial;
 

@@ -1,13 +1,13 @@
-<?php namespace RainLab\Pages\FormWidgets;
+<?php namespace Winter\Pages\FormWidgets;
 
 use Request;
 use Backend\Classes\FormWidgetBase;
-use RainLab\Pages\Classes\MenuItem;
+use Winter\Pages\Classes\MenuItem;
 
 /**
  * Menu items widget.
  *
- * @package october\backend
+ * @package winter\backend
  * @author Alexey Bobkov, Samuel Georges
  */
 class MenuItems extends FormWidgetBase
@@ -20,19 +20,19 @@ class MenuItems extends FormWidgetBase
      */
     protected $defaultAlias = 'menuitems';
 
-    public $addSubitemLabel = 'rainlab.pages::lang.menu.add_subitem';
+    public $addSubitemLabel = 'winter.pages::lang.menu.add_subitem';
 
-    public $noRecordsMessage = 'rainlab.pages::lang.menu.no_records';
+    public $noRecordsMessage = 'winter.pages::lang.menu.no_records';
 
-    public $titleRequiredMessage = 'rainlab.pages::lang.menuitem.title_required';
+    public $titleRequiredMessage = 'winter.pages::lang.menuitem.title_required';
 
-    public $referenceRequiredMessage = 'rainlab.pages::lang.menuitem.reference_required';
+    public $referenceRequiredMessage = 'winter.pages::lang.menuitem.reference_required';
 
-    public $urlRequiredMessage = 'rainlab.pages::lang.menuitem.url_required';
+    public $urlRequiredMessage = 'winter.pages::lang.menuitem.url_required';
 
-    public $cmsPageRequiredMessage = 'rainlab.pages::lang.menuitem.cms_page_required';
+    public $cmsPageRequiredMessage = 'winter.pages::lang.menuitem.cms_page_required';
 
-    public $newItemTitle = 'rainlab.pages::lang.menuitem.new_item';
+    public $newItemTitle = 'winter.pages::lang.menuitem.new_item';
 
     /**
      * {@inheritDoc}
@@ -68,7 +68,7 @@ class MenuItems extends FormWidgetBase
 
         $this->vars['emptyItem'] = $emptyItem;
 
-        $widgetConfig = $this->makeConfig('~/plugins/rainlab/pages/classes/menuitem/fields.yaml');
+        $widgetConfig = $this->makeConfig('~/plugins/winter/pages/classes/menuitem/fields.yaml');
         $widgetConfig->model = $menuItem;
         $widgetConfig->alias = $this->alias.'MenuItem';
 
@@ -80,7 +80,7 @@ class MenuItems extends FormWidgetBase
      */
     protected function loadAssets()
     {
-        $this->addJs('js/menu-items-editor.js', 'RainLab.Pages');
+        $this->addJs('js/menu-items-editor.js', 'Winter.Pages');
     }
 
     /**
@@ -97,7 +97,7 @@ class MenuItems extends FormWidgetBase
 
     /**
      * Returns the item reference description.
-     * @param \RainLab\Pages\Classes\MenuItem $item Specifies the menu item
+     * @param \Winter\Pages\Classes\MenuItem $item Specifies the menu item
      * @return string
      */
     protected function getReferenceDescription($item)
@@ -124,7 +124,7 @@ class MenuItems extends FormWidgetBase
 
         }
         else {
-            $result = trans('rainlab.pages::lang.menuitem.unknown_type');
+            $result = trans('winter.pages::lang.menuitem.unknown_type');
         }
 
         return $result;
@@ -152,7 +152,7 @@ class MenuItems extends FormWidgetBase
 
         $result = $iterator($typeOptionList, null);
         if (!strlen($result)) {
-            $result = trans('rainlab.pages::lang.menuitem.unnamed');
+            $result = trans('winter.pages::lang.menuitem.unnamed');
         }
 
         $result = preg_replace('|^\s+\/|', '', $result);
@@ -164,12 +164,12 @@ class MenuItems extends FormWidgetBase
     {
         if (is_array($itemInfo)) {
             if (!array_key_exists('title', $itemInfo) || !strlen($itemInfo['title'])) {
-                return trans('rainlab.pages::lang.menuitem.unnamed');
+                return trans('winter.pages::lang.menuitem.unnamed');
             }
 
             return $itemInfo['title'];
         }
 
-        return strlen($itemInfo) ? $itemInfo : trans('rainlab.pages::lang.menuitem.unnamed');
+        return strlen($itemInfo) ? $itemInfo : trans('winter.pages::lang.menuitem.unnamed');
     }
 }

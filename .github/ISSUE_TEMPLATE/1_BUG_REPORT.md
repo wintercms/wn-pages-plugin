@@ -4,8 +4,8 @@ about: 'Report a general Pages Plugin issue'
 labels: 'Status: Review Needed, Type: Unconfirmed Bug'
 ---
 
-- OctoberCMS Build: ### <!-- Or Commit hash if using composer -->
-- RainLab Pages Plugin Version: ###
+- Winter CMS Build: ### <!-- Or Commit hash if using composer -->
+- Pages Plugin Version: ###
 - PHP Version:
 
 ### Description:

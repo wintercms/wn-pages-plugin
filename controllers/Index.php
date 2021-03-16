@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\Controllers;
+<?php namespace Winter\Pages\Controllers;
 
 use Url;
 use Lang;
@@ -15,23 +15,23 @@ use Cms\Classes\CmsCompoundObject;
 use Cms\Widgets\TemplateList;
 use System\Helpers\DateTime;
 use Backend\Classes\Controller;
-use RainLab\Pages\Widgets\PageList;
-use RainLab\Pages\Widgets\MenuList;
-use RainLab\Pages\Widgets\SnippetList;
-use RainLab\Pages\Classes\Snippet;
-use RainLab\Pages\Classes\Page as StaticPage;
-use RainLab\Pages\Classes\Router;
-use RainLab\Pages\Classes\Content;
-use RainLab\Pages\Classes\MenuItem;
-use RainLab\Pages\Plugin as PagesPlugin;
-use RainLab\Pages\Classes\SnippetManager;
+use Winter\Pages\Widgets\PageList;
+use Winter\Pages\Widgets\MenuList;
+use Winter\Pages\Widgets\SnippetList;
+use Winter\Pages\Classes\Snippet;
+use Winter\Pages\Classes\Page as StaticPage;
+use Winter\Pages\Classes\Router;
+use Winter\Pages\Classes\Content;
+use Winter\Pages\Classes\MenuItem;
+use Winter\Pages\Plugin as PagesPlugin;
+use Winter\Pages\Classes\SnippetManager;
 use ApplicationException;
 use Exception;
 
 /**
  * Pages and Menus index
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Index extends Controller
@@ -40,7 +40,7 @@ class Index extends Controller
 
     protected $theme;
 
-    public $requiredPermissions = ['rainlab.pages.*'];
+    public $requiredPermissions = ['winter.pages.*'];
 
     /**
      * Constructor.
@@ -55,24 +55,24 @@ class Index extends Controller
             }
 
             if ($this->user) {
-                if ($this->user->hasAccess('rainlab.pages.manage_pages')) {
+                if ($this->user->hasAccess('winter.pages.manage_pages')) {
                     new PageList($this, 'pageList');
                     $this->vars['activeWidgets'][] = 'pageList';
                 }
 
-                if ($this->user->hasAccess('rainlab.pages.manage_menus')) {
+                if ($this->user->hasAccess('winter.pages.manage_menus')) {
                     new MenuList($this, 'menuList');
                     $this->vars['activeWidgets'][] = 'menuList';
                 }
 
-                if ($this->user->hasAccess('rainlab.pages.manage_content')) {
+                if ($this->user->hasAccess('winter.pages.manage_content')) {
                     new TemplateList($this, 'contentList', function() {
                         return $this->getContentTemplateList();
                     });
                     $this->vars['activeWidgets'][] = 'contentList';
                 }
 
-                if ($this->user->hasAccess('rainlab.pages.access_snippets')) {
+                if ($this->user->hasAccess('winter.pages.access_snippets')) {
                     new SnippetList($this, 'snippetList');
                     $this->vars['activeWidgets'][] = 'snippetList';
                 }
@@ -89,7 +89,7 @@ class Index extends Controller
             'snippetList' => 'snippets',
         ];
 
-        BackendMenu::setContext('RainLab.Pages', 'pages', @$context[$this->vars['activeWidgets'][0]]);
+        BackendMenu::setContext('Winter.Pages', 'pages', @$context[$this->vars['activeWidgets'][0]]);
     }
 
     //
@@ -98,18 +98,18 @@ class Index extends Controller
 
     public function index()
     {
-        $this->addJs('/modules/backend/assets/js/october.treeview.js', 'core');
-        $this->addJs('/plugins/rainlab/pages/assets/js/pages-page.js', 'RainLab.Pages');
-        $this->addJs('/plugins/rainlab/pages/assets/js/pages-snippets.js', 'RainLab.Pages');
-        $this->addCss('/plugins/rainlab/pages/assets/css/pages.css', 'RainLab.Pages');
+        $this->addJs('/modules/backend/assets/js/winter.treeview.js', 'core');
+        $this->addJs('/plugins/winter/pages/assets/js/pages-page.js', 'Winter.Pages');
+        $this->addJs('/plugins/winter/pages/assets/js/pages-snippets.js', 'Winter.Pages');
+        $this->addCss('/plugins/winter/pages/assets/css/pages.css', 'Winter.Pages');
 
         // Preload the code editor class as it could be needed
         // before it loads dynamically.
         $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js', 'core');
 
         $this->bodyClass = 'compact-container';
-        $this->pageTitle = 'rainlab.pages::lang.plugin.name';
-        $this->pageTitleTemplate = Lang::get('rainlab.pages::lang.page.template_title');
+        $this->pageTitle = 'winter.pages::lang.plugin.name';
+        $this->pageTitleTemplate = Lang::get('winter.pages::lang.page.template_title');
 
         if (Request::ajax() && Request::input('formWidgetAlias')) {
             $this->bindFormWidgetToController();
@@ -143,9 +143,9 @@ class Index extends Controller
         $result = $this->getUpdateResponse($object, $type);
 
         $successMessages = [
-            'page' => 'rainlab.pages::lang.page.saved',
-            'menu' => 'rainlab.pages::lang.menu.saved',
-            'content' => 'rainlab.pages::lang.content.saved',
+            'page' => 'winter.pages::lang.page.saved',
+            'menu' => 'winter.pages::lang.menu.saved',
+            'content' => 'winter.pages::lang.content.saved',
         ];
 
         $successMessage = isset($successMessages[$type])
@@ -289,7 +289,7 @@ class Index extends Controller
         if (strlen($snippetCode)) {
             $snippet = SnippetManager::instance()->findByCodeOrComponent($this->theme, $snippetCode, $componentClass);
             if (!$snippet) {
-                throw new ApplicationException(trans('rainlab.pages::lang.snippet.not_found', ['code' => $snippetCode]));
+                throw new ApplicationException(trans('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]));
             }
 
             $configuration = $snippet->getProperties();
@@ -321,7 +321,7 @@ class Index extends Controller
             $snippet = SnippetManager::instance()->findByCodeOrComponent($this->theme, $snippetCode, $componentClass);
 
             if (!$snippet) {
-                $result[$snippetCode] = trans('rainlab.pages::lang.snippet.not_found', ['code' => $snippetCode]);
+                $result[$snippetCode] = trans('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]);
             }
             else {
                 $result[$snippetCode] =$snippet->getName();
@@ -338,7 +338,7 @@ class Index extends Controller
         $alias = Request::input('alias');
 
         $widget = $this->makeFormWidget(
-            'Rainlab\Pages\FormWidgets\MenuItemSearch',
+            'Winter\Pages\FormWidgets\MenuItemSearch',
             [],
             ['alias' => $alias]
         );
@@ -424,7 +424,7 @@ class Index extends Controller
     /**
      * Get the active theme's datasource
      *
-     * @return \October\Rain\Halcyon\Datasource\DatasourceInterface
+     * @return \Winter\Storm\Halcyon\Datasource\DatasourceInterface
      */
     protected function getThemeDatasource()
     {
@@ -484,7 +484,7 @@ class Index extends Controller
 
         if (!($object = call_user_func(array($class, 'load'), $this->theme, $path))) {
             if (!$ignoreNotFound) {
-                throw new ApplicationException(trans('rainlab.pages::lang.object.not_found'));
+                throw new ApplicationException(trans('winter.pages::lang.object.not_found'));
             }
 
             return null;
@@ -498,7 +498,7 @@ class Index extends Controller
         $class = $this->resolveTypeClassName($type);
 
         if (!($object = $class::inTheme($this->theme))) {
-            throw new ApplicationException(trans('rainlab.pages::lang.object.not_found'));
+            throw new ApplicationException(trans('winter.pages::lang.object.not_found'));
         }
 
         return $object;
@@ -507,24 +507,24 @@ class Index extends Controller
     protected function resolveTypeClassName($type)
     {
         $types = [
-            'page'    => 'RainLab\Pages\Classes\Page',
-            'menu'    => 'RainLab\Pages\Classes\Menu',
-            'content' => 'RainLab\Pages\Classes\Content'
+            'page'    => 'Winter\Pages\Classes\Page',
+            'menu'    => 'Winter\Pages\Classes\Menu',
+            'content' => 'Winter\Pages\Classes\Content'
         ];
 
         if (!array_key_exists($type, $types)) {
-            throw new ApplicationException(Lang::get('rainlab.pages::lang.object.invalid_type') . ' - type - ' . $type);
+            throw new ApplicationException(Lang::get('winter.pages::lang.object.invalid_type') . ' - type - ' . $type);
         }
 
         $allowed = false;
         if ($type === 'content') {
-            $allowed = $this->user->hasAccess('rainlab.pages.manage_content');
+            $allowed = $this->user->hasAccess('winter.pages.manage_content');
         } else {
-            $allowed = $this->user->hasAccess("rainlab.pages.manage_{$type}s");
+            $allowed = $this->user->hasAccess("winter.pages.manage_{$type}s");
         }
 
         if (!$allowed) {
-            throw new ApplicationException(Lang::get('rainlab.pages::lang.object.unauthorized_type', ['type' => $type]));
+            throw new ApplicationException(Lang::get('winter.pages::lang.object.unauthorized_type', ['type' => $type]));
         }
 
         return $types[$type];
@@ -533,13 +533,13 @@ class Index extends Controller
     protected function makeObjectFormWidget($type, $object, $alias = null)
     {
         $formConfigs = [
-            'page'    => '~/plugins/rainlab/pages/classes/page/fields.yaml',
-            'menu'    => '~/plugins/rainlab/pages/classes/menu/fields.yaml',
-            'content' => '~/plugins/rainlab/pages/classes/content/fields.yaml'
+            'page'    => '~/plugins/winter/pages/classes/page/fields.yaml',
+            'menu'    => '~/plugins/winter/pages/classes/menu/fields.yaml',
+            'content' => '~/plugins/winter/pages/classes/content/fields.yaml'
         ];
 
         if (!array_key_exists($type, $formConfigs)) {
-            throw new ApplicationException(Lang::get('rainlab.pages::lang.object.not_found'));
+            throw new ApplicationException(Lang::get('winter.pages::lang.object.not_found'));
         }
 
         $widgetConfig = $this->makeConfig($formConfigs[$type]);
@@ -663,7 +663,7 @@ class Index extends Controller
             $viewBag = $object->getViewBag();
             $result = $viewBag ? $viewBag->property('title') : false;
             if (!$result) {
-                $result = trans('rainlab.pages::lang.page.new');
+                $result = trans('winter.pages::lang.page.new');
             }
 
             return $result;
@@ -671,7 +671,7 @@ class Index extends Controller
         elseif ($type == 'menu') {
             $result = $object->name;
             if (!strlen($result)) {
-                $result = trans('rainlab.pages::lang.menu.new');
+                $result = trans('winter.pages::lang.menu.new');
             }
 
             return $result;
@@ -734,7 +734,7 @@ class Index extends Controller
             $fileName = $objectData['fileName'];
 
             if (dirname($fileName) == 'static-pages') {
-                throw new ApplicationException(trans('rainlab.pages::lang.content.cant_save_to_dir'));
+                throw new ApplicationException(trans('winter.pages::lang.content.cant_save_to_dir'));
             }
 
             $extension = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -848,7 +848,7 @@ class Index extends Controller
 
     /**
      * Returns a list of content files
-     * @return \October\Rain\Database\Collection
+     * @return \Winter\Storm\Database\Collection
      */
     protected function getContentTemplateList()
     {
@@ -856,7 +856,7 @@ class Index extends Controller
 
         /**
          * @event pages.content.templateList
-         * Provides opportunity to filter the items returned to the ContentList widget used by the RainLab.Pages plugin in the backend.
+         * Provides opportunity to filter the items returned to the ContentList widget used by the Winter.Pages plugin in the backend.
          *
          * >**NOTE**: Recommended to just use cms.object.listInTheme instead
          *
@@ -875,7 +875,7 @@ class Index extends Controller
          *
          * Or:
          *
-         *     \RainLab\Pages\Controller\Index::extend(function ($controller) {
+         *     \Winter\Pages\Controller\Index::extend(function ($controller) {
          *           $controller->bindEvent('content.templateList', function ($templates) {
          *               foreach ($templates as $index = $content) {
          *                   if (!in_array($content->fileName, $allowedContent)) {

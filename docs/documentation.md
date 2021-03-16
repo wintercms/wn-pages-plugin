@@ -2,7 +2,7 @@ The plugin currently includes three components: Static Page, Static Menu and Sta
 
 ### Integrating the Static Pages plugin
 
-In the simplest case you could create a [layout](https://octobercms.com/docs/cms/layouts) in the CMS area and include the plugin's components to its body. The next example layout outputs a menu, breadcrumbs and a static page:
+In the simplest case you could create a [layout](https://wintercms.com/docs/cms/layouts) in the CMS area and include the plugin's components to its body. The next example layout outputs a menu, breadcrumbs and a static page:
 
     <html>
         <head>
@@ -15,11 +15,11 @@ In the simplest case you could create a [layout](https://octobercms.com/docs/cms
         </body>
     </html>
 
-![image](https://raw.githubusercontent.com/rainlab/pages-plugin/master/docs/images/static-layout.png)  {.img-responsive .frame}
+![image](https://raw.githubusercontent.com/winter/pages-plugin/master/docs/images/static-layout.png)  {.img-responsive .frame}
 
 ##### Static pages
 
-Include the Static Page [component](http://octobercms.com/docs/cms/components) to the layout. The Static Page component has two public properties:
+Include the Static Page [component](https://wintercms.com/docs/cms/components) to the layout. The Static Page component has two public properties:
 
 * `title` - specifies the static page title.
 * `content` - the static page content.
@@ -44,7 +44,7 @@ The static menu component injects the `menuItems` page variable. The default com
         </li>
     </ul>
 
-You might want to render the menus with your own code. The `menuItems` variable is an array of the `RainLab\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
+You might want to render the menus with your own code. The `menuItems` variable is an array of the `Winter\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
 
 * `title` - specifies the menu item title.
 * `url` - specifies the absolute menu item URL.
@@ -71,7 +71,7 @@ The component injects the `breadcrumbs` page variable that contains an array of 
 
 ##### Setting the active menu item explicitly
 
-In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](http://octobercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
+In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](https://wintercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
 
     function onInit()
     {
@@ -88,7 +88,7 @@ To create a link to a static page, use the `|staticPage` filter:
 
 This filter translates to PHP code as:
 
-    echo RainLab\Pages\Classes\Page::url('chairs');
+    echo Winter\Pages\Classes\Page::url('chairs');
 
 If you want to link to the static page by its URL, simply use the `|app` filter:
 
@@ -107,7 +107,7 @@ The field's assigned value will be the static page's file name, which can be use
 
 ### Placeholders
 
-[Placeholders](https://octobercms.com/docs/cms/layouts#placeholders) defined in the layout are automatically detected by the Static Pages plugin. The Edit Static Page form displays a tab for each placeholder defined in the layout used by the page. Placeholders are defined in the layout in the usual way:
+[Placeholders](https://wintercms.com/docs/cms/layouts#placeholders) defined in the layout are automatically detected by the Static Pages plugin. The Edit Static Page form displays a tab for each placeholder defined in the layout used by the page. Placeholders are defined in the layout in the usual way:
 
     {% placeholder ordering %}
 
@@ -133,7 +133,7 @@ To prevent a placeholder from appearing in the editor set the `ignore` attribute
 
 ### Creating new menu item types
 
-Plugins can extend the Static Pages plugin with new menu item types. Please refer to the [Blog plugin](https://octobercms.com/plugin/rainlab-blog) for the integration example. New item types are registered with the API events triggered by the Static Pages plugin. The event handlers should be defined in the `boot()` method of the [plugin registration file](https://octobercms.com/docs/plugin/registration#registration-file). There are three events that should be handled in the plugin.
+Plugins can extend the Static Pages plugin with new menu item types. Please refer to the [Blog plugin](https://github.com/wintercms/wn-blog-plugin) for the integration example. New item types are registered with the API events triggered by the Static Pages plugin. The event handlers should be defined in the `boot()` method of the [plugin registration file](https://wintercms.com/docs/plugin/registration#registration-file). There are three events that should be handled in the plugin.
 
 * `pages.menuitem.listType` event handler should return a list of new menu item types supported by the plugin.
 * `pages.menuitem.getTypeInfo` event handler returns detailed information about a menu item type.
@@ -243,7 +243,7 @@ The `cmsPages` is a list of CMS pages that can display objects supported by the 
 When the Static Pages plugin generates a menu on the front-end, every menu item should **resolved** by the plugin that supplies the menu item type. The process of resolving involves generating the real item URL, determining whether the menu item is active, and generating the subitems (if required). Plugins should register the `pages.menuitem.resolveItem` event handler in order to resolve menu items. The event handler takes four arguments:
 
 * `$type` - the item type name. Plugins must only handle item types they provide and ignore other types.
-* `$item` - the menu item object (RainLab\Pages\Classes\MenuItem). The menu item object represents the menu item configuration provided by the user. The object has the following properties: `title`, `type`, `reference`, `cmsPage`, `nesting`.
+* `$item` - the menu item object (Winter\Pages\Classes\MenuItem). The menu item object represents the menu item configuration provided by the user. The object has the following properties: `title`, `type`, `reference`, `cmsPage`, `nesting`.
 * `$url` - specifies the current absolute URL, in lower case. Always use the `Url::to()` helper to generate menu item links and compare them with the current URL.
 * `$theme` - the current theme object (`Cms\Classes\Theme`).
 
@@ -271,10 +271,10 @@ The `url` and `isActive` elements are required for menu items that point to a sp
 
 As the resolving process occurs every time when the front-end page is rendered, it's a good idea to cache all the information required for resolving menu items, if that's possible.
 
-If your item type requires a CMS page to resolve item URLs, you might need to return the selected page's URL, and sometimes pass parameters to the page through the URL. The next code example shows how to load a blog category CMS page referred by a menu item and how to generate an URL to this page. The blog category page has the `blogPosts` component that can load the requested category slug from the URL. We assume that the URL parameter is called 'slug', although it can be edited manually. We skip the part that loads the real parameter name for the simplicity. Please refer to the [Blog plugin](https://octobercms.com/plugin/rainlab-blog) for the reference.
+If your item type requires a CMS page to resolve item URLs, you might need to return the selected page's URL, and sometimes pass parameters to the page through the URL. The next code example shows how to load a blog category CMS page referred by a menu item and how to generate an URL to this page. The blog category page has the `blogPosts` component that can load the requested category slug from the URL. We assume that the URL parameter is called 'slug', although it can be edited manually. We skip the part that loads the real parameter name for the simplicity. Please refer to the [Blog plugin](https://github.com/wintercms/wn-blog-plugin) for the reference.
 
     use Cms\Classes\Page as CmsPage;
-    use October\Rain\Router\Helper as RouterHelper;
+    use Winter\Storm\Router\Helper as RouterHelper;
     use Str;
     use Url;
 
@@ -316,7 +316,7 @@ Partial-based snippets provide simpler functionality and usually are just contai
 
 To create snippet from a partial just enter the snippet code and snippet name in the partial form.
 
-![image](https://raw.githubusercontent.com/rainlab/pages-plugin/master/docs/images/snippets-partial.png)
+![image](https://raw.githubusercontent.com/winter/pages-plugin/master/docs/images/snippets-partial.png)
 
 The snippet properties are optional and can be defined with the grid control on the partial settings form. The table has the following columns:
 
@@ -330,16 +330,16 @@ Any property defined in the property list can be accessed within the partial mar
 
     The country name is {{ country }}
 
-In addition, properties can be passed to the partial components using an [external property value](http://octobercms.com/docs/cms/components#external-property-values).
+In addition, properties can be passed to the partial components using an [external property value](http://wintercms.com/docs/cms/components#external-property-values).
 
 ###### Snippets created from components
 
-Any component can be registered as a snippet and be used in Static Pages. To register a snippet, add the `registerPageSnippets()` method to your plugin class in the [registration file](https://octobercms.com/docs/plugin/registration#registration-file). The API for registering a snippet is similar to the one for [registering  components](https://octobercms.com/docs/plugin/registration#component-registration) - the method should return an array with class names in keys and aliases in values:
+Any component can be registered as a snippet and be used in Static Pages. To register a snippet, add the `registerPageSnippets()` method to your plugin class in the [registration file](https://wintercms.com/docs/plugin/registration#registration-file). The API for registering a snippet is similar to the one for [registering  components](https://wintercms.com/docs/plugin/registration#component-registration) - the method should return an array with class names in keys and aliases in values:
 
     public function registerPageSnippets()
     {
         return [
-           '\RainLab\Weather\Components\Weather' => 'weather'
+           '\Winter\Weather\Components\Weather' => 'weather'
         ];
     }
 
@@ -379,7 +379,7 @@ You may also use the `{repeater}` tag for repeating content:
         </div>
     {/repeater}
 
-For more details on syntax fields, see the [Parser section](https://octobercms.com/docs/services/parser#dynamic-syntax-parser) of the October documentation.
+For more details on syntax fields, see the [Parser section](https://wintercms.com/docs/services/parser#dynamic-syntax-parser) of the Winter CMS documentation.
 
 ##### Custom menu item form fields
 
@@ -387,8 +387,8 @@ Just like CMS objects have the view bag component to store arbitrary values, you
 
     Event::listen('backend.form.extendFields', function ($widget) {
         if (
-            !$widget->getController() instanceof \RainLab\Pages\Controllers\Index ||
-            !$widget->model instanceof \RainLab\Pages\Classes\MenuItem
+            !$widget->getController() instanceof \Winter\Pages\Controllers\Index ||
+            !$widget->model instanceof \Winter\Pages\Classes\MenuItem
         ) {
             return;
         }

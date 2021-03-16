@@ -1,22 +1,22 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Lang;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
 use Cms\Classes\Layout;
 use Cms\Classes\CmsException;
-use October\Rain\Parse\Syntax\Parser as SyntaxParser;
+use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Exception;
 
 /**
  * Represents a static page controller.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Controller
 {
-    use \October\Rain\Support\Traits\Singleton;
+    use \Winter\Storm\Support\Traits\Singleton;
 
     protected $theme;
 

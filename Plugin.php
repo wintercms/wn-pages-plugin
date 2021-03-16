@@ -1,12 +1,12 @@
-<?php namespace RainLab\Pages;
+<?php namespace Winter\Pages;
 
 use Event;
 use Backend;
-use RainLab\Pages\Classes\Controller;
-use RainLab\Pages\Classes\Page as StaticPage;
-use RainLab\Pages\Classes\Router;
-use RainLab\Pages\Classes\Snippet;
-use RainLab\Pages\Classes\SnippetManager;
+use Winter\Pages\Classes\Controller;
+use Winter\Pages\Classes\Page as StaticPage;
+use Winter\Pages\Classes\Router;
+use Winter\Pages\Classes\Snippet;
+use Winter\Pages\Classes\SnippetManager;
 use Cms\Classes\Theme;
 use Cms\Classes\Controller as CmsController;
 use System\Classes\PluginBase;
@@ -16,46 +16,47 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'rainlab.pages::lang.plugin.name',
-            'description' => 'rainlab.pages::lang.plugin.description',
+            'name'        => 'winter.pages::lang.plugin.name',
+            'description' => 'winter.pages::lang.plugin.description',
             'author'      => 'Alexey Bobkov, Samuel Georges',
             'icon'        => 'icon-files-o',
-            'homepage'    => 'https://github.com/rainlab/pages-plugin'
+            'homepage'    => 'https://github.com/winter/pages-plugin',
+            'replaces'    => 'RainLab.Pages'
         ];
     }
 
     public function registerComponents()
     {
         return [
-            '\RainLab\Pages\Components\ChildPages' => 'childPages',
-            '\RainLab\Pages\Components\StaticPage' => 'staticPage',
-            '\RainLab\Pages\Components\StaticMenu' => 'staticMenu',
-            '\RainLab\Pages\Components\StaticBreadcrumbs' => 'staticBreadcrumbs'
+            '\Winter\Pages\Components\ChildPages' => 'childPages',
+            '\Winter\Pages\Components\StaticPage' => 'staticPage',
+            '\Winter\Pages\Components\StaticMenu' => 'staticMenu',
+            '\Winter\Pages\Components\StaticBreadcrumbs' => 'staticBreadcrumbs'
         ];
     }
 
     public function registerPermissions()
     {
         return [
-            'rainlab.pages.manage_pages' => [
-                'tab'   => 'rainlab.pages::lang.page.tab',
+            'winter.pages.manage_pages' => [
+                'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
-                'label' => 'rainlab.pages::lang.page.manage_pages'
+                'label' => 'winter.pages::lang.page.manage_pages'
             ],
-            'rainlab.pages.manage_menus' => [
-                'tab'   => 'rainlab.pages::lang.page.tab',
+            'winter.pages.manage_menus' => [
+                'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
-                'label' => 'rainlab.pages::lang.page.manage_menus'
+                'label' => 'winter.pages::lang.page.manage_menus'
                 ],
-            'rainlab.pages.manage_content' => [
-                'tab'   => 'rainlab.pages::lang.page.tab',
+            'winter.pages.manage_content' => [
+                'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
-                'label' => 'rainlab.pages::lang.page.manage_content'
+                'label' => 'winter.pages::lang.page.manage_content'
             ],
-            'rainlab.pages.access_snippets' => [
-                'tab'   => 'rainlab.pages::lang.page.tab',
+            'winter.pages.access_snippets' => [
+                'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
-                'label' => 'rainlab.pages::lang.page.access_snippets'
+                'label' => 'winter.pages::lang.page.access_snippets'
             ]
         ];
     }
@@ -64,41 +65,41 @@ class Plugin extends PluginBase
     {
         return [
             'pages' => [
-                'label'       => 'rainlab.pages::lang.plugin.name',
-                'url'         => Backend::url('rainlab/pages'),
+                'label'       => 'winter.pages::lang.plugin.name',
+                'url'         => Backend::url('winter/pages'),
                 'icon'        => 'icon-files-o',
-                'iconSvg'     => 'plugins/rainlab/pages/assets/images/pages-icon.svg',
-                'permissions' => ['rainlab.pages.*'],
+                'iconSvg'     => 'plugins/winter/pages/assets/images/pages-icon.svg',
+                'permissions' => ['winter.pages.*'],
                 'order'       => 200,
 
                 'sideMenu' => [
                     'pages' => [
-                        'label'       => 'rainlab.pages::lang.page.menu_label',
+                        'label'       => 'winter.pages::lang.page.menu_label',
                         'icon'        => 'icon-files-o',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'pages'],
-                        'permissions' => ['rainlab.pages.manage_pages']
+                        'permissions' => ['winter.pages.manage_pages']
                     ],
                     'menus' => [
-                        'label'       => 'rainlab.pages::lang.menu.menu_label',
+                        'label'       => 'winter.pages::lang.menu.menu_label',
                         'icon'        => 'icon-sitemap',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'menus'],
-                        'permissions' => ['rainlab.pages.manage_menus']
+                        'permissions' => ['winter.pages.manage_menus']
                     ],
                     'content' => [
-                        'label'       => 'rainlab.pages::lang.content.menu_label',
+                        'label'       => 'winter.pages::lang.content.menu_label',
                         'icon'        => 'icon-file-text-o',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'content'],
-                        'permissions' => ['rainlab.pages.manage_content']
+                        'permissions' => ['winter.pages.manage_content']
                     ],
                     'snippets' => [
-                        'label'       => 'rainlab.pages::lang.snippet.menu_label',
+                        'label'       => 'winter.pages::lang.snippet.menu_label',
                         'icon'        => 'icon-newspaper-o',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'snippet'],
-                        'permissions' => ['rainlab.pages.access_snippets']
+                        'permissions' => ['winter.pages.access_snippets']
                     ]
                 ]
             ]
@@ -108,7 +109,7 @@ class Plugin extends PluginBase
     public function registerFormWidgets()
     {
         return [
-            'RainLab\Pages\FormWidgets\PagePicker' => 'staticpagepicker'
+            'Winter\Pages\FormWidgets\PagePicker' => 'staticpagepicker'
         ];
     }
 
@@ -154,8 +155,8 @@ class Plugin extends PluginBase
 
         Event::listen('pages.menuitem.listTypes', function() {
             return [
-                'static-page'      => 'rainlab.pages::lang.menuitem.static_page',
-                'all-static-pages' => 'rainlab.pages::lang.menuitem.all_static_pages'
+                'static-page'      => 'winter.pages::lang.menuitem.static_page',
+                'all-static-pages' => 'winter.pages::lang.menuitem.all_static_pages'
             ];
         });
 
@@ -201,7 +202,7 @@ class Plugin extends PluginBase
 
         Event::listen('backend.richeditor.listTypes', function () {
             return [
-                'static-page' => 'rainlab.pages::lang.menuitem.static_page',
+                'static-page' => 'winter.pages::lang.menuitem.static_page',
             ];
         });
 
@@ -227,7 +228,7 @@ class Plugin extends PluginBase
     {
         return [
             'filters' => [
-                'staticPage' => ['RainLab\Pages\Classes\Page', 'url']
+                'staticPage' => ['Winter\Pages\Classes\Page', 'url']
             ]
         ];
     }

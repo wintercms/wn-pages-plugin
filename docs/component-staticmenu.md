@@ -13,7 +13,7 @@ Property | Inspector Name | Description
 
 Variable | Type | Description
 -------- | ---- | -----------
-`menuItems` | `array` | Array of `RainLab\Pages\Classes\MenuItemReference` objects representing the defined menu
+`menuItems` | `array` | Array of `Winter\Pages\Classes\MenuItemReference` objects representing the defined menu
 
 ## Default output
 
@@ -35,7 +35,7 @@ The default component partial outputs a simple nested unordered list for menus:
 </ul>
 ```
 
-You might want to render the menus with your own code. The `menuItems` variable is an array of the `RainLab\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
+You might want to render the menus with your own code. The `menuItems` variable is an array of the `Winter\Pages\Classes\MenuItemReference` objects. Each object has the following properties:
 
 Property | Type | Description
 -------- | ---- | -----------
@@ -55,7 +55,7 @@ Property | Type | Description
 
 ## Setting the active menu item explicitly
 
-In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](https://octobercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
+In some cases you might want to mark a specific menu item as active explicitly. You can do that in the page's [`onInit()`](https://wintercms.com/docs/cms/pages#dynamic-pages) function with assigning the `activeMenuItem` page variable a value matching the menu item code you want to make active. Menu item codes are managed in the Edit Menu Item popup.
 
 ```php
 function onInit()

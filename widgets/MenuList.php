@@ -1,18 +1,18 @@
-<?php namespace RainLab\Pages\Widgets;
+<?php namespace Winter\Pages\Widgets;
 
 use Str;
 use Lang;
 use Input;
 use Request;
 use Response;
-use RainLab\Pages\Classes\Menu;
+use Winter\Pages\Classes\Menu;
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;
 
 /**
  * Menu list widget.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class MenuList extends WidgetBase
@@ -27,9 +27,9 @@ class MenuList extends WidgetBase
     /**
      * @var string Message to display when the Delete button is clicked.
      */
-    public $deleteConfirmation = 'rainlab.pages::lang.menu.delete_confirmation';
+    public $deleteConfirmation = 'winter.pages::lang.menu.delete_confirmation';
 
-    public $noRecordsMessage = 'rainlab.pages::lang.menu.no_records';
+    public $noRecordsMessage = 'winter.pages::lang.menu.no_records';
 
     public function __construct($controller, $alias)
     {
