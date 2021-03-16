@@ -1,20 +1,20 @@
-<?php namespace RainLab\Pages\Components;
+<?php namespace Winter\Pages\Components;
 
 use Request;
 use Cms\Classes\Theme;
 use Cms\Classes\ComponentBase;
-use RainLab\Pages\Classes\Router;
+use Winter\Pages\Classes\Router;
 
 /**
  * The static page component.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class StaticPage extends ComponentBase
 {
     /**
-     * @var \RainLab\Pages\Classes\Page A reference to the static page object
+     * @var \Winter\Pages\Classes\Page A reference to the static page object
      */
     public $pageObject;
 
@@ -36,8 +36,8 @@ class StaticPage extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'rainlab.pages::lang.component.static_page_name',
-            'description' => 'rainlab.pages::lang.component.static_page_description'
+            'name'        => 'winter.pages::lang.component.static_page_name',
+            'description' => 'winter.pages::lang.component.static_page_description'
         ];
     }
     
@@ -45,22 +45,22 @@ class StaticPage extends ComponentBase
     {
         return [
             'useContent' => [
-                'title'             => 'rainlab.pages::lang.component.static_page_use_content_name',
-                'description'       => 'rainlab.pages::lang.component.static_page_use_content_description',
+                'title'             => 'winter.pages::lang.component.static_page_use_content_name',
+                'description'       => 'winter.pages::lang.component.static_page_use_content_description',
                 'default'           => 1,
                 'type'              => 'checkbox',
                 'showExternalParam' => false
             ],
             'default' => [
-                'title'             => 'rainlab.pages::lang.component.static_page_default_name',
-                'description'       => 'rainlab.pages::lang.component.static_page_default_description',
+                'title'             => 'winter.pages::lang.component.static_page_default_name',
+                'description'       => 'winter.pages::lang.component.static_page_default_description',
                 'default'           => 0,
                 'type'              => 'checkbox',
                 'showExternalParam' => false
             ],
             'childLayout' => [
-                'title'             => 'rainlab.pages::lang.component.static_page_child_layout_name',
-                'description'       => 'rainlab.pages::lang.component.static_page_child_layout_description',
+                'title'             => 'winter.pages::lang.component.static_page_child_layout_name',
+                'description'       => 'winter.pages::lang.component.static_page_child_layout_description',
                 'type'              => 'string',
                 'showExternalParam' => false
             ]

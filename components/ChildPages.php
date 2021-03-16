@@ -1,16 +1,16 @@
-<?php namespace RainLab\Pages\Components;
+<?php namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
 
 class ChildPages extends ComponentBase
 {
     /**
-     * @var \RainLab\Pages\Components\StaticPage A reference to the static page component
+     * @var \Winter\Pages\Components\StaticPage A reference to the static page component
      */
     protected $staticPageComponent;
 
     /**
-     * @var array Array of \RainLab\Pages\Classes\Page references to the child static page objects for the current page
+     * @var array Array of \Winter\Pages\Classes\Page references to the child static page objects for the current page
      */
     protected $childPages;
 
@@ -19,7 +19,7 @@ class ChildPages extends ComponentBase
      * [
      *      'url' => '',
      *      'title' => '',
-     *      'page' => \RainLab\Pages\Classes\Page,
+     *      'page' => \Winter\Pages\Classes\Page,
      *      'viewBag' => array,
      *      'is_hidden' => bool,
      *      'navigation_hidden' => bool,
@@ -30,8 +30,8 @@ class ChildPages extends ComponentBase
     public function componentDetails()
     {
         return [
-            'name'        => 'rainlab.pages::lang.component.child_pages_name',
-            'description' => 'rainlab.pages::lang.component.child_pages_description'
+            'name'        => 'winter.pages::lang.component.child_pages_name',
+            'description' => 'winter.pages::lang.component.child_pages_description'
         ];
     }
 

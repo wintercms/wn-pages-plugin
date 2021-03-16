@@ -1,16 +1,16 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Cms\Classes\Content as ContentBase;
 
 /**
  * Represents a content template.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Content extends ContentBase
 {
-    public $implement = ['@RainLab.Translate.Behaviors.TranslatableCmsObject'];
+    public $implement = ['@Winter.Translate.Behaviors.TranslatableCmsObject'];
 
     /**
      * @var array Attributes that support translation, if available.
@@ -19,7 +19,7 @@ class Content extends ContentBase
         'markup'
     ];
 
-    public $translatableModel = 'RainLab\Translate\Classes\MLContent';
+    public $translatableModel = 'Winter\Translate\Classes\MLContent';
 
     /**
      * Converts the content object file name in to something nicer

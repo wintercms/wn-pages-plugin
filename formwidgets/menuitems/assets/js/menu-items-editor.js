@@ -94,7 +94,7 @@
                     var title = $.trim(selectedTitle.replace(/\s*\[.*\]$/, ''))
                     $titleField.val(title)
                     
-                    // Support for RainLab.Translate
+                    // Support for Winter.Translate
                     var defaultLocale = $('[data-control="multilingual"]').data('default-locale')
                     if (defaultLocale) {
                         $('[name="RLTranslate['+defaultLocale+'][title]"]', self.$popupContainer).val(title)
@@ -196,7 +196,7 @@
                 $.each(val, function(vbProperty, vbVal) {
                     var $input = $('[name="viewBag['+vbProperty+']"]', $popupContainer).not('[type=hidden]')
                     setPropertyOnElement($input, vbVal)
-                    // Ensure that locale specific data is made available in the RainLab.Translate data holders
+                    // Ensure that locale specific data is made available in the Winter.Translate data holders
                     if (vbProperty === 'locale') {
                         $.each(vbVal, function(locale, fields) {
                             $.each(fields, function(fieldName, fieldValue) {
@@ -257,7 +257,7 @@
             else {
                 var $input = $('[name="'+property+'"]', $popupContainer).not('[type=hidden]')
                 setPropertyOnElement($input, val)
-                // If the RainLab.Translate default locale data locker fields are available make sure that they are properly populated
+                // If the Winter.Translate default locale data locker fields are available make sure that they are properly populated
                 var $defaultLocaleField = $('[name="RLTranslate['+defaultLocale+']['+property+']"]', self.$popupContainer)
                 if ($defaultLocaleField) {
                     $defaultLocaleField.val($input.val());
@@ -276,10 +276,10 @@
             return
         }
 
-        $.oc.stripeLoadIndicator.show()
+        $.wn.stripeLoadIndicator.show()
         this.$popupForm.request('onGetMenuItemTypeInfo')
             .always(function(){
-                $.oc.stripeLoadIndicator.hide()
+                $.wn.stripeLoadIndicator.hide()
             })
             .done(function(data){
                 self.typeInfo[type] = data.menuItemTypeInfo
@@ -408,7 +408,7 @@
             typeInfo = {},
             validationErrorFound = false
 
-        // Ensure that locale specific data is made available in the RainLab.Translate data holders
+        // Ensure that locale specific data is made available in the Winter.Translate data holders
         $('[name^="viewBag[locale]"]', self.$popupContainer).each(function() {
             var locale = $(this).data('locale')
             var fieldName = $(this).data('field-name')
@@ -422,7 +422,7 @@
             var propertyName = this,
                 $input = $('[name="'+propertyName+'"]', self.$popupContainer).not('[type=hidden]')
 
-            // If the RainLab.Translate default locale data locker fields are available make sure the regular inputs are properly populated
+            // If the Winter.Translate default locale data locker fields are available make sure the regular inputs are properly populated
             if (defaultLocale) {
                 var $defaultLocaleField = $('[name="RLTranslate['+defaultLocale+']['+propertyName+']"]', self.$popupContainer)
                 if ($defaultLocaleField && $defaultLocaleField.val()) {
@@ -441,7 +441,7 @@
 
                     if (typeInfo[typeInfoProperty] !== undefined) {
 
-                        $.oc.flashMsg({
+                        $.wn.flashMsg({
                             class: 'error',
                             text: self.$popupForm.attr('data-message-'+propertyName+'-required')
                         })
@@ -486,7 +486,7 @@
         }
 
         if ($.trim(data.title).length == 0) {
-            $.oc.flashMsg({
+            $.wn.flashMsg({
                 class: 'error',
                 text: self.$popupForm.data('messageTitleRequired')
             })
@@ -497,7 +497,7 @@
         }
 
         if (data.type == 'url' && $.trim(data.url).length == 0) {
-            $.oc.flashMsg({
+            $.wn.flashMsg({
                 class: 'error',
                 text: self.$popupForm.data('messageUrlRequired')
             })

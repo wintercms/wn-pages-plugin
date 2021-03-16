@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\FormWidgets;
+<?php namespace Winter\Pages\FormWidgets;
 
 use Str;
 use Lang;
@@ -7,19 +7,19 @@ use Request;
 use Response;
 use Backend\Classes\FormWidgetBase;
 use Cms\Classes\Theme;
-use RainLab\Pages\Classes\MenuItem;
+use Winter\Pages\Classes\MenuItem;
 
 /**
  * Menu item reference search.
  *
- * @package october\backend
+ * @package winter\backend
  * @author Alexey Bobkov, Samuel Georges
  */
 class MenuItemSearch extends FormWidgetBase
 {
     use \Backend\Traits\SearchableWidget;
 
-    public $searchPlaceholderMessage = 'rainlab.pages::lang.menuitem.search_placeholder';
+    public $searchPlaceholderMessage = 'winter.pages::lang.menuitem.search_placeholder';
 
     /**
      * Renders the widget.

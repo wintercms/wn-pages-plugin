@@ -2,8 +2,11 @@
  * Handles snippet operations on the Pages main page
  */
 +function ($) { "use strict";
+    if ($.wn.pages === undefined)
+        $.wn.pages = {}
+
     if ($.oc.pages === undefined)
-        $.oc.pages = {}
+        $.oc.pages = $.wn.pages
 
     var SnippetManager = function ($masterTabs) {
         this.$masterTabs = $masterTabs
@@ -37,7 +40,7 @@
                 return
             }
 
-            $.oc.inspector.manager.createInspector(this)
+            $.wn.inspector.manager.createInspector(this)
             return false
         })
     }
@@ -46,7 +49,7 @@
         var $pageForm = $('div.tab-content > .tab-pane.active form[data-object-type=page]', this.$masterTabs)
 
         if (!$pageForm.length) {
-            $.oc.alert('Snippets can only be added to Pages. Please open or create a Page first.')
+            $.wn.alert('Snippets can only be added to Pages. Please open or create a Page first.')
             return
         }
 
@@ -58,7 +61,7 @@
             snippetCode = $sidebarItem.data('snippet')
 
         if (!$textarea.length) {
-            $.oc.alert('Snippets can only be added to page Content or HTML placeholders.')
+            $.wn.alert('Snippets can only be added to page Content or HTML placeholders.')
             return
         }
 
@@ -203,11 +206,11 @@
             switch (ev.which) {
                 case 32:
                     // Space key
-                    $.oc.inspector.manager.createInspector(snippet)
+                    $.wn.inspector.manager.createInspector(snippet)
                 break
             }
         }
     }
 
-    $.oc.pages.snippetManager = SnippetManager
+    $.wn.pages.snippetManager = SnippetManager
 }(window.jQuery);

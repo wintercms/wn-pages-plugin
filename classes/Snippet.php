@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Event;
 use Lang;
@@ -14,7 +14,7 @@ use DOMDocument;
 /**
  * Represents a static page snippet.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class Snippet
@@ -183,10 +183,10 @@ class Snippet
          */
 
         $fieldConfig = [
-            'tab'     => 'rainlab.pages::lang.snippet.partialtab',
+            'tab'     => 'winter.pages::lang.snippet.partialtab',
             'type'    => 'text',
-            'label'   => 'rainlab.pages::lang.snippet.code',
-            'comment' => 'rainlab.pages::lang.snippet.code_comment',
+            'label'   => 'winter.pages::lang.snippet.code',
+            'comment' => 'winter.pages::lang.snippet.code_comment',
             'span'    => 'left'
         ];
 
@@ -197,10 +197,10 @@ class Snippet
          */
 
         $fieldConfig = [
-            'tab'     => 'rainlab.pages::lang.snippet.partialtab',
+            'tab'     => 'winter.pages::lang.snippet.partialtab',
             'type'    => 'text',
-            'label'   => 'rainlab.pages::lang.snippet.name',
-            'comment' => 'rainlab.pages::lang.snippet.name_comment',
+            'label'   => 'winter.pages::lang.snippet.name',
+            'comment' => 'winter.pages::lang.snippet.name_comment',
             'span'    => 'right'
         ];
 
@@ -211,13 +211,13 @@ class Snippet
          */
 
         $fieldConfig = [
-            'tab'    => 'rainlab.pages::lang.snippet.partialtab',
+            'tab'    => 'winter.pages::lang.snippet.partialtab',
             'type'   => 'datatable',
             'height' => '150',
             'dynamicHeight' => true,
             'columns' => [
                 'title' => [
-                    'title' => 'rainlab.pages::lang.snippet.column_property',
+                    'title' => 'winter.pages::lang.snippet.column_property',
                     'validation' => [
                         'required' => [
                             'message' => 'Please provide the property title',
@@ -226,7 +226,7 @@ class Snippet
                     ]
                 ],
                 'property' => [
-                    'title' => 'rainlab.pages::lang.snippet.column_code',
+                    'title' => 'winter.pages::lang.snippet.column_code',
                     'validation' => [
                         'required' => [
                             'message' => 'Please provide the property code',
@@ -235,17 +235,17 @@ class Snippet
                         'regex' => [
                             'pattern'   => '^[a-z][a-z0-9]*$',
                             'modifiers' => 'i',
-                            'message'   => Lang::get('rainlab.pages::lang.snippet.property_format_error')
+                            'message'   => Lang::get('winter.pages::lang.snippet.property_format_error')
                         ]
                     ]
                 ],
                 'type' => [
-                    'title'   => 'rainlab.pages::lang.snippet.column_type',
+                    'title'   => 'winter.pages::lang.snippet.column_type',
                     'type'    => 'dropdown',
                     'options' => [
-                        'string'   => 'rainlab.pages::lang.snippet.column_type_string',
-                        'checkbox' => 'rainlab.pages::lang.snippet.column_type_checkbox',
-                        'dropdown' => 'rainlab.pages::lang.snippet.column_type_dropdown'
+                        'string'   => 'winter.pages::lang.snippet.column_type_string',
+                        'checkbox' => 'winter.pages::lang.snippet.column_type_checkbox',
+                        'dropdown' => 'winter.pages::lang.snippet.column_type_dropdown'
                     ],
                     'validation' => [
                         'required' => [
@@ -254,10 +254,10 @@ class Snippet
                     ]
                 ],
                 'default' => [
-                    'title' => 'rainlab.pages::lang.snippet.column_default'
+                    'title' => 'winter.pages::lang.snippet.column_default'
                 ],
                 'options' => [
-                    'title' => 'rainlab.pages::lang.snippet.column_options'
+                    'title' => 'winter.pages::lang.snippet.column_options'
                 ]
             ]
         ];
@@ -384,7 +384,7 @@ class Snippet
     {
         $snippet = SnippetManager::instance()->findByCodeOrComponent($theme, $snippetCode, $componentClass, true);
         if (!$snippet) {
-            throw new ApplicationException(Lang::get('rainlab.pages::lang.snippet.not_found', ['code' => $snippetCode]));
+            throw new ApplicationException(Lang::get('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]));
         }
 
         $properties = array_change_key_case($properties);
@@ -435,7 +435,7 @@ class Snippet
 
                 if (strlen($key)) {
                     if (!preg_match('/^[0-9a-z-_]+$/i', $key)) {
-                        throw new ValidationException(['snippetProperties' => Lang::get('rainlab.pages::lang.snippet.invalid_option_key', ['key'=>$key])]);
+                        throw new ValidationException(['snippetProperties' => Lang::get('winter.pages::lang.snippet.invalid_option_key', ['key'=>$key])]);
                     }
 
                     $result[$key] = trim($parts[1]);
@@ -554,7 +554,7 @@ class Snippet
         $key = crc32($theme->getPath()).'snippet-map';
         /**
          * @event pages.snippet.getMapCacheKey
-         * Enables modifying the key used to reference cached RainLab.Pages snippet maps
+         * Enables modifying the key used to reference cached Winter.Pages snippet maps
          *
          * Example usage:
          *

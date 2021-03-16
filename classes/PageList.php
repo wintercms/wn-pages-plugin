@@ -1,12 +1,12 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use Cms\Classes\Meta;
-use RainLab\Pages\Classes\Page;
+use Winter\Pages\Classes\Page;
 
 /**
  * The page list class reads and manages the static page hierarchy.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class PageList

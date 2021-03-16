@@ -1,4 +1,4 @@
-<?php namespace RainLab\Pages\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use ApplicationException;
 use Validator;
@@ -9,9 +9,9 @@ use Event;
  * Represents a front-end menu item.
  * This class is used on the front-end.
  * In the back-end items are represented with the
- * \RainLab\Pages\Classes\MenuItem objects.
+ * \Winter\Pages\Classes\MenuItem objects.
  *
- * @package rainlab\pages
+ * @package winter\pages
  * @author Alexey Bobkov, Samuel Georges
  */
 class MenuItemReference

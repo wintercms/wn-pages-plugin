@@ -21,7 +21,7 @@ Property | Type | Description
 -------- | ---- | -----------
 `url` | `string` | The relative URL for the page (use `{{ url | app }}` to get the absolute URL)
 `title` | `string` | Page title
-`page` | `RainLab\Pages\Classes\Page` | The page object itself
+`page` | `Winter\Pages\Classes\Page` | The page object itself
 `viewBag` | `array` | Contains all the extra data used by the page
 `is_hidden` | `bool` | Whether the page is hidden (only accessible to backend users)
 `navigation_hidden` | `bool` | Whether the page is hidden in automaticaly generated contexts (i.e menu)
