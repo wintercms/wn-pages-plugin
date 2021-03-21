@@ -361,7 +361,7 @@ Any property defined in the property list can be accessed within the partial mar
 
     The country name is {{ country }}
 
-In addition, properties can be passed to the partial components using an [external property value](http://wintercms.com/docs/cms/components#external-property-values).
+In addition, properties can be passed to the partial components using an [external property value](https://wintercms.com/docs/cms/components#external-property-values).
 
 ###### Snippets created from components
 
@@ -383,7 +383,7 @@ If you want to dynamically extend the list of the snippets you can bind to the `
 An example usage to add a snippet to the list:
 
     Event::listen('pages.snippets.listSnippets', function($manager) {
-        $snippet = new \RainLab\Pages\Classes\Snippet();
+        $snippet = new \Winter\Pages\Classes\Snippet();
         $snippet->initFromComponentInfo('\Example\Plugin\Components\ComponentClass', 'snippetCode');
         $manager->addSnippet($snippet);
     });

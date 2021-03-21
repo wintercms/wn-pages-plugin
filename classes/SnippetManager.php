@@ -44,7 +44,7 @@ class SnippetManager
          * Example usage to add a snippet to the list:
          *
          * Event::listen('pages.snippets.listSnippets', function($manager) {
-         *     $snippet = new \RainLab\Pages\Classes\Snippet();
+         *     $snippet = new \Winter\Pages\Classes\Snippet();
          *     $snippet->initFromComponentInfo('\Example\Plugin\Components\ComponentClass', 'snippetCode');
          *     $manager->addSnippet($snippet);
          * });

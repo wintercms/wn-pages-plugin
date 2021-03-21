@@ -18,7 +18,7 @@ class Plugin extends PluginBase
         return [
             'name'        => 'winter.pages::lang.plugin.name',
             'description' => 'winter.pages::lang.plugin.description',
-            'author'      => 'Alexey Bobkov, Samuel Georges',
+            'author'      => 'Winter CMS',
             'icon'        => 'icon-files-o',
             'homepage'    => 'https://github.com/winter/pages-plugin',
             'replaces'    => 'RainLab.Pages'

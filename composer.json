@@ -28,10 +28,9 @@
         "source": "https://github.com/wintercms/wn-pages-plugin"
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.2",
         "composer/installers": "~1.0"
     },
-    "minimum-stability": "dev",
     "extra": {
         "installer-name": "pages"
     }
