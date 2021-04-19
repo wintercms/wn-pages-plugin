@@ -21,7 +21,7 @@ class Plugin extends PluginBase
             'author'      => 'Winter CMS',
             'icon'        => 'icon-files-o',
             'homepage'    => 'https://github.com/winter/pages-plugin',
-            'replaces'    => 'RainLab.Pages'
+            'replaces'    => ['RainLab.Pages' => '<= 1.3.7'],
         ];
     }
 
