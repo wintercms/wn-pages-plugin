@@ -54,4 +54,7 @@
 "1.3.5": Minor fix to bust the browser cache for JS assets. Prevent duplicate property fields in snippet inspector.
 "1.3.6": ChildPages component now displays localized page titles from Translate plugin.
 "1.3.7": Improved page loading performance, added MenuPicker formwidget, added pages.snippets.listSnippets
+"1.4.0": Fixes bug when adding menu items in October CMS v2.0.
+"1.4.1": Fixes support for configuration values.
+"1.4.3": Fixes page deletion in newer platform builds.
 "2.0.0": Rebrand to Winter.Pages
