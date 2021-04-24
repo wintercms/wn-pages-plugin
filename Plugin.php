@@ -20,7 +20,7 @@ class Plugin extends PluginBase
             'description' => 'winter.pages::lang.plugin.description',
             'author'      => 'Winter CMS',
             'icon'        => 'icon-files-o',
-            'homepage'    => 'https://github.com/winter/pages-plugin',
+            'homepage'    => 'https://github.com/wintercms/wn-pages-plugin',
             'replaces'    => ['RainLab.Pages' => '<= 1.4.3'],
         ];
     }
