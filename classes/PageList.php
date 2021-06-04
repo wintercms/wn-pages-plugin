@@ -32,7 +32,7 @@ class PageList
      */
     public function listPages($skipCache = false)
     {
-        return Page::listInTheme($this->theme, $skipCache);
+        return Page::listInThemeArray($this->theme, ['settings.viewBag.title' => 'title'], $skipCache);
     }
 
     /**
