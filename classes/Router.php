@@ -108,7 +108,6 @@ class Router
              * The item doesn't exist in the cache, create the map
              */
             $pageList = new PageList($this->theme);
-
             $pages = $pageList->listPages();
             $map = [
                 'urls'   => [],
@@ -116,17 +115,13 @@ class Router
                 'titles' => []
             ];
             foreach ($pages as $page) {
-                $url = $page->getViewBag()->property('url');
-                if (!$url) {
+                if (!isset($page['pattern'])) {
                     continue;
                 }
 
-                $url = Str::lower(RouterHelper::normalizeUrl($url));
-                $file = $page->getBaseFileName();
-
-                $map['urls'][$url] = $file;
-                $map['files'][$file] = $url;
-                $map['titles'][$file] = $page->getViewBag()->property('title');
+                $map['urls'][$page['pattern']] = $page['file'];
+                $map['files'][$page['file']] = $page['pattern'];
+                $map['titles'][$page['file']] = $page['title'];
             }
 
             self::$urlMap = $map;
