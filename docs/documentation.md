@@ -15,7 +15,7 @@ In the simplest case you could create a [layout](https://wintercms.com/docs/cms/
         </body>
     </html>
 
-![image](https://raw.githubusercontent.com/winter/pages-plugin/master/docs/images/static-layout.png)  {.img-responsive .frame}
+![image](https://raw.githubusercontent.com/wintercms/wn-pages-plugin/main/docs/images/static-layout.png) {.img-responsive .frame}
 
 ##### Static pages
 
@@ -347,7 +347,7 @@ Partial-based snippets provide simpler functionality and usually are just contai
 
 To create snippet from a partial just enter the snippet code and snippet name in the partial form.
 
-![image](https://raw.githubusercontent.com/winter/pages-plugin/master/docs/images/snippets-partial.png)
+![image](https://raw.githubusercontent.com/wintercms/wn-pages-plugin/main/docs/images/snippets-partial.png)
 
 The snippet properties are optional and can be defined with the grid control on the partial settings form. The table has the following columns:
 
