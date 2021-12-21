@@ -1,6 +1,5 @@
 <?php namespace Winter\Pages\Components;
 
-use Request;
 use Cms\Classes\Theme;
 use Cms\Classes\ComponentBase;
 use Winter\Pages\Classes\Router;
@@ -40,7 +39,7 @@ class StaticPage extends ComponentBase
             'description' => 'winter.pages::lang.component.static_page_description'
         ];
     }
-    
+
     public function defineProperties()
     {
         return [
@@ -64,7 +63,6 @@ class StaticPage extends ComponentBase
                 'type'              => 'string',
                 'showExternalParam' => false
             ]
-            
         ];
     }
 
@@ -74,6 +72,10 @@ class StaticPage extends ComponentBase
 
         if (!strlen($url)) {
             $url = '/';
+        }
+
+        if ($this->isMaintenanceModeEnabled()) {
+            return;
         }
 
         $router = new Router(Theme::getActiveTheme());
@@ -144,6 +146,17 @@ class StaticPage extends ComponentBase
         }
 
         return $extraData;
+    }
+
+    /**
+     * isMaintenanceModeEnabled will check if maintenance mode is currently enabled.
+     * Static page logic should be disabled when this occurs.
+     */
+    protected function isMaintenanceModeEnabled(): bool
+    {
+        return MaintenanceSetting::isConfigured() &&
+            MaintenanceSetting::get('is_enabled', false) &&
+            !\BackendAuth::getUser();
     }
 
     /**

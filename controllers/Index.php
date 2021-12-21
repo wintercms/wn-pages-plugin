@@ -577,12 +577,17 @@ class Index extends Controller
         }
     }
 
+    /**
+     * addPageSyntaxFields adds syntax defined fields to the form
+     */
     protected function addPageSyntaxFields($formWidget, $page)
     {
         $fields = $page->listLayoutSyntaxFields();
 
         foreach ($fields as $fieldCode => $fieldConfig) {
-            if ($fieldConfig['type'] == 'fileupload') continue;
+            if ($fieldConfig['type'] === 'fileupload') {
+                continue;
+            }
 
             if ($fieldConfig['type'] == 'repeater') {
                 if (empty($fieldConfig['form']) || !is_string($fieldConfig['form'])) {
@@ -592,9 +597,9 @@ class Index extends Controller
             }
 
             /*
-            * Custom fields placement
-            */
-            $placement = (!empty($fieldConfig['placement']) ? $fieldConfig['placement'] : NULL);
+             * Custom fields placement
+             */
+            $placement = !empty($fieldConfig['placement']) ? $fieldConfig['placement'] : null;
 
             switch ($placement) {
                 case 'primary':
@@ -630,7 +635,7 @@ class Index extends Controller
             $fieldConfig = [
                 'tab'     => $placeholderTitle,
                 'stretch' => '1',
-                'size'    => 'huge'
+                'size'    => 'huge',
             ];
 
             if ($info['type'] != 'text') {
@@ -695,6 +700,12 @@ class Index extends Controller
     {
         $objectPath = trim(Request::input('objectPath'));
         $object = $objectPath ? $this->loadObject($type, $objectPath) : $this->createObject($type);
+
+        // Set page layout super early because it cascades to other elements
+        if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
+            $object->getViewBag()->setProperty('layout', $layout);
+        }
+
         $formWidget = $this->makeObjectFormWidget($type, $object, Request::input('formWidgetAlias'));
 
         $saveData = $formWidget->getSaveData();
@@ -811,21 +822,13 @@ class Index extends Controller
 
         if (!$objectPath) {
             $object = $this->createObject($type);
-
-            if ($type === 'page') {
-                /**
-                 * If layout is in POST, populate that into the object's viewBag to allow placeholders and syntax
-                 * fields to still work when editing a new page.
-                 * 
-                 * Fixes https://github.com/octobercms/october/issues/4628
-                 */
-                $layout = Request::input('viewBag.layout');
-                if ($layout) {
-                    $object->getViewBag()->setProperty('layout', $layout);
-                }
-            }
         } else {
             $object = $this->loadObject($type, $objectPath);
+        }
+
+        // Set page layout super early because it cascades to other elements
+        if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
+            $object->getViewBag()->setProperty('layout', $layout);
         }
 
         $widget = $this->makeObjectFormWidget($type, $object, $alias);

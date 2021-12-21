@@ -58,3 +58,7 @@
 "1.4.1": Fixes support for configuration values.
 "1.4.3": Fixes page deletion in newer platform builds.
 "2.0.0": Rebrand to Winter.Pages
+"2.0.1":
+  - "Fixes rich editor usage inside repeaters."
+  - "Fixes a lifecycle issue when switching the page layout."
+  - "Fixes maintenance mode when using static pages."
