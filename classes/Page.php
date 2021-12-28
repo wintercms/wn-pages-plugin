@@ -5,10 +5,8 @@ use File;
 use Lang;
 use Cache;
 use Event;
-use Route;
 use Config;
 use Validator;
-use Winter\Pages\Classes\Router;
 use Winter\Pages\Classes\Snippet;
 use Winter\Pages\Classes\PageList;
 use Cms\Classes\Theme;
@@ -20,7 +18,6 @@ use Winter\Storm\Support\Str;
 use Winter\Storm\Router\Helper as RouterHelper;
 use Winter\Storm\Parse\Bracket as TextParser;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
-use ApplicationException;
 use Twig\Node\Node as TwigNode;
 
 /**

@@ -2,6 +2,7 @@
 
 use Cms\Classes\Theme;
 use Cms\Classes\ComponentBase;
+use Cms\Models\MaintenanceSetting;
 use Winter\Pages\Classes\Router;
 
 /**

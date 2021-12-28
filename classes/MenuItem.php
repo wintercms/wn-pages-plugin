@@ -1,8 +1,5 @@
 <?php namespace Winter\Pages\Classes;
 
-use ApplicationException;
-use Validator;
-use Lang;
 use Event;
 
 /**

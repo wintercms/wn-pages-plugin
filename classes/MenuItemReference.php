@@ -1,10 +1,5 @@
 <?php namespace Winter\Pages\Classes;
 
-use ApplicationException;
-use Validator;
-use Lang;
-use Event;
-
 /**
  * Represents a front-end menu item.
  * This class is used on the front-end.

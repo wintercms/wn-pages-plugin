@@ -1,14 +1,10 @@
 <?php namespace Winter\Pages\Widgets;
 
-use Backend\Classes\WidgetBase;
-use Winter\Pages\Classes\Snippet;
-use Winter\Pages\Classes\SnippetManager;
-use Cms\Classes\Theme;
-use Input;
-use Response;
-use Request;
 use Str;
-use Lang;
+use Input;
+use Backend\Classes\WidgetBase;
+use Cms\Classes\Theme;
+use Winter\Pages\Classes\SnippetManager;
 
 /**
  * Snippet list widget.

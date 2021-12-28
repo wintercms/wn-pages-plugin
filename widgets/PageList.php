@@ -1,10 +1,7 @@
 <?php namespace Winter\Pages\Widgets;
 
 use Str;
-use Lang;
 use Input;
-use Request;
-use Response;
 use Backend\Classes\WidgetBase;
 use Winter\Pages\Classes\PageList as StaticPageList;
 use Cms\Classes\Theme;

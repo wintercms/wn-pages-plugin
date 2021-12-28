@@ -1,12 +1,11 @@
 <?php namespace Winter\Pages\Classes;
 
 use Event;
-use Lang;
 use Cache;
 use Config;
+use SystemException;
 use Cms\Classes\Partial;
 use System\Classes\PluginManager;
-use SystemException;
 use Winter\Pages\Classes\Snippet;
 
 /**

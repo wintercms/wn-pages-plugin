@@ -1,6 +1,5 @@
 <?php namespace Winter\Pages\FormWidgets;
 
-use Request;
 use Backend\Classes\FormWidgetBase;
 use Winter\Pages\Classes\MenuItem;
 

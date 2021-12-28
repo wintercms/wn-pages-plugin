@@ -1,10 +1,7 @@
 <?php namespace Winter\Pages\Widgets;
 
 use Str;
-use Lang;
 use Input;
-use Request;
-use Response;
 use Winter\Pages\Classes\Menu;
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;

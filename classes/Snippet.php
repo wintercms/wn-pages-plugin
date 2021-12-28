@@ -5,11 +5,9 @@ use Lang;
 use Cache;
 use Config;
 use ApplicationException;
-use Cms\Classes\Partial;
 use Cms\Classes\ComponentHelpers;
 use Cms\Classes\Controller as CmsController;
 use ValidationException;
-use DOMDocument;
 
 /**
  * Represents a static page snippet.

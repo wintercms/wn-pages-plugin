@@ -1,9 +1,7 @@
 <?php namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
-use Winter\Pages\Classes\Router;
 use Cms\Classes\Theme;
-use Request;
 use Winter\Pages\Classes\Menu as PagesMenu;
 
 /**

@@ -6,9 +6,7 @@ use Flash;
 use Event;
 use Config;
 use Request;
-use Response;
 use BackendMenu;
-use Cms\Classes\Layout;
 use Cms\Classes\Theme;
 use Cms\Classes\CmsObject;
 use Cms\Classes\CmsCompoundObject;
@@ -18,9 +16,7 @@ use Backend\Classes\Controller;
 use Winter\Pages\Widgets\PageList;
 use Winter\Pages\Widgets\MenuList;
 use Winter\Pages\Widgets\SnippetList;
-use Winter\Pages\Classes\Snippet;
 use Winter\Pages\Classes\Page as StaticPage;
-use Winter\Pages\Classes\Router;
 use Winter\Pages\Classes\Content;
 use Winter\Pages\Classes\MenuItem;
 use Winter\Pages\Plugin as PagesPlugin;
@@ -827,7 +823,8 @@ class Index extends Controller
         }
 
         // Set page layout super early because it cascades to other elements
-        if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
+        $layout = post('viewBag[layout]');
+        if ($type === 'page' && !is_null($layout)) {
             $object->getViewBag()->setProperty('layout', $layout);
         }
 

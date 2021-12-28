@@ -1,12 +1,10 @@
 <?php namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
+use Cms\Classes\Theme;
 use Winter\Pages\Classes\Router;
 use Winter\Pages\Classes\MenuItemReference;
 use Winter\Pages\Classes\Page as StaticPageClass;
-use Cms\Classes\Theme;
-use Request;
-use Url;
 
 /**
  * The static breadcrumbs component.

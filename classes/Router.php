@@ -1,6 +1,5 @@
 <?php namespace Winter\Pages\Classes;
 
-use Lang;
 use Cache;
 use Event;
 use Config;

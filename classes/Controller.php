@@ -3,7 +3,6 @@
 use Lang;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
-use Cms\Classes\Layout;
 use Cms\Classes\CmsException;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Exception;
