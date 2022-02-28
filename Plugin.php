@@ -2,6 +2,7 @@
 
 use Event;
 use Backend;
+use Backend\Models\UserRole;
 use Winter\Pages\Classes\Controller;
 use Winter\Pages\Classes\Page as StaticPage;
 use Winter\Pages\Classes\Router;
@@ -41,21 +42,25 @@ class Plugin extends PluginBase
             'winter.pages.manage_pages' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 'label' => 'winter.pages::lang.page.manage_pages'
             ],
             'winter.pages.manage_menus' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 'label' => 'winter.pages::lang.page.manage_menus'
                 ],
             'winter.pages.manage_content' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 'label' => 'winter.pages::lang.page.manage_content'
             ],
             'winter.pages.access_snippets' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 'label' => 'winter.pages::lang.page.access_snippets'
             ]
         ];
