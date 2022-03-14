@@ -25,6 +25,13 @@
 
     <button
         type="button"
+        class="btn btn-default empty oc-icon-clone <?php if (!$objectPath): ?>hide<?php endif ?>"
+        data-control="duplicate-object"
+    >
+    </button>
+
+    <button
+        type="button"
         class="btn btn-default empty oc-icon-trash-o <?php if (!$objectPath): ?>hide<?php endif ?>"
         data-request="onDelete"
         data-request-confirm="<?= e(trans('winter.pages::lang.page.delete_confirm_single')) ?>"

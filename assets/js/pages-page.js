@@ -58,6 +58,13 @@
             this.proxy(this.onCreateObject)
         )
 
+        // Duplicate object button click
+        $(document).on(
+            'click',
+            '#pages-master-tabs form[data-object-type=page] [data-control=duplicate-object]',
+            this.proxy(this.onDuplicateObject)
+        )
+
         // Submenu item is clicked in the sidebar
         $(document).on('submenu.oc.treeview', 'form.layout[data-content-id=pages]', this.proxy(this.onSidebarSubmenuItemClick))
 
@@ -350,6 +357,36 @@
 
         $.wn.stripeLoadIndicator.show()
         $form.request('onCreateObject', {
+            data: {
+               type: type,
+               parent: parent
+            }
+        }).done(function(data){
+            self.$masterTabs.ocTab('addTab', data.tabTitle, data.tab, tabId, $form.data('type-icon') + ' new-template')
+            $('#layout-side-panel').trigger('close.oc.sidePanel')
+            self.setPageTitle(data.tabTitle)
+        }).always(function(){
+            $.wn.stripeLoadIndicator.hide()
+        })
+
+        e.stopPropagation()
+
+        return false
+    }
+
+    /*
+     * Triggered when the Duplicate button is clicked on the page form
+     */
+    PagesPage.prototype.onDuplicateObject = function(e) {
+        var self = this,
+            $button = $(e.target),
+            $form = $button.closest('form'),
+            parent = $button.data('parent') !== undefined ? $button.data('parent') : null,
+            type = $form.data('object-type') ? $form.data('object-type') : $form.data('template-type'),
+            tabId = type + Math.random()
+
+        $.wn.stripeLoadIndicator.show()
+        $form.request('onDuplicateObject', {
             data: {
                type: type,
                parent: parent
