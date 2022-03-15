@@ -84,7 +84,6 @@ return [
         'layout' => 'Izkārtojums',
         'description' => 'Skaidrojums',
         'preview' => 'Priekšskats',
-        'duplicate' => 'Dublikāts',
         'enter_fullscreen' => 'Atvērt pilnekrāna režīmu',
         'exit_fullscreen' => 'Aizvērt pilnekrāna režīmu',
         'hidden' => 'Paslēpts',

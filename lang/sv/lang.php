@@ -85,7 +85,6 @@ return [
         'layout' => 'Layout',
         'description' => 'Beskrivning',
         'preview' => 'Förhandsgranska',
-        'duplicate' => 'Dubbla',
         'enter_fullscreen' => 'Gå in i fullskärmsläge',
         'exit_fullscreen' => 'Gå ut ur fullskärmsläge',
         'hidden' => 'Gömd',

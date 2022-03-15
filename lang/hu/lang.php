@@ -97,7 +97,6 @@ return [
         'layout' => 'Elrendezés',
         'description' => 'Leírás',
         'preview' => 'Előnézet',
-        'duplicate' => 'Duplikátum',
         'enter_fullscreen' => 'Váltás teljes képernyős módra',
         'exit_fullscreen' => 'Kilépés a teljes képernyős módból',
         'hidden' => 'Rejtett',

@@ -93,7 +93,6 @@
         'layout' => 'Układ',
         'description' => 'Opis',
         'preview' => 'Podgląd',
-        'duplicate' => 'Duplikat',
         'enter_fullscreen' => 'Pełny ekran',
         'exit_fullscreen' => 'Zamknij pełny ekran',
         'hidden' => 'Ukryta',

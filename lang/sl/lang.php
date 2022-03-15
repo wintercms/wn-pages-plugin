@@ -97,7 +97,6 @@ return [
         'layout'                    => 'Postavitev',
         'description'               => 'Opis',
         'preview'                   => 'Predogled',
-        'duplicate'                 => 'Dvojnik',
         'enter_fullscreen'          => 'Celozaslonski način',
         'exit_fullscreen'           => 'Zapri celozaslonski način',
         'hidden'                    => 'Skrita stran',

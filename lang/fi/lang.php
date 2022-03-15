@@ -97,7 +97,6 @@ return [
         'layout' => 'Ulkoasu',
         'description' => 'Kuvaus',
         'preview' => 'Esikatsele',
-        'duplicate' => 'Kaksoiskappale',
         'enter_fullscreen' => 'Kokoruudun tila',
         'exit_fullscreen' => 'Poistu kokoruudun tilasta',
         'hidden' => 'Piilotettu',

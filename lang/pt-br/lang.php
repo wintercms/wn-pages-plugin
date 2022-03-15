@@ -85,7 +85,6 @@ return [
         'layout' => 'Layout',
         'description' => 'Descrição',
         'preview' => 'Visualizar',
-        'duplicate' => 'Duplisere',
         'enter_fullscreen' => 'Entrar no modo tela cheia',
         'exit_fullscreen' => 'Sair do modo tela cheia',
         'hidden' => 'Ocultar',
