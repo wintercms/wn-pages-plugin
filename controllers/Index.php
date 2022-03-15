@@ -197,6 +197,8 @@ class Index extends Controller
         $type = Request::input('objectType');
 
         $object = $this->loadObject($type, trim(Request::input('objectPath')));
+        $parentPage = null;
+        $parent = null;
 
         if ($type === 'page') {
             $parentPage = $object->getParent() ?? null;
@@ -208,9 +210,6 @@ class Index extends Controller
                     $fileName, 0, -strlen('.' . $ext)
                 );
             }
-        } else {
-            $parentPage = null;
-            $parent = null;
         }
 
         $className = get_class($object);
