@@ -85,6 +85,7 @@ return [
         'layout' => 'Plantilla',
         'description' => 'Descripción',
         'preview' => 'Vista previa',
+        'duplicate' => 'Duplicado',
         'enter_fullscreen' => 'Entrar en modo de pantalla completa',
         'exit_fullscreen' => 'Salir del modo de pantalla completa',
         'hidden' => 'Oculto',

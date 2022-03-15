@@ -87,6 +87,7 @@ return [
         'layout' => 'Σχέδιο',
         'description' => 'Περιγραφή',
         'preview' => 'Προεπισκόπηση',
+        'duplicate' => 'Διπλό',
         'enter_fullscreen' => 'Πλήρης οθόνη',
         'exit_fullscreen' => 'Έξοδος πλήρους οθόνης',
         'hidden' => 'Κρυφό',

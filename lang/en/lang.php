@@ -97,6 +97,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Description',
         'preview' => 'Preview',
+        'duplicate' => 'Duplicate',
         'enter_fullscreen' => 'Enter fullscreen mode',
         'exit_fullscreen' => 'Exit fullscreen mode',
         'hidden' => 'Hidden',

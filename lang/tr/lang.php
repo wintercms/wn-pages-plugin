@@ -95,6 +95,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Tanımlama',
         'preview' => 'Önizleme',
+        'duplicate' => 'Kopyalamak',
         'enter_fullscreen' => 'Tam Ekran moduna geç',
         'exit_fullscreen' => 'Tam Ekran modundan çık',
         'hidden' => 'Gizli',

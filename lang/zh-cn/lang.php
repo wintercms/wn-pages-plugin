@@ -86,6 +86,7 @@ return [
         'layout' => '布局',
         'description' => '描述',
         'preview' => '预览',
+        'duplicate' => '重复的',
         'enter_fullscreen' => '全屏编辑',
         'exit_fullscreen' => '退出全屏',
         'hidden' => '隐藏',

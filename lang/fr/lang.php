@@ -95,6 +95,7 @@ return [
         'layout' => 'Maquette',
         'description' => 'Description',
         'preview' => 'Aperçu',
+        'duplicate' => 'Dupliquer',
         'enter_fullscreen' => 'Activer le mode plein écran',
         'exit_fullscreen' => 'Annuler le mode plein écran',
         'hidden' => 'Caché',

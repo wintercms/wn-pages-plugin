@@ -85,6 +85,7 @@
         'layout' => 'طرح بندی',
         'description' => 'توضیحات',
         'preview' => 'پیش نمایش',
+        'duplicate' => 'تکراری',
         'enter_fullscreen' => 'حالت تمام صفحه',
         'exit_fullscreen' => 'خروج از حالت تمام صفحه',
         'hidden' => 'مخفی',

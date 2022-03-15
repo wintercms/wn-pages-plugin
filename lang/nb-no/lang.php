@@ -84,6 +84,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Beskrivelse',
         'preview' => 'Forhåndsvis',
+        'duplicate' => 'Duplisere',
         'enter_fullscreen' => 'Fullskjermmodus',
         'exit_fullscreen' => 'Avslutt fullskjermmodus',
         'hidden' => 'Skjult',

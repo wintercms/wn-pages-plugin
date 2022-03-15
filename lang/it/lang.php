@@ -86,6 +86,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Descrizione',
         'preview' => 'Anteprima',
+        'duplicate' => 'Duplicato',
         'enter_fullscreen' => 'Abilita visualizzazione a schermo intero',
         'exit_fullscreen' => 'Esci dalla visualizzazione a schermo intero',
         'hidden' => 'Nascosto',

@@ -25,9 +25,10 @@
 
     <button
         type="button"
-        class="btn btn-default empty oc-icon-clone <?php if (!$objectPath): ?>hide<?php endif ?>"
+        class="btn btn-default oc-icon-clone <?php if (!$objectPath): ?>hide<?php endif ?>"
         data-control="duplicate-object"
     >
+        <?= e(trans('winter.pages::lang.editor.duplicate')) ?>
     </button>
 
     <button
