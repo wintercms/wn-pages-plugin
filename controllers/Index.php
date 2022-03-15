@@ -197,13 +197,20 @@ class Index extends Controller
         $type = Request::input('objectType');
 
         $object = $this->loadObject($type, trim(Request::input('objectPath')));
-        $parent = Request::input('parent');
-        $parentPage = null;
 
-        if ($type == 'page') {
-            if (strlen($parent)) {
-                $parentPage = StaticPage::load($this->theme, $parent);
+        if ($type === 'page') {
+            $parentPage = $object->getParent() ?? null;
+
+            if ($parentPage) {
+                $fileName = $parentPage->fileName;
+                $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                $parent = substr(
+                    $fileName, 0, -strlen('.' . $ext)
+                );
             }
+        } else {
+            $parentPage = null;
+            $parent = null;
         }
 
         $className = get_class($object);
