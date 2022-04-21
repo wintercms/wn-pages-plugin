@@ -455,8 +455,8 @@
 
             var $collapseIcon = $('<a href="javascript:;" class="tab-collapse-icon tabless"><i class="icon-chevron-up"></i></a>'),
                 $panel = $('.form-tabless-fields', data.pane),
-                $secondaryPanel = $('.control-tabs.secondary-tabs', data.pane),
-                $primaryPanel = $('.control-tabs.primary-tabs', data.pane),
+                $secondaryPanel = $(data.pane).find('.control-tabs.secondary-tabs').first(),
+                $primaryPanel = $(data.pane).find('.control-tabs.primary-tabs').first(),
                 hasSecondaryTabs = $secondaryPanel.length > 0
 
             $secondaryPanel.addClass('secondary-content-tabs')
