@@ -86,6 +86,6 @@ The Code field allows to assign the API code that you can use to set the active 
 
 ## See also
 
-Read the [Getting started with Static Pages](https://wintercms.com/blog/post/getting-started-static-pages) tutorial in the Blog.
+Read the [Getting started with Static Pages](https://octobercms.com/blog/post/getting-started-static-pages) tutorial in the October CMS Blog.
 
 Read the [documentation](/docs/documentation.md).
