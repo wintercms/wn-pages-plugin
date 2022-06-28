@@ -47,7 +47,7 @@ class MenuItemReference
     public $items = [];
 
     /**
-     * @var array Specifies the item custom view bag properties.
+     * View bag data holder.
      */
-    public $viewBag = [];
+    public MenuItemViewBag $viewBag;
 }
