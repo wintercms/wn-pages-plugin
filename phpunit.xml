@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+>
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./classes</directory>
+      <directory suffix=".php">./components</directory>
+      <directory suffix=".php">./controllers</directory>
+      <directory suffix=".php">./formwidgets</directory>
+      <directory suffix=".php">./widgets</directory>
+    </include>
+    <exclude>
+      <file>./Plugin.php</file>
+      <directory>./tests</directory>
+      <directory>./updates</directory>
+      <directory>./vendor</directory>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="Winter.Pages Test Suite">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <env name="APP_ENV" value="testing"/>
+    <env name="CACHE_DRIVER" value="array"/>
+    <env name="SESSION_DRIVER" value="array"/>
+  </php>
+</phpunit>
