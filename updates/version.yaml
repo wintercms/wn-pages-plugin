@@ -62,3 +62,4 @@
   - "Fixes rich editor usage inside repeaters."
   - "Fixes a lifecycle issue when switching the page layout."
   - "Fixes maintenance mode when using static pages."
+"2.0.2": "Add support for Winter 1.2"
