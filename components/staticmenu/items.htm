@@ -1,4 +1,4 @@
-{% for item in items if not item.viewBag.isHidden %}
+{% for item in items | filter(item => not item.viewBag.isHidden) %}
     <li role="presentation" class="{{ item.isActive ? 'active' : '' }} {{ item.isChildActive ? 'child-active' : '' }} {{ item.viewBag.cssClass }}">
         {% if item.url %}
             <a href="{{ item.url }}" {{ item.viewBag.isExternal ? 'target="_blank"' }}>
