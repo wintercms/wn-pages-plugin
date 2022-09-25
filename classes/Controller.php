@@ -43,7 +43,26 @@ class Controller
         $page = $router->findByUrl($url);
 
         if (!$page) {
-            return null;
+            // Attempt to render a page preview if one exists
+            if (Str::startsWith($url, '/winter.pages/preview/')) {
+                $alias = Str::after($url, '/winter.pages/preview/');
+                $objectType = 'page';
+                $data = Session::pull("winter.pages.$objectType.preview:$alias");
+
+                try {
+                    $page = ObjectHelper::fillObject(
+                        $this->theme,
+                        'page',
+                        $data['objectPath'] ?? $data['fileName'],
+                        $data
+                    );
+                } catch (\Throwable $e) {
+                    throw $e;// @TODO: Hide this exception
+                    return null;
+                }
+            } else {
+                return null;
+            }
         }
 
         $viewBag = $page->viewBag;

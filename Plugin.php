@@ -32,10 +32,10 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            '\Winter\Pages\Components\ChildPages' => 'childPages',
-            '\Winter\Pages\Components\StaticPage' => 'staticPage',
-            '\Winter\Pages\Components\StaticMenu' => 'staticMenu',
-            '\Winter\Pages\Components\StaticBreadcrumbs' => 'staticBreadcrumbs'
+            \Winter\Pages\Components\ChildPages::class => 'childPages',
+            \Winter\Pages\Components\StaticPage::class => 'staticPage',
+            \Winter\Pages\Components\StaticMenu::class => 'staticMenu',
+            \Winter\Pages\Components\StaticBreadcrumbs::class => 'staticBreadcrumbs'
         ];
     }
 
@@ -46,26 +46,26 @@ class Plugin extends PluginBase
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
-                'label' => 'winter.pages::lang.page.manage_pages'
+                'label' => 'winter.pages::lang.page.manage_pages',
             ],
             'winter.pages.manage_menus' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
-                'label' => 'winter.pages::lang.page.manage_menus'
+                'label' => 'winter.pages::lang.page.manage_menus',
                 ],
             'winter.pages.manage_content' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
-                'label' => 'winter.pages::lang.page.manage_content'
+                'label' => 'winter.pages::lang.page.manage_content',
             ],
             'winter.pages.access_snippets' => [
                 'tab'   => 'winter.pages::lang.page.tab',
                 'order' => 200,
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
-                'label' => 'winter.pages::lang.page.access_snippets'
-            ]
+                'label' => 'winter.pages::lang.page.access_snippets',
+            ],
         ];
     }
 
@@ -86,31 +86,31 @@ class Plugin extends PluginBase
                         'icon'        => 'icon-files-o',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'pages'],
-                        'permissions' => ['winter.pages.manage_pages']
+                        'permissions' => ['winter.pages.manage_pages'],
                     ],
                     'menus' => [
                         'label'       => 'winter.pages::lang.menu.menu_label',
                         'icon'        => 'icon-sitemap',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'menus'],
-                        'permissions' => ['winter.pages.manage_menus']
+                        'permissions' => ['winter.pages.manage_menus'],
                     ],
                     'content' => [
                         'label'       => 'winter.pages::lang.content.menu_label',
                         'icon'        => 'icon-file-text-o',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'content'],
-                        'permissions' => ['winter.pages.manage_content']
+                        'permissions' => ['winter.pages.manage_content'],
                     ],
                     'snippets' => [
                         'label'       => 'winter.pages::lang.snippet.menu_label',
                         'icon'        => 'icon-newspaper-o',
                         'url'         => 'javascript:;',
                         'attributes'  => ['data-menu-item'=>'snippet'],
-                        'permissions' => ['winter.pages.access_snippets']
-                    ]
-                ]
-            ]
+                        'permissions' => ['winter.pages.access_snippets'],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -231,9 +231,8 @@ class Plugin extends PluginBase
 
     /**
      * Register new Twig variables
-     * @return array
      */
-    public function registerMarkupTags()
+    public function registerMarkupTags(): array
     {
         return [
             'filters' => [
