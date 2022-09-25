@@ -1,7 +1,7 @@
 <?php namespace Winter\Pages\Components;
 
-use Cms\Classes\Theme;
 use Cms\Classes\ComponentBase;
+use Cms\Classes\Theme;
 use Cms\Models\MaintenanceSetting;
 use Winter\Pages\Classes\Router;
 

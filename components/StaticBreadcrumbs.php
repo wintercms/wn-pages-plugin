@@ -2,9 +2,9 @@
 
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Theme;
-use Winter\Pages\Classes\Router;
 use Winter\Pages\Classes\MenuItemReference;
 use Winter\Pages\Classes\Page as StaticPageClass;
+use Winter\Pages\Classes\Router;
 
 /**
  * The static breadcrumbs component.

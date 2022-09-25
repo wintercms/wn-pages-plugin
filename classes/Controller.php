@@ -1,11 +1,13 @@
 <?php namespace Winter\Pages\Classes;
 
-use Lang;
+use Cms\Classes\CmsException;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
-use Cms\Classes\CmsException;
-use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Exception;
+use Lang;
+use Session;
+use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
+use Winter\Storm\Support\Str;
 
 /**
  * Represents a static page controller.

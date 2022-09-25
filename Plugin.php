@@ -1,16 +1,19 @@
 <?php namespace Winter\Pages;
 
-use Event;
 use Backend;
+use Backend\Classes\Controller as BaseBackendController;
+use Backend\FormWidgets\RichEditor as FroalaFormWidget;
 use Backend\Models\UserRole;
+use BackendAuth;
+use Cms\Classes\Controller as CmsController;
+use Cms\Classes\Theme;
+use Event;
+use System\Classes\PluginBase;
 use Winter\Pages\Classes\Controller;
 use Winter\Pages\Classes\Page as StaticPage;
 use Winter\Pages\Classes\Router;
 use Winter\Pages\Classes\Snippet;
 use Winter\Pages\Classes\SnippetManager;
-use Cms\Classes\Theme;
-use Cms\Classes\Controller as CmsController;
-use System\Classes\PluginBase;
 
 class Plugin extends PluginBase
 {

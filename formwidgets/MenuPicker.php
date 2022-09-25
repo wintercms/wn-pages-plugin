@@ -1,8 +1,8 @@
 <?php namespace Winter\Pages\FormWidgets;
 
-use Cms\Classes\Theme;
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
+use Cms\Classes\Theme;
 use Winter\Pages\Classes\Menu;
 
 /**
