@@ -1,10 +1,7 @@
 <?php namespace Winter\Pages;
 
 use Backend;
-use Backend\Classes\Controller as BaseBackendController;
-use Backend\FormWidgets\RichEditor as FroalaFormWidget;
 use Backend\Models\UserRole;
-use BackendAuth;
 use Cms\Classes\Controller as CmsController;
 use Cms\Classes\Theme;
 use Event;
@@ -29,7 +26,10 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerComponents()
+    /**
+     * Register the CMS components provided by this plugin
+     */
+    public function registerComponents(): array
     {
         return [
             \Winter\Pages\Components\ChildPages::class => 'childPages',
@@ -39,7 +39,10 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerPermissions()
+    /**
+     * Register the permissions provided by this plugin
+     */
+    public function registerPermissions(): array
     {
         return [
             'winter.pages.manage_pages' => [
@@ -69,7 +72,10 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerNavigation()
+    /**
+     * Register the backend navigation items provided by this plugin
+     */
+    public function registerNavigation(): array
     {
         return [
             'pages' => [
@@ -114,7 +120,10 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerFormWidgets()
+    /**
+     * Register the backend FormWidgets provided by this plugin
+     */
+    public function registerFormWidgets(): array
     {
         return [
             FormWidgets\PagePicker::class => 'staticpagepicker',
@@ -122,12 +131,111 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function boot()
+    /**
+     * Register Twig extensions provided by this plugin
+     */
+    public function registerMarkupTags(): array
+    {
+        return [
+            'filters' => [
+                'staticPage' => ['Winter\Pages\Classes\Page', 'url']
+            ]
+        ];
+    }
+
+    /**
+     * Clear the caches used by this plugin
+     */
+    public static function clearCache(): void
+    {
+        $theme = Theme::getEditTheme();
+
+        $router = new Router($theme);
+        $router->clearCache();
+
+        StaticPage::clearMenuCache($theme);
+        SnippetManager::clearCache($theme);
+    }
+
+    /**
+     * Boot the plugin
+     */
+    public function boot(): void
+    {
+        $this->extendThemeSync();
+        $this->extendBackendForms();
+        $this->extendCmsTemplates();
+        $this->extendCmsRouter();
+        $this->extendCmsRenderer();
+
+        $this->registerMenuItemTypes();
+        $this->registerRichEditorLinkTypes();
+    }
+
+    /**
+     * Extend the theme:sync command to include Pages & Menus in the sync
+     */
+    protected function extendThemeSync(): void
+    {
+        Event::listen('system.console.theme.sync.getAvailableModelClasses', function () {
+            return [
+                Classes\Menu::class,
+                Classes\Page::class,
+            ];
+        });
+    }
+
+    /**
+     * Extend the backend forms
+     */
+    protected function extendBackendForms(): void
+    {
+        Event::listen('backend.form.extendFieldsBefore', function($formWidget) {
+            if ($formWidget->model instanceof \Cms\Classes\Partial) {
+                Snippet::extendPartialForm($formWidget);
+            }
+        });
+    }
+
+    /**
+     * Extend CMS templates
+     */
+    protected function extendCmsTemplates(): void
+    {
+        Event::listen('cms.template.save', function($controller, $template, $type) {
+            Plugin::clearCache();
+        });
+
+        Event::listen('cms.template.processSettingsBeforeSave', function($controller, $dataHolder) {
+            $dataHolder->settings = Snippet::processTemplateSettingsArray($dataHolder->settings);
+        });
+
+        Event::listen('cms.template.processSettingsAfterLoad', function($controller, $template) {
+            Snippet::processTemplateSettings($template);
+        });
+
+        Event::listen('cms.template.processTwigContent', function($template, $dataHolder) {
+            if ($template instanceof \Cms\Classes\Layout) {
+                $dataHolder->content = Controller::instance()->parseSyntaxFields($dataHolder->content);
+            }
+        });
+    }
+
+    /**
+     * Extend the CMS router
+     */
+    protected function extendCmsRouter(): void
     {
         Event::listen('cms.router.beforeRoute', function($url) {
             return Controller::instance()->initCmsPage($url);
         });
+    }
 
+    /**
+     * Extend the CMS renderer
+     */
+    protected function extendCmsRenderer(): void
+    {
         Event::listen('cms.page.beforeRenderPage', function($controller, $page) {
             /*
              * Before twig renders
@@ -161,7 +269,13 @@ class Plugin extends PluginBase
                 return $contents;
             }
         });
+    }
 
+    /**
+     * Register the frontend Menu Item types provided by this plugin
+     */
+    protected function registerMenuItemTypes(): void
+    {
         Event::listen('pages.menuitem.listTypes', function() {
             return [
                 'static-page'      => 'winter.pages::lang.menuitem.static_page',
@@ -184,31 +298,13 @@ class Plugin extends PluginBase
                 return StaticPage::resolveMenuItem($item, $url, $theme);
             }
         });
+    }
 
-        Event::listen('backend.form.extendFieldsBefore', function($formWidget) {
-            if ($formWidget->model instanceof \Cms\Classes\Partial) {
-                Snippet::extendPartialForm($formWidget);
-            }
-        });
-
-        Event::listen('cms.template.save', function($controller, $template, $type) {
-            Plugin::clearCache();
-        });
-
-        Event::listen('cms.template.processSettingsBeforeSave', function($controller, $dataHolder) {
-            $dataHolder->settings = Snippet::processTemplateSettingsArray($dataHolder->settings);
-        });
-
-        Event::listen('cms.template.processSettingsAfterLoad', function($controller, $template) {
-            Snippet::processTemplateSettings($template);
-        });
-
-        Event::listen('cms.template.processTwigContent', function($template, $dataHolder) {
-            if ($template instanceof \Cms\Classes\Layout) {
-                $dataHolder->content = Controller::instance()->parseSyntaxFields($dataHolder->content);
-            }
-        });
-
+    /**
+     * Register the link types provided by this plugin to the richeditor
+     */
+    protected function registerRichEditorLinkTypes(): void
+    {
         Event::listen('backend.richeditor.listTypes', function () {
             return [
                 'static-page' => 'winter.pages::lang.menuitem.static_page',
@@ -220,64 +316,5 @@ class Plugin extends PluginBase
                 return StaticPage::getRichEditorTypeInfo($type);
             }
         });
-
-        Event::listen('system.console.theme.sync.getAvailableModelClasses', function () {
-            return [
-                Classes\Menu::class,
-                Classes\Page::class,
-            ];
-        });
-    }
-
-    /**
-     * Register new Twig variables
-     */
-    public function registerMarkupTags(): array
-    {
-        return [
-            'filters' => [
-                'staticPage' => ['Winter\Pages\Classes\Page', 'url']
-            ]
-        ];
-    }
-
-    public function registerClassAliases()
-    {
-        /**
-         * To allow compatibility with plugins that extend the original RainLab.Pages plugin,
-         * this will alias those classes to use the new Winter.Pages classes.
-         */
-        return [
-            \Winter\Pages\Plugin::class                       => \RainLab\Pages\Plugin::class,
-            \Winter\Pages\Classes\Content::class              => \RainLab\Pages\Classes\Content::class,
-            \Winter\Pages\Classes\Controller::class           => \RainLab\Pages\Classes\Controller::class,
-            \Winter\Pages\Classes\Menu::class                 => \RainLab\Pages\Classes\Menu::class,
-            \Winter\Pages\Classes\Page::class                 => \RainLab\Pages\Classes\Page::class,
-            \Winter\Pages\Classes\Router::class               => \RainLab\Pages\Classes\Router::class,
-            \Winter\Pages\Classes\Snippet::class              => \RainLab\Pages\Classes\Snippet::class,
-            \Winter\Pages\Classes\SnippetManager::class       => \RainLab\Pages\Classes\SnippetManager::class,
-            \Winter\Pages\Components\ChildPages::class        => \RainLab\Pages\Components\ChildPages::class,
-            \Winter\Pages\Components\StaticBreadcrumbs::class => \RainLab\Pages\Components\StaticBreadcrumbs::class,
-            \Winter\Pages\Components\StaticMenu::class        => \RainLab\Pages\Components\StaticMenu::class,
-            \Winter\Pages\Components\StaticPage::class        => \RainLab\Pages\Components\StaticPage::class,
-            \Winter\Pages\Controllers\Index::class            => \RainLab\Pages\Controllers\Index::class,
-            \Winter\Pages\FormWidgets\MenuItems::class        => \RainLab\Pages\FormWidgets\MenuItems::class,
-            \Winter\Pages\FormWidgets\MenuItemSearch::class   => \RainLab\Pages\FormWidgets\MenuItemSearch::class,
-            \Winter\Pages\FormWidgets\PagePicker::class       => \RainLab\Pages\FormWidgets\PagePicker::class,
-            \Winter\Pages\Widgets\MenuList::class             => \RainLab\Pages\Widgets\MenuList::class,
-            \Winter\Pages\Widgets\PageList::class             => \RainLab\Pages\Widgets\PageList::class,
-            \Winter\Pages\Widgets\SnippetList::class          => \RainLab\Pages\Widgets\SnippetList::class,
-        ];
-    }
-
-    public static function clearCache()
-    {
-        $theme = Theme::getEditTheme();
-
-        $router = new Router($theme);
-        $router->clearCache();
-
-        StaticPage::clearMenuCache($theme);
-        SnippetManager::clearCache($theme);
     }
 }

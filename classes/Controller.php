@@ -47,7 +47,11 @@ class Controller
             if (Str::startsWith($url, '/winter.pages/preview/')) {
                 $alias = Str::after($url, '/winter.pages/preview/');
                 $objectType = 'page';
-                $data = Session::pull("winter.pages.$objectType.preview:$alias");
+                $data = Session::get("winter.pages.$objectType.preview:$alias");
+
+                if (empty($data)) {
+                    return null;
+                }
 
                 try {
                     $page = ObjectHelper::fillObject(
