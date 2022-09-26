@@ -11,6 +11,7 @@ use Winter\Pages\Classes\Page as StaticPage;
 use Winter\Pages\Classes\Router;
 use Winter\Pages\Classes\Snippet;
 use Winter\Pages\Classes\SnippetManager;
+use Winter\Pages\Controllers\Index;
 
 class Plugin extends PluginBase
 {
@@ -190,11 +191,39 @@ class Plugin extends PluginBase
      */
     protected function extendBackendForms(): void
     {
-        Event::listen('backend.form.extendFieldsBefore', function($formWidget) {
+        Event::listen('backend.form.extendFieldsBefore', function ($formWidget) {
             if ($formWidget->model instanceof \Cms\Classes\Partial) {
                 Snippet::extendPartialForm($formWidget);
             }
         });
+
+        // Add the Preview tab as the last tab with a event priority that still
+        // allows other plugins to change it if desired.
+        Event::listen('backend.form.extendFieldsBefore', function ($formWidget) {
+            if (
+                $formWidget->isNested
+                || !($formWidget->getController() instanceof Index)
+                || !($formWidget->model instanceof StaticPage)
+            ) {
+                return;
+            }
+
+            $existingFields = array_merge(
+                array_keys($formWidget->fields ?? []),
+                array_keys($formWidget->tabs['fields'] ?? []),
+                array_keys($formWidget->secondaryTabs['fields'] ?? [])
+            );
+
+            $formWidget->secondaryTabs['fields'] = array_merge($formWidget->secondaryTabs['fields'], [
+                '_preview' => [
+                    'tab' => 'winter.pages::lang.editor.preview',
+                    'type' => 'partial',
+                    'span' => 'full',
+                    'path' => '$/winter/pages/classes/page/field.preview.php',
+                    'dependsOn' => $existingFields,
+                ],
+            ]);
+        }, PHP_INT_MIN + 1);
     }
 
     /**

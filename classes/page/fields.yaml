@@ -68,17 +68,3 @@ secondaryTabs:
             type: richeditor
             stretch: true
             size: huge
-        _preview:
-            tab: winter.pages::lang.editor.preview
-            type: partial
-            span: full
-            path: $/winter/pages/classes/page/field.preview.php
-            dependsOn:
-                - viewBag[title]
-                - viewBag[url]
-                - viewBag[layout]
-                - viewBag[is_hidden]
-                - viewBag[navigation_hidden]
-                - viewBag[meta_title]
-                - viewBag[meta_description]
-                - markup
