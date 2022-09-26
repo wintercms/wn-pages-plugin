@@ -14,9 +14,7 @@
             \Winter\Pages\Classes\ObjectHelper::resolveClassType(get_class($formModel))
         );
         $sessionKey = $prefix . $formAlias;
-        if (!Session::has($sessionKey)) {
-            Session::put($sessionKey, $formModel->toArray());
-        }
+        Session::put($sessionKey, $formModel->toArray());
         $url = "/winter.pages/preview/$formAlias";
         $this->addJs('/plugins/winter/pages/assets/js/page-preview.js', 'Winter.Pages');
         $this->addCss('/plugins/winter/pages/assets/css/page-preview.css', 'Winter.Pages');
