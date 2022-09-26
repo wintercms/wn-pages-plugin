@@ -79,8 +79,12 @@ class StaticPage extends ComponentBase
             return;
         }
 
-        $router = new Router(Theme::getActiveTheme());
-        $this->pageObject = $this->page['page'] = $router->findByUrl($url);
+        if (isset($this->controller->getPage()->apiBag['staticPage'])) {
+            $this->pageObject = $this->page['page'] = $this->controller->getPage()->apiBag['staticPage'];
+        } else {
+            $router = new Router(Theme::getActiveTheme());
+            $this->pageObject = $this->page['page'] = $router->findByUrl($url);
+        }
 
         if ($this->pageObject) {
             $this->title = $this->page['title'] = array_get($this->pageObject->viewBag, 'title');
