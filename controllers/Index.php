@@ -3,7 +3,6 @@
 use ApplicationException;
 use Backend\Classes\Controller;
 use BackendMenu;
-use Cms\Classes\CmsCompoundObject;
 use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
 use Cms\Widgets\TemplateList;
@@ -117,6 +116,21 @@ class Index extends Controller
         return $type;
     }
 
+    /**
+     * Gets the object from the current request
+     * @throws ApplicationException if the current user does not have permissions to manage the identified type
+     */
+    public function getObjectFromRequest()
+    {
+        $type = $this->getObjectType();
+        return ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            Request::input('objectPath'),
+            post()
+        );
+    }
+
     //
     // Pages, menus and text blocks
     //
@@ -138,7 +152,18 @@ class Index extends Controller
             $widget->bindEvent('form.refreshFields', function ($allFields) use ($widget) {
                 $prefix = ObjectHelper::getTypePreviewSessionKeyPrefix($this->getObjectType());
                 $sessionKey = "$prefix{$widget->alias}";
-                Session::put($sessionKey, post());
+
+                $this->validateRequestTheme();
+                $type = $this->getObjectType();
+                $object = $this->getObjectFromRequest();
+                $object = ObjectHelper::fillObject(
+                    $this->theme,
+                    $type,
+                    Request::input('objectPath'),
+                    post()
+                );
+
+                Session::put($sessionKey, $object->toArray());
             });
         }
 

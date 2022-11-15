@@ -57,7 +57,7 @@ class Controller
                     $page = ObjectHelper::fillObject(
                         $this->theme,
                         'page',
-                        $data['objectPath'] ?? $data['fileName'],
+                        $data['objectPath'] ?? $data['fileName'] ?? '',
                         $data
                     );
                 } catch (\Throwable $e) {
