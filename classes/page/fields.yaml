@@ -26,6 +26,10 @@ fields:
 
 tabs:
     cssClass: master-area
+
+    icons:
+        cms::lang.editor.settings: icon-cog
+
     fields:
         viewBag[layout]:
             tab: cms::lang.editor.settings
