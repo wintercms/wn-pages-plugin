@@ -17,7 +17,10 @@
     <?php endif ?>
 
     <?php if (isset($parentPage)): ?>
-        <input type="hidden" data-parent-url value="<?= e($parentPage->getViewBag()->property('url')) ?>" />
+        <input type="hidden" data-parent-url
+               value="<?= e($parentPage->getViewBag()->property('url')) === '/'
+                        ? ''
+                        : e($parentPage->getViewBag()->property('url')) ?>"/>
     <?php endif ?>
 
     <input type="hidden" value="0" name="objectForceSave" />
