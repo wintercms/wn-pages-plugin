@@ -157,7 +157,8 @@ class StaticPage extends ComponentBase
     {
         return MaintenanceSetting::isConfigured() &&
             MaintenanceSetting::get('is_enabled', false) &&
-            !\BackendAuth::getUser();
+            !MaintenanceSetting::isAllowedIp(Request::ip()) &&
+            !BackendAuth::getUser();
     }
 
     /**
