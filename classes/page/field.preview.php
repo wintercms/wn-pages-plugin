@@ -31,9 +31,12 @@
     </ul>
     <iframe
         width="100%"
-        scrolling="no"
         class="preview-desktop"
-        onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';"
+        onload="
+            this.contentWindow.document.documentElement.scrollHeight > 0
+                ? this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'
+                : void(0);
+        "
         src="<?= Url::to($url); ?>"
     ></iframe>
 </div>

@@ -40,3 +40,9 @@
 [data-control="page-preview"].preview-mobile {
     width: 320px;
 }
+
+div.form-group[data-field-name="_preview"],
+div.form-group[data-field-name="_preview"] div[data-control="page-preview"],
+div.form-group[data-field-name="_preview"] div[data-control="page-preview"] iframe {
+    height: 100%;
+}
