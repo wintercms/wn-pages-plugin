@@ -1,5 +1,7 @@
 <?php namespace Winter\Pages\Components;
 
+use Request;
+use BackendAuth;
 use Cms\Classes\Theme;
 use Cms\Classes\ComponentBase;
 use Cms\Models\MaintenanceSetting;
