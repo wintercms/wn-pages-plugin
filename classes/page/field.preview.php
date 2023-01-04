@@ -10,16 +10,18 @@
         if (empty($formAlias)) {
             return;
         }
-        $prefix = \Winter\Pages\Classes\ObjectHelper::getTypePreviewSessionKeyPrefix(
-            \Winter\Pages\Classes\ObjectHelper::resolveClassType(get_class($formModel))
+
+        $sessionKey = \Winter\Pages\Classes\ObjectHelper::getTypePreviewSessionCacheKey(
+            \Winter\Pages\Classes\ObjectHelper::resolveClassType(get_class($formModel)),
+            $formAlias
         );
-        $sessionKey = $prefix . $formAlias;
 
         $object = (Request::ajax() && Request::has('objectType'))
             ? $this->getObjectFromRequest()
             : $formModel;
 
-        Session::put($sessionKey, $object->toArray());
+        Cache::put($sessionKey, $object->toArray());
+
         $url = "/winter.pages/preview/$formAlias";
         $this->addJs('/plugins/winter/pages/assets/js/page-preview.js', 'Winter.Pages');
         $this->addCss('/plugins/winter/pages/assets/css/page-preview.css', 'Winter.Pages');

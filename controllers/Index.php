@@ -7,12 +7,12 @@ use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
 use Cms\Widgets\TemplateList;
 use Config;
+use Cache;
 use Event;
 use Exception;
 use Flash;
 use Lang;
 use Request;
-use Session;
 use System\Helpers\DateTime;
 use Url;
 use Winter\Pages\Classes\Content;
@@ -150,20 +150,19 @@ class Index extends Controller
             $widget = $this->widget->{$formAlias};
 
             $widget->bindEvent('form.refreshFields', function ($allFields) use ($widget) {
-                $prefix = ObjectHelper::getTypePreviewSessionKeyPrefix($this->getObjectType());
-                $sessionKey = "$prefix{$widget->alias}";
-
                 $this->validateRequestTheme();
-                $type = $this->getObjectType();
-                $object = $this->getObjectFromRequest();
+
                 $object = ObjectHelper::fillObject(
                     $this->theme,
-                    $type,
+                    $this->getObjectType(),
                     Request::input('objectPath'),
                     post()
                 );
 
-                Session::put($sessionKey, $object->toArray());
+                Cache::put(
+                    ObjectHelper::getTypePreviewSessionCacheKey($this->getObjectType(), $widget->alias),
+                    $object->toArray()
+                );
             });
         }
 

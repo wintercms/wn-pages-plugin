@@ -6,21 +6,22 @@ use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
 use Config;
 use Lang;
+use Session;
 
 class ObjectHelper
 {
     protected static array $types = [
         'page'    => \Winter\Pages\Classes\Page::class,
         'menu'    => \Winter\Pages\Classes\Menu::class,
-        'content' => \Winter\Pages\Classes\Conten::class,
+        'content' => \Winter\Pages\Classes\Content::class,
     ];
 
     /**
-     * Get the session key for the preview data.
+     * Get the cache key for the preview data tied to session.
      */
-    public static function getTypePreviewSessionKeyPrefix(string $type,): string
+    public static function getTypePreviewSessionCacheKey(string $type, string $alias): string
     {
-        return "winter.pages.$type.preview:";
+        return "winter.pages.$type.preview:$alias" . Session::getId();
     }
 
     /**

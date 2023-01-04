@@ -5,7 +5,7 @@ use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
 use Exception;
 use Lang;
-use Session;
+use Cache;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Winter\Storm\Support\Str;
 
@@ -44,27 +44,28 @@ class Controller
 
         if (!$page) {
             // Attempt to render a page preview if one exists
-            if (Str::startsWith($url, '/winter.pages/preview/')) {
-                $alias = Str::after($url, '/winter.pages/preview/');
-                $objectType = 'page';
-                $data = Session::get("winter.pages.$objectType.preview:$alias");
+            if (!Str::startsWith($url, '/winter.pages/preview/')) {
+                return null;
+            }
 
-                if (empty($data)) {
-                    return null;
-                }
+            $alias = Str::after($url, '/winter.pages/preview/');
+            $objectType = 'page';
 
-                try {
-                    $page = ObjectHelper::fillObject(
-                        $this->theme,
-                        'page',
-                        $data['objectPath'] ?? $data['fileName'] ?? '',
-                        $data
-                    );
-                } catch (\Throwable $e) {
-                    throw $e;// @TODO: Hide this exception
-                    return null;
-                }
-            } else {
+            $data = Cache::get(ObjectHelper::getTypePreviewSessionCacheKey($objectType, $alias));
+
+            if (empty($data)) {
+                return null;
+            }
+
+            try {
+                $page = ObjectHelper::fillObject(
+                    $this->theme,
+                    $objectType,
+                    $data['objectPath'] ?? $data['fileName'] ?? '',
+                    $data
+                );
+            } catch (\Throwable $e) {
+                throw $e;// @TODO: Hide this exception
                 return null;
             }
         }
