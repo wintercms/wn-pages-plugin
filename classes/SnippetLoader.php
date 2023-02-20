@@ -33,8 +33,8 @@ class SnippetLoader
         #$snippetInfo['code'] = uniqid($snippetInfo['code'] . '_' . md5(serialize($snippetInfo['properties'])) . '_');
         // the line above was commented out to allow the overriden partials in theme to be used for the component alias
 
-        self::attachComponentSnippetToController($snippetInfo, $controller, true);
-        self::cacheSnippet($snippetInfo['code'], $snippetInfo);
+        static::attachComponentSnippetToController($snippetInfo, $controller, true);
+        static::cacheSnippet($snippetInfo['code'], $snippetInfo);
 
         return $snippetInfo['code'];
     }
@@ -67,13 +67,13 @@ class SnippetLoader
      */
     public static function saveCachedSnippets(CmsPage $page)
     {
-        if (empty(self::$pageSnippetsCache)) {
+        if (empty(static::$pageSnippetsCache)) {
             return;
         }
 
         Cache::put(
-            self::getMapCacheKey($page),
-            serialize(self::$pageSnippetsCache),
+            static::getMapCacheKey($page),
+            serialize(static::$pageSnippetsCache),
             Carbon::now()->addDay()
         );
     }
@@ -87,11 +87,11 @@ class SnippetLoader
      */
     public static function restoreComponentSnippetsFromCache($cmsController, CmsPage $page)
     {
-        $componentSnippets = self::fetchCachedSnippets($page);
+        $componentSnippets = static::fetchCachedSnippets($page);
 
         foreach ($componentSnippets as $componentInfo) {
             try {
-                self::attachComponentSnippetToController($componentInfo, $cmsController);
+                static::attachComponentSnippetToController($componentInfo, $cmsController);
             } catch (\Exception $e) {
             }
         }
@@ -151,7 +151,7 @@ class SnippetLoader
      */
     protected static function cacheSnippet($alias, $snippetInfo)
     {
-        self::$pageSnippetsCache[$alias] = $snippetInfo;
+        static::$pageSnippetsCache[$alias] = $snippetInfo;
     }
 
     /**
@@ -161,7 +161,7 @@ class SnippetLoader
      */
     protected static function fetchCachedSnippets(CmsPage $page)
     {
-        $cache = @unserialize(Cache::get(self::getMapCacheKey($page), serialize([])));
+        $cache = @unserialize(Cache::get(static::getMapCacheKey($page), serialize([])));
 
         return is_array($cache) ? $cache : [];
     }
