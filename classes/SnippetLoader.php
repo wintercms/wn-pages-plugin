@@ -1,4 +1,4 @@
-<?php namespace StudioAzura\W2C\Classes;
+<?php namespace Winter\Pages\Classes;
 
 use ApplicationException;
 use Cache;
