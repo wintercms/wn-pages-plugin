@@ -4,6 +4,7 @@ use Backend;
 use Backend\Models\UserRole;
 use Cms\Classes\Controller as CmsController;
 use Cms\Classes\Theme;
+use Config;
 use Event;
 use System\Classes\PluginBase;
 use Winter\Pages\Classes\Controller;
@@ -201,7 +202,8 @@ class Plugin extends PluginBase
         // allows other plugins to change it if desired.
         Event::listen('backend.form.extendFieldsBefore', function ($formWidget) {
             if (
-                $formWidget->isNested
+                !Config::get('winter.pages::preview_enabled', false)
+                || $formWidget->isNested
                 || !($formWidget->getController() instanceof Index)
                 || !($formWidget->model instanceof StaticPage)
             ) {
