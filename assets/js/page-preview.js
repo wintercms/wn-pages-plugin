@@ -61,21 +61,6 @@
     }
 
     /**
-     * Resize the iframe to fit its content when displayed in a tab.
-     * @param {Event} e
-     */
-    PagePreview.prototype.onTabShown = function (e) {
-        const tabBody = $($(e.target).attr('data-target'));
-        if (!tabBody.length) {
-            return
-        }
-        const iframe = tabBody.find(this.$iframe);
-        if (iframe.length) {
-            iframe[0].style.height = iframe[0].contentWindow.document.documentElement.scrollHeight + 'px';
-        }
-    }
-
-    /**
      * Resize the preview based on the selected device
      * @param {Event} event
      */

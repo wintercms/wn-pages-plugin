@@ -1,4 +1,4 @@
-<div data-control="page-preview">
+<div data-control="page-preview" class="preview-desktop">
     <?php
         // Find the alias of the current Form widget
         foreach ($this->widget as $alias => $widget) {
@@ -33,12 +33,6 @@
     </ul>
     <iframe
         width="100%"
-        class="preview-desktop"
-        onload="
-            this.contentWindow.document.documentElement.scrollHeight > 0
-                ? this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px'
-                : void(0);
-        "
         src="<?= Url::to($url); ?>"
     ></iframe>
 </div>
