@@ -42,7 +42,6 @@
         this.$iframeTabContainer = this.$iframe.parent('.control-tabs')
 
         // Set up events on various elements
-        this.$iframeTabContainer.on('shown.bs.tab', this.proxy(this.onTabShown))
         this.$deviceSelector.on('click', 'a', this.proxy(this.onDeviceClick))
     }
 
@@ -50,7 +49,6 @@
      * Disposes the element.
      */
     PagePreview.prototype.dispose = function () {
-        this.$iframeTabContainer.off('shown.bs.tab', this.proxy(this.onTabShown))
         this.$deviceSelector.off('click', 'a', this.proxy(this.onDeviceClick))
 
         this.$deviceSelector = null
