@@ -1,11 +1,12 @@
 <?php namespace Winter\Pages\Classes;
 
+use Cache;
 use Cms\Classes\CmsException;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
 use Exception;
 use Lang;
-use Cache;
+use Log;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Winter\Storm\Support\Str;
 
@@ -65,7 +66,7 @@ class Controller
                     $data
                 );
             } catch (\Throwable $e) {
-                throw $e;// @TODO: Hide this exception
+                Log::error($e->getMessage(), $e->getTrace());
                 return null;
             }
         }
