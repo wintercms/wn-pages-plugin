@@ -1,8 +1,10 @@
 <?php namespace Winter\Pages\Components;
 
+use BackendAuth;
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Theme;
 use Cms\Models\MaintenanceSetting;
+use Request;
 use Winter\Pages\Classes\Router;
 
 /**
@@ -161,7 +163,8 @@ class StaticPage extends ComponentBase
     {
         return MaintenanceSetting::isConfigured() &&
             MaintenanceSetting::get('is_enabled', false) &&
-            !\BackendAuth::getUser();
+            !MaintenanceSetting::isAllowedIp(Request::ip()) &&
+            !BackendAuth::getUser();
     }
 
     /**
