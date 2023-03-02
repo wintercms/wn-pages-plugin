@@ -10,7 +10,10 @@ use Session;
 
 class ObjectHelper
 {
-    protected static array $types = [
+    /**
+     * @var array
+     */
+    protected static $types = [
         'page'    => \Winter\Pages\Classes\Page::class,
         'menu'    => \Winter\Pages\Classes\Menu::class,
         'content' => \Winter\Pages\Classes\Content::class,

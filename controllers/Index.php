@@ -425,7 +425,7 @@ class Index extends Controller
         $widget = $this->makeFormWidget(
             'Winter\Pages\FormWidgets\MenuItemSearch',
             [],
-            ['alias' => $alias],
+            ['alias' => $alias]
         );
 
         return $widget->onSearch();
