@@ -788,7 +788,7 @@ class Page extends ContentBase
                     if ($locale === $defaultLocale->code) {
                         $pageUrl = $result['url'];
                     } else {
-                        $pageUrl = static::getLocalizedPageUrl(self::find($pageInfo['code']), $locale);
+                        $pageUrl = static::getLocalizedPageUrl(self::find($item->reference), $locale);
                     }
                     if ($pageUrl) {
                         $alternateLinks[$locale] = Url::to($pageUrl);
@@ -827,7 +827,7 @@ class Page extends ContentBase
                             if ($locale === $defaultLocale->code) {
                                 $pageUrl = $branchItem['url'];
                             } else {
-                                $pageUrl = static::getLocalizedPageUrl(self::find($itemInfo['code']), $locale);
+                                $pageUrl = static::getLocalizedPageUrl(self::find($itemName), $locale);
                             }
                             if ($pageUrl) {
                                 $alternateLinks[$locale] = Url::to($pageUrl);
@@ -943,7 +943,6 @@ class Page extends ContentBase
                     'title'  => array_get($viewBag, 'title'),
                     'mtime'  => $item->page->mtime,
                     'items'  => $iterator($item->subpages, $pageCode, $level+1),
-                    'code'   => $pageCode,
                     'parent' => $parent,
                     'navigation_hidden' => array_get($viewBag, 'navigation_hidden')
                 ];
