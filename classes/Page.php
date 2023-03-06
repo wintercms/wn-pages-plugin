@@ -827,7 +827,7 @@ class Page extends ContentBase
                             if ($locale === $defaultLocale->code) {
                                 $pageUrl = $branchItem['url'];
                             } else {
-                                $pageUrl = static::getMLStaticPageUrl($itemInfo, $locale);
+                                $pageUrl = static::getLocalizedPageUrl(self::find($itemInfo['code']), $locale);
                             }
                             if ($pageUrl) {
                                 $alternateLinks[$locale] = Url::to($pageUrl);
@@ -854,9 +854,11 @@ class Page extends ContentBase
         return $result;
     }
 
-    protected static function getMLStaticPageUrl($pageInfo, $locale)
+    /**
+     * Gets the localized URL for the provided page
+     */
+    protected static function getLocalizedPageUrl(self $page, string $locale): string
     {
-        $page = self::find($pageInfo['code']);
         $translator = Translator::instance();
 
         $page->rewriteTranslatablePageUrl($locale);
