@@ -788,7 +788,7 @@ class Page extends ContentBase
                     if ($locale === $defaultLocale->code) {
                         $pageUrl = $result['url'];
                     } else {
-                        $pageUrl = static::getMLStaticPageUrl($pageInfo, $locale);
+                        $pageUrl = static::getLocalizedPageUrl(self::find($pageInfo['code']), $locale);
                     }
                     if ($pageUrl) {
                         $alternateLinks[$locale] = Url::to($pageUrl);
