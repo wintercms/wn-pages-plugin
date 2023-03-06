@@ -1,24 +1,28 @@
 <?php namespace Winter\Pages\Classes;
 
+use Cache;
 use Cms;
+use Cms\Classes\ComponentManager;
+use Cms\Classes\Content as ContentBase;
+use Cms\Classes\Layout;
+use Cms\Classes\Theme;
+use Config;
+use Event;
 use File;
 use Lang;
-use Cache;
-use Event;
-use Config;
-use Validator;
-use Winter\Pages\Classes\Snippet;
-use Winter\Pages\Classes\PageList;
-use Cms\Classes\Theme;
-use Cms\Classes\Layout;
-use Cms\Classes\Content as ContentBase;
-use Cms\Classes\ComponentManager;
 use System\Helpers\View as ViewHelper;
-use Winter\Storm\Support\Str;
-use Winter\Storm\Router\Helper as RouterHelper;
+use Twig\Node\Node as TwigNode;
+use Url;
+use Validator;
+use Winter\Pages\Classes\PageList;
+use Winter\Pages\Classes\Snippet;
 use Winter\Storm\Parse\Bracket as TextParser;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
-use Twig\Node\Node as TwigNode;
+use Winter\Storm\Router\Helper as RouterHelper;
+use Winter\Storm\Router\Router;
+use Winter\Storm\Support\Str;
+use Winter\Translate\Classes\Translator;
+use Winter\Translate\Models\Locale;
 
 /**
  * Represents a static page.
@@ -756,6 +760,14 @@ class Page extends ContentBase
      */
     public static function resolveMenuItem($item, $url, $theme)
     {
+        if (class_exists(Locale::class)) {
+            $locales = Locale::listEnabled();
+            $defaultLocale = Locale::getDefault();
+        } else {
+           $locales = [];
+           $defaultLocale = null;
+        }
+
         $tree = self::buildMenuTree($theme);
 
         if ($item->type == 'static-page' && !isset($tree[$item->reference])) {
@@ -769,10 +781,27 @@ class Page extends ContentBase
             $result['url'] = Cms::url($pageInfo['url']);
             $result['mtime'] = $pageInfo['mtime'];
             $result['isActive'] = self::urlsAreEqual($result['url'], $url);
+
+            if ($locales) {
+                $alternateLinks = [];
+                foreach ($locales as $locale => $name) {
+                    if ($locale === $defaultLocale->code) {
+                        $pageUrl = $result['url'];
+                    } else {
+                        $pageUrl = static::getMLStaticPageUrl($pageInfo, $locale);
+                    }
+                    if ($pageUrl) {
+                        $alternateLinks[$locale] = Url::to($pageUrl);
+                    }
+                }
+                if ($alternateLinks) {
+                    $result['alternateLinks'] = $alternateLinks;
+                }
+            }
         }
 
         if ($item->nesting || $item->type == 'all-static-pages') {
-            $iterator = function($items) use (&$iterator, &$tree, $url) {
+            $iterator = function($items) use (&$iterator, &$tree, $url, $locales, $defaultLocale) {
                 $branch = [];
 
                 foreach ($items as $itemName) {
@@ -792,6 +821,23 @@ class Page extends ContentBase
                     $branchItem['title'] = $itemInfo['title'];
                     $branchItem['mtime'] = $itemInfo['mtime'];
 
+                    if ($locales) {
+                        $alternateLinks = [];
+                        foreach ($locales as $locale => $name) {
+                            if ($locale === $defaultLocale->code) {
+                                $pageUrl = $branchItem['url'];
+                            } else {
+                                $pageUrl = static::getMLStaticPageUrl($itemInfo, $locale);
+                            }
+                            if ($pageUrl) {
+                                $alternateLinks[$locale] = Url::to($pageUrl);
+                            }
+                        }
+                        if ($alternateLinks) {
+                            $branchItem['alternateLinks'] = $alternateLinks;
+                        }
+                    }
+
                     if ($itemInfo['items']) {
                         $branchItem['items'] = $iterator($itemInfo['items']);
                     }
@@ -806,6 +852,17 @@ class Page extends ContentBase
         }
 
         return $result;
+    }
+
+    protected static function getMLStaticPageUrl($pageInfo, $locale)
+    {
+        $page = self::find($pageInfo['code']);
+        $translator = Translator::instance();
+
+        $page->rewriteTranslatablePageUrl($locale);
+        $url = $translator->getPathInLocale(array_get($page->attributes, 'viewBag.url'), $locale);
+
+        return (new Router)->urlFromPattern($url);
     }
 
     /**
@@ -884,6 +941,7 @@ class Page extends ContentBase
                     'title'  => array_get($viewBag, 'title'),
                     'mtime'  => $item->page->mtime,
                     'items'  => $iterator($item->subpages, $pageCode, $level+1),
+                    'code'   => $pageCode,
                     'parent' => $parent,
                     'navigation_hidden' => array_get($viewBag, 'navigation_hidden')
                 ];
