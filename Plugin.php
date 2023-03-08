@@ -71,6 +71,12 @@ class Plugin extends PluginBase
                 'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
                 'label' => 'winter.pages::lang.page.access_snippets',
             ],
+            'winter.pages.access_preview' => [
+                'tab'   => 'winter.pages::lang.page.tab',
+                'order' => 200,
+                'roles' => [UserRole::CODE_DEVELOPER, UserRole::CODE_PUBLISHER],
+                'label' => 'winter.pages::lang.page.access_preview',
+            ],
         ];
     }
 
@@ -202,8 +208,7 @@ class Plugin extends PluginBase
         // allows other plugins to change it if desired.
         Event::listen('backend.form.extendFieldsBefore', function ($formWidget) {
             if (
-                !Config::get('winter.pages::preview_enabled', false)
-                || $formWidget->isNested
+                $formWidget->isNested
                 || !($formWidget->getController() instanceof Index)
                 || !($formWidget->model instanceof StaticPage)
             ) {
@@ -222,6 +227,7 @@ class Plugin extends PluginBase
                     'type' => 'partial',
                     'span' => 'full',
                     'path' => '$/winter/pages/classes/page/field.preview.php',
+                    'permissions' => ['winter.pages.access_preview'],
                     'dependsOn' => $existingFields,
                 ],
             ]);
