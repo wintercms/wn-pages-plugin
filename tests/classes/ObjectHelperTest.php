@@ -4,7 +4,7 @@ namespace Winter\Pages\Tests\Classes;
 
 use Cms\Classes\Theme;
 use Config;
-use System\Tests\Bootstrap\PluginTestCase;
+use PluginTestCase;
 use Winter\Pages\Classes\ObjectHelper;
 use Winter\Storm\Exception\ApplicationException;
 
