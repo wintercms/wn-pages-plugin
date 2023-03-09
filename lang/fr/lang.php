@@ -86,7 +86,7 @@ return [
     ],
     'object' => [
         'invalid_type' => 'Type d’objet inconnu',
-        'unauthorized_type' => 'Vous n’êtes pas autorisé à gérer les objets de :type',
+        'unauthorized_type' => 'Vous n’êtes pas autorisé à gérer les objets de type :type',
         'not_found' => 'L’objet demandé n’a pas été trouvé.'
     ],
     'editor' => [
