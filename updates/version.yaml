@@ -69,3 +69,4 @@
   - "Fixed issue where subpages of home would get 2 slashes"
   - "Fixed issue where allowed IPs couldn't access pages in maintenance mode"
   - "Improved Swedish translation"
+"2.1.0": "Added support for live previews of the frontend-rendered pages"
