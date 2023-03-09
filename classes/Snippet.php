@@ -1,12 +1,12 @@
 <?php namespace Winter\Pages\Classes;
 
-use Event;
-use Lang;
-use Cache;
-use Config;
 use ApplicationException;
+use Cache;
 use Cms\Classes\ComponentHelpers;
 use Cms\Classes\Controller as CmsController;
+use Config;
+use Event;
+use Lang;
 use ValidationException;
 
 /**

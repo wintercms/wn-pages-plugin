@@ -1,24 +1,24 @@
 <?php namespace Winter\Pages\Classes;
 
+use Cache;
 use Cms;
+use Cms\Classes\ComponentManager;
+use Cms\Classes\Content as ContentBase;
+use Cms\Classes\Layout;
+use Cms\Classes\Theme;
+use Config;
+use Event;
 use File;
 use Lang;
-use Cache;
-use Event;
-use Config;
-use Validator;
-use Winter\Pages\Classes\Snippet;
-use Winter\Pages\Classes\PageList;
-use Cms\Classes\Theme;
-use Cms\Classes\Layout;
-use Cms\Classes\Content as ContentBase;
-use Cms\Classes\ComponentManager;
 use System\Helpers\View as ViewHelper;
-use Winter\Storm\Support\Str;
-use Winter\Storm\Router\Helper as RouterHelper;
+use Twig\Node\Node as TwigNode;
+use Validator;
+use Winter\Pages\Classes\PageList;
+use Winter\Pages\Classes\Snippet;
 use Winter\Storm\Parse\Bracket as TextParser;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
-use Twig\Node\Node as TwigNode;
+use Winter\Storm\Router\Helper as RouterHelper;
+use Winter\Storm\Support\Str;
 
 /**
  * Represents a static page.
@@ -241,14 +241,14 @@ class Page extends ContentBase
         foreach ($this->getChildren() as $subPage) {
             $result = array_merge($result, $subPage->delete());
         }
-        
+
         /*
          * Delete the object
          */
         $result = array_merge($result, [$this->getBaseFileName()]);
 
         parent::delete();
-        
+
         /*
          * Remove from meta
          */

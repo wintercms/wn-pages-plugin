@@ -1,9 +1,9 @@
 <?php namespace Winter\Pages\Widgets;
 
-use Str;
-use Input;
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;
+use Input;
+use Str;
 use Winter\Pages\Classes\SnippetManager;
 
 /**
@@ -93,7 +93,7 @@ class SnippetList extends WidgetBase
     protected function getThemeSessionKey($prefix)
     {
         return $prefix.$this->theme->getDirName();
-    }    
+    }
 
     protected function getSession($key = null, $default = null)
     {
@@ -102,7 +102,7 @@ class SnippetList extends WidgetBase
         return parent::getSession($key, $default);
     }
 
-    protected function putSession($key, $value) 
+    protected function putSession($key, $value)
     {
         return parent::putSession($this->getThemeSessionKey($key), $value);
     }
