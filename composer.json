@@ -35,6 +35,10 @@
         "rainlab/pages-plugin": "~1.3"
     },
     "extra": {
-        "installer-name": "pages"
+        "installer-name": "pages",
+        "winter": {
+            "icon": "https://raw.githubusercontent.com/wintercms/wn-pages-plugin/main/.github/icon.png",
+            "categories": ["Content", "Navigation"]
+        },
     }
 }
