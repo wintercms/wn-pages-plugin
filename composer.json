@@ -37,6 +37,7 @@
     "extra": {
         "installer-name": "pages",
         "winter": {
+            "name": "Pages",
             "icon": "https://raw.githubusercontent.com/wintercms/wn-pages-plugin/main/.github/icon.png",
             "categories": ["Content", "Navigation"]
         }
