@@ -245,14 +245,14 @@ class Page extends ContentBase
         foreach ($this->getChildren() as $subPage) {
             $result = array_merge($result, $subPage->delete());
         }
-        
+
         /*
          * Delete the object
          */
         $result = array_merge($result, [$this->getBaseFileName()]);
 
         parent::delete();
-        
+
         /*
          * Remove from meta
          */
@@ -709,6 +709,7 @@ class Page extends ContentBase
 
     /**
      * Handler for the pages.menuitem.getTypeInfo event.
+     *
      * Returns a menu item type information. The type information is returned as array
      * with the following elements:
      * - references - a list of the item type reference options. The options are returned in the
@@ -721,28 +722,32 @@ class Page extends ContentBase
      *   Optional, false if omitted.
      * - cmsPages - a list of CMS pages (objects of the Cms\Classes\Page class), if the item type requires a CMS page reference to
      *   resolve the item URL.
-     * @param string $type Specifies the menu item type
-     * @return array Returns an array
      */
-    public static function getMenuTypeInfo($type)
+    public static function getMenuTypeInfo(string $type): ?array
     {
-        if ($type == 'all-static-pages') {
-            return [
-                'dynamicItems' => true
-            ];
+        $result = null;
+
+        switch ($type) {
+            case 'all-static-pages':
+                $result = [
+                    'dynamicItems' => true
+                ];
+                break;
+            case 'static-page':
+                $result = [
+                    'references'   => self::listStaticPageMenuOptions(),
+                    'nesting'      => true,
+                    'dynamicItems' => true
+                ];
+                break;
         }
 
-        if ($type == 'static-page') {
-            return [
-                'references'   => self::listStaticPageMenuOptions(),
-                'nesting'      => true,
-                'dynamicItems' => true
-            ];
-        }
+        return $result;
     }
 
     /**
      * Handler for the pages.menuitem.resolveItem event.
+     *
      * Returns information about a menu item. The result is an array
      * with the following keys:
      * - url - the menu item URL. Not required for menu item types that return all available records.
