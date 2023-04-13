@@ -772,14 +772,16 @@ class Page extends ContentBase
 
         // Helper to get the processed localized urls from the raw locale URL data array
         // that takes into account the enabled locales
-        $getLocalizedUrls = function (array $localeUrls) {
+        $getLocalizedUrls = function (array $pageInfo) {
+            $localeUrls = $pageInfo['localeUrls'];
             $localizedUrls = [];
             $enabledLocales = class_exists(Locale::class) ? Locale::listEnabled() : [];
 
             if ($enabledLocales) {
                 $localizedUrls = [];
                 foreach ($enabledLocales as $locale => $name) {
-                    $pageUrl = static::getLocalizedUrl(array_get($localeUrls, $locale), $locale);
+                    $localeUrl = array_get($localeUrls, $locale) ?: $pageInfo['url'];
+                    $pageUrl = static::getLocalizedUrl($localeUrl, $locale);
                     if ($pageUrl) {
                         $localizedUrls[$locale] = Url::to($pageUrl);
                     }
@@ -798,7 +800,7 @@ class Page extends ContentBase
             ];
             $result['isActive'] = self::urlsAreEqual($result['url'], $url);
 
-            $localizedUrls = $getLocalizedUrls($pageInfo['localeUrls']);
+            $localizedUrls = $getLocalizedUrls($pageInfo);
             if (count($localizedUrls) > 1) {
                 $result['alternateLinks'] = $localizedUrls;
             }
@@ -829,7 +831,7 @@ class Page extends ContentBase
                     $branchItem['title'] = $itemInfo['title'];
                     $branchItem['mtime'] = $itemInfo['mtime'];
 
-                    $localizedUrls = $getLocalizedUrls($itemInfo['localeUrls']);
+                    $localizedUrls = $getLocalizedUrls($itemInfo);
                     if (count($localizedUrls) > 1) {
                         $result['alternateLinks'] = $localizedUrls;
                     }
