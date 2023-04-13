@@ -767,7 +767,7 @@ class Page extends ContentBase
         $tree = self::buildMenuTree($theme);
 
         if ($item->type == 'static-page' && !isset($tree[$item->reference])) {
-            return;
+            return null;
         }
 
         // Helper to get the processed localized urls from the raw locale URL data array
