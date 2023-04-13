@@ -757,21 +757,12 @@ class Page extends ContentBase
      *   return all available records.
      * - items - an array of arrays with the same keys (url, isActive, items) + the title key.
      *   The items array should be added only if the $item's $nesting property value is TRUE.
-     * @param \Winter\Pages\Classes\MenuItem $item Specifies the menu item.
-     * @param \Cms\Classes\Theme $theme Specifies the current theme.
-     * @param string $url Specifies the current page URL, normalized, in lower case
-     * The URL is specified relative to the website root, it includes the subdirectory name, if any.
-     * @return mixed Returns an array. Returns null if the item cannot be resolved.
+     *
+     * @param \Winter\Sitemap\Classes\DefinitionItem|\Winter\Pages\Classes\MenuItem $item Specifies the menu item.
      */
-    public static function resolveMenuItem($item, $url, $theme)
+    public static function resolveMenuItem(object $item, string $url, Theme $theme): ?array
     {
-        if (class_exists(Locale::class)) {
-            $locales = Locale::listEnabled();
-            $defaultLocale = Locale::getDefault();
-        } else {
-           $locales = [];
-           $defaultLocale = null;
-        }
+        $result = null;
 
         $tree = self::buildMenuTree($theme);
 
@@ -779,34 +770,46 @@ class Page extends ContentBase
             return;
         }
 
-        $result = [];
+        // Helper to get the processed localized urls from the raw locale URL data array
+        // that takes into account the enabled locales
+        $getLocalizedUrls = function (array $localeUrls) {
+            $localizedUrls = [];
+            $enabledLocales = class_exists(Locale::class) ? Locale::listEnabled() : [];
+
+            if ($enabledLocales) {
+                $localizedUrls = [];
+                foreach ($enabledLocales as $locale => $name) {
+                    $pageUrl = static::getLocalizedUrl(array_get($localeUrls, $locale), $locale);
+                    if ($pageUrl) {
+                        $localizedUrls[$locale] = Url::to($pageUrl);
+                    }
+                }
+            }
+
+            return $localizedUrls;
+        };
+
 
         if ($item->type == 'static-page') {
             $pageInfo = $tree[$item->reference];
-            $result['url'] = Cms::url($pageInfo['url']);
-            $result['mtime'] = $pageInfo['mtime'];
+            $result = [
+                'url' => Cms::url($pageInfo['url']),
+                'mtime' => $pageInfo['mtime'],
+            ];
             $result['isActive'] = self::urlsAreEqual($result['url'], $url);
 
-            if ($locales) {
-                $alternateLinks = [];
-                foreach ($locales as $locale => $name) {
-                    if ($locale === $defaultLocale->code) {
-                        $pageUrl = $result['url'];
-                    } else {
-                        $pageUrl = static::getLocalizedPageUrl(self::find($item->reference), $locale);
-                    }
-                    if ($pageUrl) {
-                        $alternateLinks[$locale] = Url::to($pageUrl);
-                    }
-                }
-                if ($alternateLinks) {
-                    $result['alternateLinks'] = $alternateLinks;
-                }
+            $localizedUrls = $getLocalizedUrls($pageInfo['localeUrls']);
+            if (count($localizedUrls) > 1) {
+                $result['alternateLinks'] = $localizedUrls;
             }
         }
 
         if ($item->nesting || $item->type == 'all-static-pages') {
-            $iterator = function($items) use (&$iterator, &$tree, $url, $locales, $defaultLocale) {
+            $result = [
+                'items' => [],
+            ];
+
+            $iterator = function($items) use (&$iterator, &$tree, $url, $getLocalizedUrls) {
                 $branch = [];
 
                 foreach ($items as $itemName) {
@@ -826,21 +829,9 @@ class Page extends ContentBase
                     $branchItem['title'] = $itemInfo['title'];
                     $branchItem['mtime'] = $itemInfo['mtime'];
 
-                    if ($locales) {
-                        $alternateLinks = [];
-                        foreach ($locales as $locale => $name) {
-                            if ($locale === $defaultLocale->code) {
-                                $pageUrl = $branchItem['url'];
-                            } else {
-                                $pageUrl = static::getLocalizedPageUrl(self::find($itemName), $locale);
-                            }
-                            if ($pageUrl) {
-                                $alternateLinks[$locale] = Url::to($pageUrl);
-                            }
-                        }
-                        if ($alternateLinks) {
-                            $branchItem['alternateLinks'] = $alternateLinks;
-                        }
+                    $localizedUrls = $getLocalizedUrls($itemInfo['localeUrls']);
+                    if (count($localizedUrls) > 1) {
+                        $result['alternateLinks'] = $localizedUrls;
                     }
 
                     if ($itemInfo['items']) {
@@ -860,14 +851,13 @@ class Page extends ContentBase
     }
 
     /**
-     * Gets the localized URL for the provided page
+     * Gets the localized URL to this page
      */
-    protected static function getLocalizedPageUrl(self $page, string $locale): string
+    protected static function getLocalizedUrl(string $url, string $locale): ?string
     {
         $translator = Translator::instance();
 
-        $page->rewriteTranslatablePageUrl($locale);
-        $url = $translator->getPathInLocale(array_get($page->attributes, 'viewBag.url'), $locale);
+        $url = $translator->getPathInLocale($url, $locale);
 
         return (new Router)->urlFromPattern($url);
     }
@@ -943,12 +933,14 @@ class Page extends ContentBase
                 $pageCode = $item->page->getBaseFileName();
                 $pageUrl = Str::lower(RouterHelper::normalizeUrl(array_get($viewBag, 'url')));
 
+
                 $itemData = [
                     'url'    => $pageUrl,
                     'title'  => array_get($viewBag, 'title'),
                     'mtime'  => $item->page->mtime,
                     'items'  => $iterator($item->subpages, $pageCode, $level+1),
                     'parent' => $parent,
+                    'localeUrls' => array_get($viewBag, 'localeUrl', []),
                     'navigation_hidden' => array_get($viewBag, 'navigation_hidden')
                 ];
 
