@@ -171,49 +171,45 @@ class Menu extends Meta
                      * If the item type is not URL, use the API to request the item type's provider to
                      * return the item URL, subitems and determine whether the item is active.
                      */
-                    $apiResult = Event::fire('pages.menuitem.resolveItem', [$item->type, $item, $currentUrl, $this->theme]);
-                    if (is_array($apiResult)) {
-                        foreach ($apiResult as $itemInfo) {
-                            if (!is_array($itemInfo)) {
-                                continue;
+                    $itemInfo = Event::fire('pages.menuitem.resolveItem', [$item->type, $item, $currentUrl, $this->theme], true);
+                    if (!is_array($itemInfo)) {
+                        continue;
+                    }
+
+                    if (!$item->replace && isset($itemInfo['url'])) {
+                        $parentReference->url = $itemInfo['url'];
+                        $parentReference->isActive = $itemInfo['isActive'] || $activeMenuItem === $item->code;
+                    }
+
+                    if (isset($itemInfo['items'])) {
+                        $itemIterator = function($items) use (&$itemIterator, $parentReference) {
+                            $result = [];
+
+                            foreach ($items as $item) {
+                                $reference = new MenuItemReference;
+                                $reference->type = isset($item['type']) ? $item['type'] : null;
+                                $reference->title = isset($item['title']) ? $item['title'] : '--no title--';
+                                $reference->url = isset($item['url']) ? $item['url'] : '#';
+                                $reference->isActive = isset($item['isActive']) ? $item['isActive'] : false;
+                                $reference->viewBag = isset($item['viewBag']) ? $item['viewBag'] : [];
+                                $reference->code = isset($item['code']) ? $item['code'] : null;
+
+                                if (!strlen($parentReference->url)) {
+                                    $parentReference->url = $reference->url;
+                                    $parentReference->isActive = $reference->isActive;
+                                }
+
+                                if (isset($item['items'])) {
+                                    $reference->items = $itemIterator($item['items']);
+                                }
+
+                                $result[] = $reference;
                             }
 
-                            if (!$item->replace && isset($itemInfo['url'])) {
-                                $parentReference->url = $itemInfo['url'];
-                                $parentReference->isActive = $itemInfo['isActive'] || $activeMenuItem === $item->code;
-                            }
+                            return $result;
+                        };
 
-                            if (isset($itemInfo['items'])) {
-                                $itemIterator = function($items) use (&$itemIterator, $parentReference) {
-                                    $result = [];
-
-                                    foreach ($items as $item) {
-                                        $reference = new MenuItemReference;
-                                        $reference->type = isset($item['type']) ? $item['type'] : null;
-                                        $reference->title = isset($item['title']) ? $item['title'] : '--no title--';
-                                        $reference->url = isset($item['url']) ? $item['url'] : '#';
-                                        $reference->isActive = isset($item['isActive']) ? $item['isActive'] : false;
-                                        $reference->viewBag = isset($item['viewBag']) ? $item['viewBag'] : [];
-                                        $reference->code = isset($item['code']) ? $item['code'] : null;
-
-                                        if (!strlen($parentReference->url)) {
-                                            $parentReference->url = $reference->url;
-                                            $parentReference->isActive = $reference->isActive;
-                                        }
-
-                                        if (isset($item['items'])) {
-                                            $reference->items = $itemIterator($item['items']);
-                                        }
-
-                                        $result[] = $reference;
-                                    }
-
-                                    return $result;
-                                };
-
-                                $parentReference->items = $itemIterator($itemInfo['items']);
-                            }
-                        }
+                        $parentReference->items = $itemIterator($itemInfo['items']);
                     }
                 }
 
