@@ -172,9 +172,6 @@ class Menu extends Meta
                      * return the item URL, subitems and determine whether the item is active.
                      */
                     $itemInfo = Event::fire('pages.menuitem.resolveItem', [$item->type, $item, $currentUrl, $this->theme], true);
-                    if (!is_array($itemInfo)) {
-                        continue;
-                    }
 
                     if (!$item->replace && isset($itemInfo['url'])) {
                         $parentReference->url = $itemInfo['url'];
