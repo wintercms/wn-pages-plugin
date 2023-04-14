@@ -1,8 +1,8 @@
 <?php namespace Winter\Pages\FormWidgets;
 
-use Str;
-use Input;
 use Backend\Classes\FormWidgetBase;
+use Input;
+use Str;
 use Winter\Pages\Classes\MenuItem;
 
 /**

@@ -1,28 +1,30 @@
 <?php namespace Winter\Pages\Controllers;
 
-use Url;
-use Lang;
-use Flash;
-use Event;
-use Config;
-use Request;
-use BackendMenu;
-use Cms\Classes\Theme;
-use Cms\Classes\CmsObject;
-use Cms\Classes\CmsCompoundObject;
-use Cms\Widgets\TemplateList;
-use System\Helpers\DateTime;
+use ApplicationException;
 use Backend\Classes\Controller;
-use Winter\Pages\Widgets\PageList;
-use Winter\Pages\Widgets\MenuList;
-use Winter\Pages\Widgets\SnippetList;
-use Winter\Pages\Classes\Page as StaticPage;
+use BackendMenu;
+use Cms\Classes\CmsObject;
+use Cms\Classes\Theme;
+use Cms\Widgets\TemplateList;
+use Config;
+use Cache;
+use Event;
+use Exception;
+use Flash;
+use Lang;
+use Request;
+use System\Helpers\DateTime;
+use Url;
 use Winter\Pages\Classes\Content;
 use Winter\Pages\Classes\MenuItem;
-use Winter\Pages\Plugin as PagesPlugin;
+use Winter\Pages\Classes\Page as StaticPage;
 use Winter\Pages\Classes\SnippetManager;
-use ApplicationException;
-use Exception;
+use Winter\Pages\Plugin as PagesPlugin;
+use Winter\Pages\Widgets\MenuList;
+use Winter\Pages\Widgets\PageList;
+use Winter\Pages\Widgets\SnippetList;
+
+use Winter\Pages\Classes\ObjectHelper;
 
 /**
  * Pages and Menus index
@@ -89,8 +91,83 @@ class Index extends Controller
     }
 
     //
+    // Helpers
+    //
+
+    /**
+     * Gets the object type for the current request
+     * @throws ApplicationException if the current user does not have permissions to manage the identified type
+     */
+    protected function getObjectType(): string
+    {
+        $type = Request::input('objectType');
+
+        $allowed = false;
+        if ($type === 'content') {
+            $allowed = $this->user->hasAccess('winter.pages.manage_content');
+        } else {
+            $allowed = $this->user->hasAccess("winter.pages.manage_{$type}s");
+        }
+
+        if (!$allowed) {
+            throw new ApplicationException(Lang::get('winter.pages::lang.object.unauthorized_type', ['type' => $type]));
+        }
+
+        return $type;
+    }
+
+    /**
+     * Gets the object from the current request
+     * @throws ApplicationException if the current user does not have permissions to manage the identified type
+     */
+    public function getObjectFromRequest()
+    {
+        $type = $this->getObjectType();
+        return ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            Request::input('objectPath'),
+            post()
+        );
+    }
+
+    //
     // Pages, menus and text blocks
     //
+
+    /**
+     * Hook into the controller after the page action has executed (widgets initialized)
+     * but before AJAX handlers are run
+     * @TODO: Generalize the preview logic so it can be used in other plugins
+     */
+    public function pageAction()
+    {
+        $result = parent::pageAction();
+
+        $formAlias = post('formWidgetAlias');
+
+        if (!empty($formAlias) && isset($this->widget->{$formAlias})) {
+            $widget = $this->widget->{$formAlias};
+
+            $widget->bindEvent('form.refreshFields', function ($allFields) use ($widget) {
+                $this->validateRequestTheme();
+
+                $object = ObjectHelper::fillObject(
+                    $this->theme,
+                    $this->getObjectType(),
+                    Request::input('objectPath'),
+                    post()
+                );
+
+                Cache::put(
+                    ObjectHelper::getTypePreviewSessionCacheKey($this->getObjectType(), $widget->alias),
+                    $object->toArray()
+                );
+            });
+        }
+
+        return $result;
+    }
 
     public function index()
     {
@@ -117,7 +194,7 @@ class Index extends Controller
         $this->validateRequestTheme();
 
         $type = Request::input('type');
-        $object = $this->loadObject($type, Request::input('path'));
+        $object = ObjectHelper::loadObject($this->theme, $type, Request::input('path'));
 
         return $this->pushObjectForm($type, $object);
     }
@@ -125,9 +202,14 @@ class Index extends Controller
     public function onSave()
     {
         $this->validateRequestTheme();
-        $type = Request::input('objectType');
+        $type = $this->getObjectType();
 
-        $object = $this->fillObjectFromPost($type);
+        $object = ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            Request::input('objectPath'),
+            post()
+        );
         $object->save();
 
         /*
@@ -158,7 +240,7 @@ class Index extends Controller
         $this->validateRequestTheme();
 
         $type = Request::input('type');
-        $object = $this->createObject($type);
+        $object = ObjectHelper::createObject($this->theme, $type);
         $parent = Request::input('parent');
         $parentPage = null;
 
@@ -171,6 +253,7 @@ class Index extends Controller
         }
 
         $widget = $this->makeObjectFormWidget($type, $object);
+        $widget->bindToController();
         $this->vars['objectPath'] = '';
         $this->vars['canCommit'] = $this->canCommitObject($object);
         $this->vars['canReset'] = $this->canResetObject($object);
@@ -194,9 +277,11 @@ class Index extends Controller
     {
         $this->validateRequestTheme();
 
-        $type = Request::input('objectType');
-
-        $deletedObjects = $this->loadObject($type, trim(Request::input('objectPath')))->delete();
+        $deletedObjects = ObjectHelper::loadObject(
+            $this->theme,
+            $this->getObjectType(),
+            trim(Request::input('objectPath', ''))
+        )->delete();
 
         $result = [
             'deletedObjects' => $deletedObjects,
@@ -225,7 +310,7 @@ class Index extends Controller
                 if (!$selected) {
                     continue;
                 }
-                $object = $this->loadObject($type, $path, true);
+                $object = ObjectHelper::loadObject($this->theme, $type, $path, true);
                 if (!$object) {
                     continue;
                 }
@@ -268,9 +353,13 @@ class Index extends Controller
     {
         $this->validateRequestTheme();
 
-        $type = Request::input('objectType');
-
-        $object = $this->fillObjectFromPost($type);
+        $type = $this->getObjectType();
+        $object = ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            Request::input('objectPath'),
+            post()
+        );
 
         return $this->pushObjectForm($type, $object, Request::input('formWidgetAlias'));
     }
@@ -285,7 +374,7 @@ class Index extends Controller
         if (strlen($snippetCode)) {
             $snippet = SnippetManager::instance()->findByCodeOrComponent($this->theme, $snippetCode, $componentClass);
             if (!$snippet) {
-                throw new ApplicationException(trans('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]));
+                throw new ApplicationException(Lang::get('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]));
             }
 
             $configuration = $snippet->getProperties();
@@ -295,8 +384,8 @@ class Index extends Controller
             'configuration' => [
                 'properties'  => $configuration,
                 'title'       => $snippet->getName(),
-                'description' => $snippet->getDescription()
-            ]
+                'description' => $snippet->getDescription(),
+            ],
         ];
     }
 
@@ -317,7 +406,7 @@ class Index extends Controller
             $snippet = SnippetManager::instance()->findByCodeOrComponent($this->theme, $snippetCode, $componentClass);
 
             if (!$snippet) {
-                $result[$snippetCode] = trans('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]);
+                $result[$snippetCode] = Lang::get('winter.pages::lang.snippet.not_found', ['code' => $snippetCode]);
             }
             else {
                 $result[$snippetCode] =$snippet->getName();
@@ -325,7 +414,7 @@ class Index extends Controller
         }
 
         return [
-            'names' => $result
+            'names' => $result,
         ];
     }
 
@@ -350,8 +439,8 @@ class Index extends Controller
     public function onCommit()
     {
         $this->validateRequestTheme();
-        $type = Request::input('objectType');
-        $object = $this->loadObject($type, trim(Request::input('objectPath')));
+        $type = $this->getObjectType();
+        $object = ObjectHelper::loadObject($this->theme, $type, trim(Request::input('objectPath', '')));
 
         if ($this->canCommitObject($object)) {
             // Populate the filesystem with the object and then remove it from the db
@@ -373,8 +462,8 @@ class Index extends Controller
     public function onReset()
     {
         $this->validateRequestTheme();
-        $type = Request::input('objectType');
-        $object = $this->loadObject($type, trim(Request::input('objectPath')));
+        $type = $this->getObjectType();
+        $object = ObjectHelper::loadObject($this->theme, $type, trim(Request::input('objectPath', '')));
 
         if ($this->canResetObject($object)) {
             // Remove the object from the DB
@@ -451,11 +540,8 @@ class Index extends Controller
     /**
      * Check to see if the provided object can be reset
      * Only available when the DB layer is enabled and the object exists in both the DB & Filesystem
-     *
-     * @param CmsObject $object
-     * @return boolean
      */
-    protected function canResetObject(CmsObject $object)
+    protected function canResetObject(CmsObject $object): bool
     {
         $result = false;
 
@@ -467,63 +553,15 @@ class Index extends Controller
         return $result;
     }
 
-    protected function validateRequestTheme()
+    /**
+     * Validates that the theme provided in the AJAX request matches the current one
+     * @throws ApplicationException if the validation fails
+     */
+    protected function validateRequestTheme(): void
     {
         if ($this->theme->getDirName() != Request::input('theme')) {
-            throw new ApplicationException(trans('cms::lang.theme.edit.not_match'));
+            throw new ApplicationException(Lang::get('cms::lang.theme.edit.not_match'));
         }
-    }
-
-    protected function loadObject($type, $path, $ignoreNotFound = false)
-    {
-        $class = $this->resolveTypeClassName($type);
-
-        if (!($object = call_user_func(array($class, 'load'), $this->theme, $path))) {
-            if (!$ignoreNotFound) {
-                throw new ApplicationException(trans('winter.pages::lang.object.not_found'));
-            }
-
-            return null;
-        }
-
-        return $object;
-    }
-
-    protected function createObject($type)
-    {
-        $class = $this->resolveTypeClassName($type);
-
-        if (!($object = $class::inTheme($this->theme))) {
-            throw new ApplicationException(trans('winter.pages::lang.object.not_found'));
-        }
-
-        return $object;
-    }
-
-    protected function resolveTypeClassName($type)
-    {
-        $types = [
-            'page'    => 'Winter\Pages\Classes\Page',
-            'menu'    => 'Winter\Pages\Classes\Menu',
-            'content' => 'Winter\Pages\Classes\Content'
-        ];
-
-        if (!array_key_exists($type, $types)) {
-            throw new ApplicationException(Lang::get('winter.pages::lang.object.invalid_type') . ' - type - ' . $type);
-        }
-
-        $allowed = false;
-        if ($type === 'content') {
-            $allowed = $this->user->hasAccess('winter.pages.manage_content');
-        } else {
-            $allowed = $this->user->hasAccess("winter.pages.manage_{$type}s");
-        }
-
-        if (!$allowed) {
-            throw new ApplicationException(Lang::get('winter.pages::lang.object.unauthorized_type', ['type' => $type]));
-        }
-
-        return $types[$type];
     }
 
     protected function makeObjectFormWidget($type, $object, $alias = null)
@@ -546,7 +584,7 @@ class Index extends Controller
         $widget = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
 
         if ($type == 'page') {
-            $widget->bindEvent('form.extendFieldsBefore', function() use ($widget, $object) {
+            $widget->bindEvent('form.extendFieldsBefore', function () use ($widget, $object) {
                 $this->checkContentField($widget, $object);
                 $this->addPagePlaceholders($widget, $object);
                 $this->addPageSyntaxFields($widget, $object);
@@ -658,136 +696,50 @@ class Index extends Controller
         }
     }
 
-    protected function getTabTitle($type, $object)
+    /**
+     * Get the tab title the provided type & object
+     */
+    protected function getTabTitle(string $type, CmsObject $object): string
     {
-        if ($type == 'page') {
-            $viewBag = $object->getViewBag();
-            $result = $viewBag ? $viewBag->property('title') : false;
-            if (!$result) {
-                $result = trans('winter.pages::lang.page.new');
-            }
-
-            return $result;
-        }
-        elseif ($type == 'menu') {
-            $result = $object->name;
-            if (!strlen($result)) {
-                $result = trans('winter.pages::lang.menu.new');
-            }
-
-            return $result;
-        }
-        elseif ($type == 'content') {
-            $result = in_array($type, ['asset', 'content'])
-                ? $object->getFileName()
-                : $object->getBaseFileName();
-
-            if (!$result) {
-                $result = trans('cms::lang.'.$type.'.new');
-            }
-
-            return $result;
-        }
-
-        return $object->getFileName();
-    }
-
-    protected function fillObjectFromPost($type)
-    {
-        $objectPath = trim(Request::input('objectPath'));
-        $object = $objectPath ? $this->loadObject($type, $objectPath) : $this->createObject($type);
-
-        // Set page layout super early because it cascades to other elements
-        if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
-            $object->getViewBag()->setProperty('layout', $layout);
-        }
-
-        $formWidget = $this->makeObjectFormWidget($type, $object, Request::input('formWidgetAlias'));
-
-        $saveData = $formWidget->getSaveData();
-        $postData = post();
-        $objectData = [];
-
-        if ($viewBag = array_get($saveData, 'viewBag')) {
-            $objectData['settings'] = ['viewBag' => $viewBag];
-        }
-
-        $fields = ['markup', 'code', 'fileName', 'content', 'itemData', 'name'];
-
-        if ($type != 'menu' && $type != 'content') {
-            $object->parentFileName = Request::input('parentFileName');
-        }
-
-        foreach ($fields as $field) {
-            if (array_key_exists($field, $saveData)) {
-                $objectData[$field] = $saveData[$field];
-            }
-            elseif (array_key_exists($field, $postData)) {
-                $objectData[$field] = $postData[$field];
-            }
-        }
-
-        if ($type == 'page') {
-            $placeholders = array_get($saveData, 'placeholders');
-
-            if (is_array($placeholders) && Config::get('cms.convertLineEndings', false) === true) {
-                $placeholders = array_map([$this, 'convertLineEndings'], $placeholders);
-            }
-
-            $objectData['placeholders'] = $placeholders;
-        }
-
-        if ($type == 'content') {
-            $fileName = $objectData['fileName'];
-
-            if (dirname($fileName) == 'static-pages') {
-                throw new ApplicationException(trans('winter.pages::lang.content.cant_save_to_dir'));
-            }
-
-            $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-
-            if ($extension === 'htm' || $extension === 'html' || !strlen($extension)) {
-                $objectData['markup'] = array_get($saveData, 'markup_html');
-            }
-        }
-
-        if ($type == 'menu') {
-            // If no item data is sent through POST, this means the menu is empty
-            if (!isset($objectData['itemData'])) {
-                $objectData['itemData'] = [];
-            } else {
-                $objectData['itemData'] = json_decode($objectData['itemData'], true);
-                if (json_last_error() !== JSON_ERROR_NONE || !is_array($objectData['itemData'])) {
-                    $objectData['itemData'] = [];
+        $result = '';
+        switch ($type) {
+            case 'page':
+                $viewBag = $object->getViewBag();
+                $result = $viewBag ? $viewBag->property('title') : false;
+                if (!$result) {
+                    $result = Lang::get('winter.pages::lang.page.new');
                 }
-            }
+                break;
+
+            case 'menu':
+                $result = $object->name;
+                if (!strlen($result)) {
+                    $result = Lang::get('winter.pages::lang.menu.new');
+                }
+                break;
+
+            case 'content':
+                $result = in_array($type, ['asset', 'content'])
+                    ? $object->getFileName()
+                    : $object->getBaseFileName();
+
+                if (!$result) {
+                    $result = Lang::get('cms::lang.'.$type.'.new');
+                }
+                break;
+
+            default:
+                $result = $object->getFileName();
+                break;
         }
 
-        if (!empty($objectData['markup']) && Config::get('cms.convertLineEndings', false) === true) {
-            $objectData['markup'] = $this->convertLineEndings($objectData['markup']);
-        }
-
-        if (!Request::input('objectForceSave') && $object->mtime) {
-            if (Request::input('objectMtime') != $object->mtime) {
-                throw new ApplicationException('mtime-mismatch');
-            }
-        }
-
-        $object->fill($objectData);
-
-        /*
-         * Rehydrate the object viewBag array property where values are sourced.
-         */
-        if ($object instanceof CmsCompoundObject && is_array($viewBag)) {
-            $object->viewBag = $viewBag + $object->viewBag;
-        }
-
-        return $object;
+        return $result;
     }
 
     protected function pushObjectForm($type, $object, $alias = null)
     {
         $widget = $this->makeObjectFormWidget($type, $object, $alias);
+        $widget->bindToController();
 
         $this->vars['canCommit'] = $this->canCommitObject($object);
         $this->vars['canReset'] = $this->canResetObject($object);
@@ -813,13 +765,13 @@ class Index extends Controller
     protected function bindFormWidgetToController()
     {
         $alias = Request::input('formWidgetAlias');
-        $type = Request::input('objectType');
+        $type = $this->getObjectType();
         $objectPath = trim(Request::input('objectPath'));
 
         if (!$objectPath) {
-            $object = $this->createObject($type);
+            $object = ObjectHelper::createObject($this->theme, $type);
         } else {
-            $object = $this->loadObject($type, $objectPath);
+            $object = ObjectHelper::loadObject($this->theme, $type, $objectPath);
         }
 
         // Set page layout super early because it cascades to other elements

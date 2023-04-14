@@ -1,0 +1,56 @@
+[data-control="page-preview"] {
+    margin: 0;
+    padding: 0 1em 1em 1em;
+    background: #f2f2f2;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+[data-control="page-preview"] iframe {
+    background: #fff;
+    margin: 0 auto;
+    border: 0;
+    box-shadow: 0px 0px 7px -3px rgb(0 0 0 / 50%);
+    border-radius: 5px;
+}
+[data-control="page-preview"] .devices {
+    margin: 0 auto;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    background: #f2f2f2;
+    padding: 0.5em 1em;
+}
+[data-control="page-preview"] .devices a {
+    padding: 0.5em 0.75em;
+    display: block;
+    margin-right: 1em;
+    border-radius: 3px;
+    background: #ddd;
+    transition: all .2s ease;
+}
+[data-control="page-preview"] .devices a.active,
+[data-control="page-preview"] .devices a:hover {
+    font-weight: bold;
+    background: #333;
+    color: #fff;
+}
+[data-control="page-preview"].preview-desktop iframe {
+    width: 100%;
+}
+[data-control="page-preview"].preview-tablet iframe {
+    width: min(768px, 100%);
+}
+[data-control="page-preview"].preview-mobile iframe {
+    width: min(320px, 100%);
+}
+
+div.form-group[data-field-name="_preview"],
+div.form-group[data-field-name="_preview"] div[data-control="page-preview"],
+div.form-group[data-field-name="_preview"] div[data-control="page-preview"] iframe {
+    height: 100%;
+}
+
+div.form-group[data-field-name="_preview"] {
+    padding-bottom: 0;
+}

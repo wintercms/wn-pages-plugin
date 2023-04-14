@@ -26,6 +26,10 @@ fields:
 
 tabs:
     cssClass: master-area
+
+    icons:
+        cms::lang.editor.settings: icon-cog
+
     fields:
         viewBag[layout]:
             tab: cms::lang.editor.settings
@@ -59,6 +63,9 @@ tabs:
 
 secondaryTabs:
     stretch: true
+    icons:
+        winter.pages::lang.editor.content: icon-pencil
+        winter.pages::lang.editor.preview: icon-crosshairs
     fields:
         markup:
             tab: winter.pages::lang.editor.content

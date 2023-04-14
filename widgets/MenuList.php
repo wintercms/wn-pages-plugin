@@ -1,10 +1,10 @@
 <?php namespace Winter\Pages\Widgets;
 
-use Str;
-use Input;
-use Winter\Pages\Classes\Menu;
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;
+use Input;
+use Str;
+use Winter\Pages\Classes\Menu;
 
 /**
  * Menu list widget.
@@ -112,7 +112,7 @@ class MenuList extends WidgetBase
         return parent::getSession($key, $default);
     }
 
-    protected function putSession($key, $value) 
+    protected function putSession($key, $value)
     {
         return parent::putSession($this->getThemeSessionKey($key), $value);
     }

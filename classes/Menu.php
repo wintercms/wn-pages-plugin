@@ -1,10 +1,10 @@
 <?php namespace Winter\Pages\Classes;
 
-use Url;
+use Cms\Classes\Meta;
 use Event;
 use Request;
 use SystemException;
-use Cms\Classes\Meta;
+use Url;
 use Winter\Storm\Support\Str;
 
 /**
