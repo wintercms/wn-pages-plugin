@@ -149,7 +149,7 @@ class ObjectHelper
                 $object->parentFileName = $data['parentFileName'] ?? null;
 
                 $placeholders = array_get($data, 'placeholders');
-                if (is_array($placeholders)) {
+                if (is_array($placeholders) && Config::get('cms.convertLineEndings', false) === true) {
                     $placeholders = array_map([static::class, 'convertLineEndings'], $placeholders);
                 }
 
@@ -185,7 +185,7 @@ class ObjectHelper
                 break;
         }
 
-        if (!empty($objectData['markup'])) {
+        if (!empty($objectData['markup']) && Config::get('cms.convertLineEndings', false) === true) {
             $objectData['markup'] = static::convertLineEndings($objectData['markup']);
         }
 
