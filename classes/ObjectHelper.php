@@ -1,6 +1,7 @@
 <?php namespace Winter\Pages\Classes;
 
 use ApplicationException;
+use Backend\Classes\Controller;
 use Cms\Classes\CmsCompoundObject;
 use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
@@ -108,7 +109,7 @@ class ObjectHelper
     /**
      * Fills the provided Winter.Pages object with the provided data
      */
-    public static function fillObject(Theme $theme, string $type, string $path, array $data, $controller = null): CmsObject
+    public static function fillObject(Theme $theme, string $type, string $path, array $data, ?Controller $controller = null): CmsObject
     {
         $objectData = [];
 
