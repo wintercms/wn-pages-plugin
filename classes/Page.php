@@ -833,7 +833,7 @@ class Page extends ContentBase
 
                     $localizedUrls = $getLocalizedUrls($itemInfo);
                     if (count($localizedUrls) > 1) {
-                        $result['alternateLinks'] = $localizedUrls;
+                        $branchItem['alternateLinks'] = $localizedUrls;
                     }
 
                     if ($itemInfo['items']) {
