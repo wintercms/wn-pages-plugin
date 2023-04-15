@@ -127,8 +127,7 @@ class Index extends Controller
             $this->theme,
             $type,
             Request::input('objectPath'),
-            post(),
-            $this
+            post()
         );
     }
 
