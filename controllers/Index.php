@@ -127,7 +127,8 @@ class Index extends Controller
             $this->theme,
             $type,
             Request::input('objectPath'),
-            post()
+            post(),
+            $this
         );
     }
 
@@ -202,14 +203,8 @@ class Index extends Controller
     public function onSave()
     {
         $this->validateRequestTheme();
-        $type = $this->getObjectType();
 
-        $object = ObjectHelper::fillObject(
-            $this->theme,
-            $type,
-            Request::input('objectPath'),
-            post()
-        );
+        $object = $this->getObjectFromRequest();
         $object->save();
 
         /*
@@ -353,13 +348,7 @@ class Index extends Controller
     {
         $this->validateRequestTheme();
 
-        $type = $this->getObjectType();
-        $object = ObjectHelper::fillObject(
-            $this->theme,
-            $type,
-            Request::input('objectPath'),
-            post()
-        );
+        $object = $this->getObjectFromRequest();
 
         return $this->pushObjectForm($type, $object, Request::input('formWidgetAlias'));
     }
@@ -564,7 +553,7 @@ class Index extends Controller
         }
     }
 
-    protected function makeObjectFormWidget($type, $object, $alias = null)
+    public function makeObjectFormWidget($type, $object, $alias = null)
     {
         $formConfigs = [
             'page'    => '~/plugins/winter/pages/classes/page/fields.yaml',
