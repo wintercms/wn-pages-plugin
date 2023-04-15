@@ -204,7 +204,14 @@ class Index extends Controller
     {
         $this->validateRequestTheme();
 
-        $object = $this->getObjectFromRequest();
+        $type = $this->getObjectType();
+        $object = ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            Request::input('objectPath'),
+            post(),
+            $this
+        );
         $object->save();
 
         /*
@@ -348,7 +355,14 @@ class Index extends Controller
     {
         $this->validateRequestTheme();
 
-        $object = $this->getObjectFromRequest();
+        $type = $this->getObjectType();
+        $object = ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            Request::input('objectPath'),
+            post(),
+            $this
+        );
 
         return $this->pushObjectForm($type, $object, Request::input('formWidgetAlias'));
     }
