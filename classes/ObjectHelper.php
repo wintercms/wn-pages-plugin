@@ -1,7 +1,6 @@
 <?php namespace Winter\Pages\Classes;
 
 use ApplicationException;
-use Backend\Classes\Controller;
 use Cms\Classes\CmsCompoundObject;
 use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
@@ -109,25 +108,21 @@ class ObjectHelper
     /**
      * Fills the provided Winter.Pages object with the provided data
      */
-    public static function fillObject(Theme $theme, string $type, string $path, array $data, ?Controller $controller = null): CmsObject
+    public static function fillObject(Theme $theme, string $type, string $path, array $data, ?CmsObject $object = null): CmsObject
     {
         $objectData = [];
 
         // Get the object to fill
-        $path = trim($path);
-        $object = !empty($path)
-            ? static::loadObject($theme, $type, $path)
-            : static::createObject($theme, $type);
+        if (is_null($object)) {
+            $path = trim($path);
+            $object = !empty($path)
+                ? static::loadObject($theme, $type, $path)
+                : static::createObject($theme, $type);
+        }
 
         // Set page layout super early because it cascades to other elements
         if ($type === 'page' && ($layout = $data['viewBag']['layout'] ?? null)) {
             $object->getViewBag()->setProperty('layout', $layout);
-        }
-
-        if ($controller) {
-            $formWidget = $controller->makeObjectFormWidget($type, $object, Request::input('formWidgetAlias'));
-            $saveData = $formWidget->getSaveData();
-            $data = array_merge($data, $saveData);
         }
 
         // Store viewBag data in the object's "settings" property
