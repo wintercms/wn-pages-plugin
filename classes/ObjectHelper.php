@@ -6,7 +6,6 @@ use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
 use Config;
 use Lang;
-use Request;
 use Session;
 
 class ObjectHelper
