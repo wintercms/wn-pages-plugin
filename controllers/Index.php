@@ -214,13 +214,7 @@ class Index extends Controller
         $saveData = $formWidget->getSaveData();
         $data = array_merge($data, $saveData);
 
-        ObjectHelper::fillObject(
-            $theme,
-            $type,
-            $path,
-            $data,
-            $object
-        );
+        ObjectHelper::fillObject($theme, $type, $path, $data, $object);
 
         $object->save();
 
