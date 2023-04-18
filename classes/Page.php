@@ -773,12 +773,12 @@ class Page extends ContentBase
         // Helper to get the processed localized urls from the raw locale URL data array
         // that takes into account the enabled locales
         $getLocalizedUrls = function (array $pageInfo) {
-            $localeUrls = $pageInfo['localeUrls'];
             $localizedUrls = [];
             $enabledLocales = class_exists(Locale::class) ? Locale::listEnabled() : [];
 
             if ($enabledLocales) {
-                $localizedUrls = [];
+                $localeUrls = $pageInfo['localeUrls'] ?? [];
+
                 foreach ($enabledLocales as $locale => $name) {
                     $localeUrl = array_get($localeUrls, $locale) ?: $pageInfo['url'];
                     $pageUrl = static::getLocalizedUrl($localeUrl, $locale);
@@ -790,7 +790,6 @@ class Page extends ContentBase
 
             return $localizedUrls;
         };
-
 
         if ($item->type == 'static-page') {
             $pageInfo = $tree[$item->reference];
