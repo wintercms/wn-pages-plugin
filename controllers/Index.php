@@ -145,7 +145,7 @@ class Index extends Controller
             $this->theme,
             $this->getObjectType(),
             Request::input('objectPath'),
-            $formWidget->getSaveData(),
+            array_merge(post(), $formWidget->getSaveData()),
             $object
         );
     }
