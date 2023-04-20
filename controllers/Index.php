@@ -131,8 +131,8 @@ class Index extends Controller
         $objectPath = trim(Request::input('objectPath'));
 
         $object = $objectPath
-            ? $this->loadObject($type, $objectPath)
-            : $this->createObject($type);
+            ? ObjectHelper::loadObject($type, $objectPath)
+            : ObjectHelper::createObject($this->theme, $type);
 
         // Set page layout super early because it cascades to other elements
         if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
@@ -143,8 +143,8 @@ class Index extends Controller
 
         return ObjectHelper::fillObject(
             $this->theme,
-            $this->getObjectType(),
-            Request::input('objectPath'),
+            $type,
+            $objectPath,
             array_merge(post(), $formWidget->getSaveData()),
             $object
         );
