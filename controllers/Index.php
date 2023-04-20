@@ -127,13 +127,12 @@ class Index extends Controller
      */
     public function getObjectFromRequest(): CmsObject
     {
-        // @TODO: Figure out how to get the form widget's save data from the request here too without insanity to match the original implementation
-        // in order to support Winter.Translate
-
-
         $type = $this->getObjectType();
         $objectPath = trim(Request::input('objectPath'));
-        $object = $objectPath ? $this->loadObject($type, $objectPath) : $this->createObject($type);
+
+        $object = $objectPath
+            ? $this->loadObject($type, $objectPath)
+            : $this->createObject($type);
 
         // Set page layout super early because it cascades to other elements
         if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
@@ -142,14 +141,12 @@ class Index extends Controller
 
         $formWidget = $this->makeObjectFormWidget($type, $object, Request::input('formWidgetAlias'));
 
-        $saveData = $formWidget->getSaveData();
-
-
         return ObjectHelper::fillObject(
             $this->theme,
             $this->getObjectType(),
             Request::input('objectPath'),
-            post()
+            $formWidget->getSaveData(),
+            $object
         );
     }
 

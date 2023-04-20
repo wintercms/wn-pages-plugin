@@ -107,15 +107,17 @@ class ObjectHelper
     /**
      * Fills the provided Winter.Pages object with the provided data
      */
-    public static function fillObject(Theme $theme, string $type, string $path, array $data): CmsObject
+    public static function fillObject(Theme $theme, string $type, string $path, array $data, ?CmsObject $object = null): CmsObject
     {
         $objectData = [];
 
         // Get the object to fill
-        $path = trim($path);
-        $object = !empty($path)
-            ? static::loadObject($theme, $type, $path)
-            : static::createObject($theme, $type);
+        if (is_null($object)) {
+            $path = trim($path);
+            $object = !empty($path)
+                ? static::loadObject($theme, $type, $path)
+                : static::createObject($theme, $type);
+        }
 
         // Set page layout super early because it cascades to other elements
         if ($type === 'page' && ($layout = $data['viewBag']['layout'] ?? null)) {
