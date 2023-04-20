@@ -131,7 +131,7 @@ class Index extends Controller
         $objectPath = trim(Request::input('objectPath'));
 
         $object = $objectPath
-            ? ObjectHelper::loadObject($type, $objectPath)
+            ? ObjectHelper::loadObject($this->theme, $type, $objectPath)
             : ObjectHelper::createObject($this->theme, $type);
 
         // Set page layout super early because it cascades to other elements
