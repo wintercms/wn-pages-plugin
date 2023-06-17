@@ -8,6 +8,8 @@ use Cms\Classes\Controller as CmsController;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
 use Cms\Classes\ComponentManager;
+use Exception;
+use Flash;
 use Session;
 use SystemException;
 
@@ -161,7 +163,13 @@ class SnippetLoader
      */
     protected static function fetchCachedSnippets(CmsPage $page)
     {
-        $cache = @unserialize(Cache::get(static::getMapCacheKey($page), serialize([])));
+        try {
+            $cache = unserialize(Cache::get(static::getMapCacheKey($page), serialize([])));
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+            trace_log($error);
+            Flash::error($error);
+        }
 
         return is_array($cache) ? $cache : [];
     }
