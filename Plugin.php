@@ -265,7 +265,8 @@ class Plugin extends PluginBase
     {
         return [
             'filters' => [
-                'staticPage' => ['Winter\Pages\Classes\Page', 'url']
+                'staticPage'    => ['Winter\Pages\Classes\Page', 'url'],
+                'parseSnippets' => ['Winter\Pages\Classes\Snippet', 'parse'],
             ]
         ];
     }
