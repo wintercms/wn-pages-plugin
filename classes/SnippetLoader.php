@@ -12,7 +12,6 @@ use Exception;
 use Flash;
 use Session;
 use SystemException;
-
 use Winter\Pages\Classes\SnippetManager;
 
 class SnippetLoader
@@ -22,12 +21,10 @@ class SnippetLoader
     /**
      * Add a component registered as a snippet to the active controller.
      *
-     * @param array $snippetInfo        The info of the snippet to register
-     * @return string                   The generated unique alias for this snippet
      * @throws SystemException
      * @throws CmsException
      */
-    public static function registerComponentSnippet($snippetInfo)
+    public static function registerComponentSnippet(array $snippetInfo): string
     {
         $controller = CmsController::getController();
 
@@ -44,11 +41,9 @@ class SnippetLoader
     /**
      * Add a partial registered as a snippet to the active controller.
      *
-     * @param array $snippetInfo        The info of the snippet to register
-     * @return string                   The generated unique alias for this snippet
      * @throws ApplicationException
      */
-    public static function registerPartialSnippet($snippetInfo)
+    public static function registerPartialSnippet(array $snippetInfo): string
     {
         $theme = Theme::getActiveTheme();
         $partialSnippetMap = SnippetManager::instance()->getPartialSnippetMap($theme);
@@ -64,10 +59,8 @@ class SnippetLoader
     /**
      * Save to the cache the component snippets loaded for this page.
      * Should be called once after all snippets are loaded to avoid multiple serializations.
-     *
-     * @param CmsPage $page             The CMS Page to which the cache should be attached
      */
-    public static function saveCachedSnippets(CmsPage $page)
+    public static function saveCachedSnippets(CmsPage $page): void
     {
         if (empty(static::$pageSnippetsCache)) {
             return;
@@ -83,17 +76,14 @@ class SnippetLoader
     /**
      * Register back to the current controller all component snippets previously saved.
      * This make AJAX handlers of these components available.
-     *
-     * @param CmsController $cmsController
-     * @param CmsPage $page                 The CMS page for which to load the cache
      */
-    public static function restoreComponentSnippetsFromCache($cmsController, CmsPage $page)
+    public static function restoreComponentSnippetsFromCache(CmsController $controller, CmsPage $page): void
     {
         $componentSnippets = static::fetchCachedSnippets($page);
 
         foreach ($componentSnippets as $componentInfo) {
             try {
-                static::attachComponentSnippetToController($componentInfo, $cmsController);
+                static::attachComponentSnippetToController($componentInfo, $controller);
             } catch (\Exception $e) {
             }
         }
@@ -109,13 +99,10 @@ class SnippetLoader
      * If asked, the run lifecycle events of the component can be run. This is required for
      * component that are added late in the page execution like with the twig filter.
      *
-     * @param array $componentInfo
-     * @param CmsController $controller
-     * @param bool $triggerRun              Should the run events of the component lifecycle be triggered?
      * @throws SystemException
      * @throws CmsException
      */
-    protected static function attachComponentSnippetToController($componentInfo, CmsController $controller, $triggerRun = false)
+    protected static function attachComponentSnippetToController(array $componentInfo, CmsController $controller, bool $triggerRunEvents = false): void
     {
         $componentManager = ComponentManager::instance();
 
@@ -129,7 +116,7 @@ class SnippetLoader
             $componentInfo['properties']
         );
 
-        if ($triggerRun) {
+        if ($triggerRunEvents) {
             if ($component->fireEvent('component.beforeRun', [], true)) {
                 return;
             }
@@ -147,21 +134,16 @@ class SnippetLoader
     /**
      * Store a component snippet to the cache.
      * The cache is not actually saved; saveCachedSnippets() must be called to persist the cache.
-     *
-     * @param string $alias                     The unique alias of the snippet
-     * @param array $snippetInfo        The info of the snippet
      */
-    protected static function cacheSnippet($alias, $snippetInfo)
+    protected static function cacheSnippet(string $alias, array $snippetInfo): void
     {
         static::$pageSnippetsCache[$alias] = $snippetInfo;
     }
 
     /**
      * Get cached component snippets from the cache.
-     *
-     * @param CmsPage $page         The CMS page for which to load the cache
      */
-    protected static function fetchCachedSnippets(CmsPage $page)
+    protected static function fetchCachedSnippets(CmsPage $page): void
     {
         try {
             $cache = unserialize(Cache::get(static::getMapCacheKey($page), serialize([])));
@@ -176,11 +158,8 @@ class SnippetLoader
 
     /**
      * Get a cache key for the current page and the current user.
-     *
-     * @param CmsPage $page         The CMS page for which to load the cache
-     * @return string
      */
-    protected static function getMapCacheKey(CmsPage $page)
+    protected static function getMapCacheKey(CmsPage $page): string
     {
         $theme = Theme::getActiveTheme();
 
