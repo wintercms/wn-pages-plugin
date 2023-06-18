@@ -355,6 +355,7 @@ class Snippet
      * in snippet classes or partials and replaces property names defined in the static page markup.
      *
      * @throws ApplicationException if the provided snippet cannot be found
+     * @throws SystemException if the snippet component class cannot be found
      */
     protected static function preprocessPropertyValues(Theme $theme, string $snippetCode, string $componentClass, array $properties): array
     {
@@ -441,9 +442,8 @@ class Snippet
     /**
      * Parse content to render snippets
      *
-     * @throws ApplicationException
-     * @throws CmsException
-     * @throws SystemException
+     * @throws ApplicationException if the provided snippet cannot be found
+     * @throws SystemException if the snippet component class cannot be found
      */
     public static function parse(string $markup, array $params = []): string
     {

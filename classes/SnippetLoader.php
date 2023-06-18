@@ -21,8 +21,7 @@ class SnippetLoader
     /**
      * Add a component registered as a snippet to the active controller.
      *
-     * @throws SystemException
-     * @throws CmsException
+     * @throws SystemException if the snippet component class cannot be found
      */
     public static function registerComponentSnippet(array $snippetInfo): string
     {
@@ -41,7 +40,7 @@ class SnippetLoader
     /**
      * Add a partial registered as a snippet to the active controller.
      *
-     * @throws ApplicationException
+     * @throws ApplicationException if the snippet partial is not found.
      */
     public static function registerPartialSnippet(array $snippetInfo): string
     {
@@ -99,8 +98,7 @@ class SnippetLoader
      * If asked, the run lifecycle events of the component can be run. This is required for
      * component that are added late in the page execution like with the twig filter.
      *
-     * @throws SystemException
-     * @throws CmsException
+     * @throws SystemException if component code is reserved.
      */
     protected static function attachComponentSnippetToController(array $componentInfo, CmsController $controller, bool $triggerRunEvents = false): void
     {
