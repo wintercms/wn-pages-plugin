@@ -1,6 +1,9 @@
 <?php namespace Winter\Pages;
 
 use Backend;
+use BackendAuth;
+use Backend\Classes\Controller as BaseBackendController;
+use Backend\FormWidgets\RichEditor as FroalaFormWidget;
 use Backend\Models\UserRole;
 use Cms\Classes\Controller as CmsController;
 use Cms\Classes\Theme;
