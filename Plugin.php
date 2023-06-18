@@ -233,6 +233,36 @@ class Plugin extends PluginBase
                 ],
             ]);
         }, PHP_INT_MIN + 1);
+        
+        // Add support for the "snippets" button to all richeditor fields in the backend
+        BaseBackendController::extend(function ($controller) {
+            $user = BackendAuth::getUser();
+            if (!$user || !$user->hasAccess('winter.pages.access_snippets')) {
+                return;
+            }
+
+            // Add the AJAX handlers required for snippet inspector properties
+            // to function on all backend controllers
+            $controller->addDynamicMethod('onGetInspectorConfiguration', function() {
+                return (new StaticPage)->onGetInspectorConfiguration();
+            });
+            $controller->addDynamicMethod('onGetSnippetNames', function() {
+                return (new StaticPage)->onGetSnippetNames();
+            });
+            $controller->addDynamicMethod('onInspectableGetOptions', function() {
+                return (new StaticPage)->onInspectableGetOptions();
+            });
+
+            FroalaFormWidget::extend(function ($widget) {
+                // Adds default base CSS/JS for snippets
+                $widget->addCss('/plugins/winter/pages/assets/css/pages.css', 'Winter.Pages');
+                $widget->addJs('/plugins/winter/pages/assets/js/pages-page.js', 'Winter.Pages');
+                $widget->addJs('/plugins/winter/pages/assets/js/pages-snippets.js', 'Winter.Pages');
+
+                // Adds custom assets for the Froala snippet button
+                $widget->addJs('/plugins/winter/pages/assets/js/froala-snippets.js', 'Winter.Pages');
+            });
+        });
     }
 
     /**
@@ -353,42 +383,6 @@ class Plugin extends PluginBase
             if ($type === 'static-page') {
                 return StaticPage::getRichEditorTypeInfo($type);
             }
-        });
-
-        Event::listen('system.console.theme.sync.getAvailableModelClasses', function () {
-            return [
-                Classes\Menu::class,
-                Classes\Page::class,
-            ];
-        });
-
-        BaseBackendController::extend(function ($controller) {
-            $user = BackendAuth::getUser();
-            if (!$user || !$user->hasAccess('winter.pages.access_snippets')) {
-                return;
-            }
-
-            // Add the AJAX handlers required for snippet inspector properties
-            // to function on all backend controllers
-            $controller->addDynamicMethod('onGetInspectorConfiguration', function() {
-                return (new StaticPage)->onGetInspectorConfiguration();
-            });
-            $controller->addDynamicMethod('onGetSnippetNames', function() {
-                return (new StaticPage)->onGetSnippetNames();
-            });
-            $controller->addDynamicMethod('onInspectableGetOptions', function() {
-                return (new StaticPage)->onInspectableGetOptions();
-            });
-
-            FroalaFormWidget::extend(function ($widget) {
-                // Adds default base CSS/JS for snippets
-                $widget->addCss('/plugins/winter/pages/assets/css/pages.css', 'Winter.Pages');
-                $widget->addJs('/plugins/winter/pages/assets/js/pages-page.js', 'Winter.Pages');
-                $widget->addJs('/plugins/winter/pages/assets/js/pages-snippets.js', 'Winter.Pages');
-
-                // Adds custom assets for the Froala snippet button
-                $widget->addJs('/plugins/winter/pages/assets/js/froala-snippets.js', 'Winter.Pages');
-            });
         });
     }
 }
