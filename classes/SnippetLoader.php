@@ -143,7 +143,7 @@ class SnippetLoader
     /**
      * Get cached component snippets from the cache.
      */
-    protected static function fetchCachedSnippets(CmsPage $page): void
+    protected static function fetchCachedSnippets(CmsPage $page): array
     {
         try {
             $cache = unserialize(Cache::get(static::getMapCacheKey($page), serialize([])));
