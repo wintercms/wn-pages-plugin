@@ -149,7 +149,7 @@ class Plugin extends PluginBase
     {
         return [
             'filters' => [
-                'staticPage'    => [StaticPage::class, 'url']
+                'staticPage'    => [StaticPage::class, 'url'],
                 'parseSnippets' => [Snippet::class, 'parse'],
             ]
         ];
