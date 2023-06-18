@@ -85,31 +85,29 @@
                 // Insert the content
                 this.figures.insert($snippetNode);
             }
-
         }
     });
 
     generateUniqueComponentSnippetCode = function(componentClass, originalCode, $pageForm) {
         var updatedCode = originalCode,
             counter = 1,
-            snippetFound = false
+            snippetFound = false;
 
         do {
-            snippetFound = false
+            snippetFound = false;
 
-            $('[data-control="richeditor"] textarea', $pageForm).each(function() {
+            $('[data-control="richeditor"] textarea', $pageForm).each(function () {
                 var $textarea = $(this),
-                    $codeDom = $('<div>' + $textarea.val() + '</div>')
+                    $codeDom = $('<div>' + $textarea.val() + '</div>');
 
                 if ($codeDom.find('[data-snippet="'+updatedCode+'"][data-component]').length > 0) {
-                    snippetFound = true
-                    updatedCode = originalCode + counter
-                    counter++
+                    snippetFound = true;
+                    updatedCode = originalCode + counter;
+                    counter++;
 
-                    return false
+                    return false;
                 }
-            })
-
+            });
         } while (snippetFound)
 
         return updatedCode
@@ -128,5 +126,4 @@
             $.wn.pagesPage.snippetManager.initSnippets($editor);
         }
     });
-
 })(jQuery);
