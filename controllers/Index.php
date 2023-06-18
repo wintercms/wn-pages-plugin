@@ -1,10 +1,14 @@
-<?php namespace Winter\Pages\Controllers;
+<?php
+
+namespace Winter\Pages\Controllers;
 
 use ApplicationException;
 use Backend\Classes\Controller;
+use Backend\Widgets\Form;
 use BackendMenu;
-use Cms\Classes\CmsCompoundObject;
+use Cache;
 use Cms\Classes\CmsObject;
+use Cms\Classes\CmsObjectCollection;
 use Cms\Classes\Theme;
 use Cms\Widgets\TemplateList;
 use Config;
@@ -13,19 +17,19 @@ use Exception;
 use Flash;
 use Lang;
 use Request;
-use Session;
 use System\Helpers\DateTime;
 use Url;
 use Winter\Pages\Classes\Content;
 use Winter\Pages\Classes\MenuItem;
+use Winter\Pages\Classes\ObjectHelper;
 use Winter\Pages\Classes\Page as StaticPage;
 use Winter\Pages\Classes\SnippetManager;
+use Winter\Pages\FormWidgets\MenuItemSearch;
 use Winter\Pages\Plugin as PagesPlugin;
 use Winter\Pages\Widgets\MenuList;
 use Winter\Pages\Widgets\PageList;
 use Winter\Pages\Widgets\SnippetList;
-
-use Winter\Pages\Classes\ObjectHelper;
+use Winter\Storm\Halcyon\Datasource\DatasourceInterface;
 
 /**
  * Pages and Menus index
@@ -117,6 +121,35 @@ class Index extends Controller
         return $type;
     }
 
+    /**
+     * Gets the object from the current request
+     * @throws ApplicationException if the current user does not have permissions to manage the identified type
+     */
+    public function getObjectFromRequest(): CmsObject
+    {
+        $type = $this->getObjectType();
+        $objectPath = trim(Request::input('objectPath'));
+
+        $object = $objectPath
+            ? ObjectHelper::loadObject($this->theme, $type, $objectPath)
+            : ObjectHelper::createObject($this->theme, $type);
+
+        // Set page layout super early because it cascades to other elements
+        if ($type === 'page' && ($layout = post('viewBag[layout]'))) {
+            $object->getViewBag()->setProperty('layout', $layout);
+        }
+
+        $formWidget = $this->makeObjectFormWidget($type, $object, Request::input('formWidgetAlias'));
+
+        return ObjectHelper::fillObject(
+            $this->theme,
+            $type,
+            $objectPath,
+            array_merge(post(), $formWidget->getSaveData()),
+            $object
+        );
+    }
+
     //
     // Pages, menus and text blocks
     //
@@ -136,9 +169,14 @@ class Index extends Controller
             $widget = $this->widget->{$formAlias};
 
             $widget->bindEvent('form.refreshFields', function ($allFields) use ($widget) {
-                $prefix = ObjectHelper::getTypePreviewSessionKeyPrefix($this->getObjectType());
-                $sessionKey = "$prefix{$widget->alias}";
-                Session::put($sessionKey, post());
+                $this->validateRequestTheme();
+
+                $object = $this->getObjectFromRequest();
+
+                Cache::put(
+                    ObjectHelper::getTypePreviewSessionCacheKey($this->getObjectType(), $widget->alias),
+                    $object->toArray()
+                );
             });
         }
 
@@ -165,7 +203,7 @@ class Index extends Controller
         }
     }
 
-    public function index_onOpen()
+    public function index_onOpen(): array
     {
         $this->validateRequestTheme();
 
@@ -175,17 +213,11 @@ class Index extends Controller
         return $this->pushObjectForm($type, $object);
     }
 
-    public function onSave()
+    public function onSave(): array
     {
         $this->validateRequestTheme();
         $type = $this->getObjectType();
-
-        $object = ObjectHelper::fillObject(
-            $this->theme,
-            $type,
-            Request::input('objectPath'),
-            post()
-        );
+        $object = $this->getObjectFromRequest();
         $object->save();
 
         /*
@@ -211,7 +243,7 @@ class Index extends Controller
         return $result;
     }
 
-    public function onCreateObject()
+    public function onCreateObject(): array
     {
         $this->validateRequestTheme();
 
@@ -249,7 +281,7 @@ class Index extends Controller
         return $result;
     }
 
-    public function onDelete()
+    public function onDelete(): array
     {
         $this->validateRequestTheme();
 
@@ -267,7 +299,7 @@ class Index extends Controller
         return $result;
     }
 
-    public function onDeleteObjects()
+    public function onDeleteObjects(): array
     {
         $this->validateRequestTheme();
 
@@ -316,7 +348,7 @@ class Index extends Controller
         return $this->makePartial('concurrency_resolve_form');
     }
 
-    public function onGetMenuItemTypeInfo()
+    public function onGetMenuItemTypeInfo(): array
     {
         $type = Request::input('type');
 
@@ -325,22 +357,17 @@ class Index extends Controller
         ];
     }
 
-    public function onUpdatePageLayout()
+    public function onUpdatePageLayout(): array
     {
         $this->validateRequestTheme();
 
         $type = $this->getObjectType();
-        $object = ObjectHelper::fillObject(
-            $this->theme,
-            $type,
-            Request::input('objectPath'),
-            post()
-        );
+        $object = $this->getObjectFromRequest();
 
         return $this->pushObjectForm($type, $object, Request::input('formWidgetAlias'));
     }
 
-    public function onGetInspectorConfiguration()
+    public function onGetInspectorConfiguration(): array
     {
         $configuration = [];
 
@@ -365,7 +392,7 @@ class Index extends Controller
         ];
     }
 
-    public function onGetSnippetNames()
+    public function onGetSnippetNames(): array
     {
         $codes = array_unique(Request::input('codes'));
         $result = [];
@@ -394,14 +421,14 @@ class Index extends Controller
         ];
     }
 
-    public function onMenuItemReferenceSearch()
+    public function onMenuItemReferenceSearch(): array
     {
         $alias = Request::input('alias');
 
         $widget = $this->makeFormWidget(
-            'Winter\Pages\FormWidgets\MenuItemSearch',
+            MenuItemSearch::class,
             [],
-            ['alias' => $alias],
+            ['alias' => $alias]
         );
 
         return $widget->onSearch();
@@ -409,10 +436,8 @@ class Index extends Controller
 
     /**
      * Commits the DB changes of a object to the filesystem
-     *
-     * @return array $response
      */
-    public function onCommit()
+    public function onCommit(): array
     {
         $this->validateRequestTheme();
         $type = $this->getObjectType();
@@ -432,10 +457,8 @@ class Index extends Controller
 
     /**
      * Resets a object to the version on the filesystem
-     *
-     * @return array $response
      */
-    public function onReset()
+    public function onReset(): array
     {
         $this->validateRequestTheme();
         $type = $this->getObjectType();
@@ -458,12 +481,8 @@ class Index extends Controller
 
     /**
      * Get the response to return in an AJAX request that updates an object
-     *
-     * @param CmsObject $object The object that has been affected
-     * @param string $type The type of object being affected
-     * @return array $result;
      */
-    protected function getUpdateResponse(CmsObject $object, string $type)
+    protected function getUpdateResponse(CmsObject $object, string $type): array
     {
         $result = [
             'objectPath'  => $type != 'content' ? $object->getBaseFileName() : $object->fileName,
@@ -484,10 +503,8 @@ class Index extends Controller
 
     /**
      * Get the active theme's datasource
-     *
-     * @return \Winter\Storm\Halcyon\Datasource\DatasourceInterface
      */
-    protected function getThemeDatasource()
+    protected function getThemeDatasource(): DatasourceInterface
     {
         return $this->theme->getDatasource();
     }
@@ -495,11 +512,8 @@ class Index extends Controller
     /**
      * Check to see if the provided object can be committed
      * Only available in debug mode, the DB layer must be enabled, and the object must exist in the database
-     *
-     * @param CmsObject $object
-     * @return boolean
      */
-    protected function canCommitObject(CmsObject $object)
+    protected function canCommitObject(CmsObject $object): bool
     {
         $result = false;
 
@@ -540,7 +554,7 @@ class Index extends Controller
         }
     }
 
-    protected function makeObjectFormWidget($type, $object, $alias = null)
+    protected function makeObjectFormWidget($type, $object, $alias = null): Form
     {
         $formConfigs = [
             'page'    => '~/plugins/winter/pages/classes/page/fields.yaml',
@@ -557,7 +571,7 @@ class Index extends Controller
         $widgetConfig->alias = $alias ?: 'form' . studly_case($type) . md5($object->exists ? $object->getFileName() : uniqid());
         $widgetConfig->context = !$object->exists ? 'create' : 'update';
 
-        $widget = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
+        $widget = $this->makeWidget(Form::class, $widgetConfig);
 
         if ($type == 'page') {
             $widget->bindEvent('form.extendFieldsBefore', function () use ($widget, $object) {
@@ -570,7 +584,7 @@ class Index extends Controller
         return $widget;
     }
 
-    protected function checkContentField($formWidget, $page)
+    protected function checkContentField($formWidget, $page): void
     {
         if (!($layout = $page->getLayoutObject())) {
             return;
@@ -590,7 +604,7 @@ class Index extends Controller
     /**
      * addPageSyntaxFields adds syntax defined fields to the form
      */
-    protected function addPageSyntaxFields($formWidget, $page)
+    protected function addPageSyntaxFields($formWidget, $page): void
     {
         $fields = $page->listLayoutSyntaxFields();
 
@@ -632,7 +646,7 @@ class Index extends Controller
         }
     }
 
-    protected function addPagePlaceholders($formWidget, $page)
+    protected function addPagePlaceholders($formWidget, $page): void
     {
         $placeholders = $page->listLayoutPlaceholders();
 
@@ -712,7 +726,7 @@ class Index extends Controller
         return $result;
     }
 
-    protected function pushObjectForm($type, $object, $alias = null)
+    protected function pushObjectForm($type, $object, $alias = null): array
     {
         $widget = $this->makeObjectFormWidget($type, $object, $alias);
         $widget->bindToController();
@@ -738,7 +752,7 @@ class Index extends Controller
         ];
     }
 
-    protected function bindFormWidgetToController()
+    protected function bindFormWidgetToController(): void
     {
         $alias = Request::input('formWidgetAlias');
         $type = $this->getObjectType();
@@ -761,12 +775,9 @@ class Index extends Controller
     }
 
     /**
-     * Replaces Windows style (/r/n) line endings with unix style (/n)
-     * line endings.
-     * @param string $markup The markup to convert to unix style endings
-     * @return string
+     * Replaces Windows style (/r/n) line endings with unix style (/n) line endings.
      */
-    protected function convertLineEndings($markup)
+    protected function convertLineEndings(string $markup): string
     {
         $markup = str_replace("\r\n", "\n", $markup);
         $markup = str_replace("\r", "\n", $markup);
@@ -776,9 +787,8 @@ class Index extends Controller
 
     /**
      * Returns a list of content files
-     * @return \Winter\Storm\Database\Collection
      */
-    protected function getContentTemplateList()
+    protected function getContentTemplateList(): CmsObjectCollection
     {
         $templates = Content::listInTheme($this->theme, true);
 

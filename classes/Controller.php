@@ -1,11 +1,12 @@
 <?php namespace Winter\Pages\Classes;
 
+use Cache;
 use Cms\Classes\CmsException;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
 use Exception;
 use Lang;
-use Session;
+use Log;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Winter\Storm\Support\Str;
 
@@ -44,23 +45,28 @@ class Controller
 
         if (!$page) {
             // Attempt to render a page preview if one exists
-            if (Str::startsWith($url, '/winter.pages/preview/')) {
-                $alias = Str::after($url, '/winter.pages/preview/');
-                $objectType = 'page';
-                $data = Session::pull("winter.pages.$objectType.preview:$alias");
+            if (!Str::startsWith($url, '/winter.pages/preview/')) {
+                return null;
+            }
 
-                try {
-                    $page = ObjectHelper::fillObject(
-                        $this->theme,
-                        'page',
-                        $data['objectPath'] ?? $data['fileName'],
-                        $data
-                    );
-                } catch (\Throwable $e) {
-                    throw $e;// @TODO: Hide this exception
-                    return null;
-                }
-            } else {
+            $alias = Str::after($url, '/winter.pages/preview/');
+            $objectType = 'page';
+
+            $data = Cache::get(ObjectHelper::getTypePreviewSessionCacheKey($objectType, $alias));
+
+            if (empty($data)) {
+                return null;
+            }
+
+            try {
+                $page = ObjectHelper::fillObject(
+                    $this->theme,
+                    $objectType,
+                    $data['objectPath'] ?? $data['fileName'] ?? '',
+                    $data
+                );
+            } catch (\Throwable $e) {
+                Log::error($e->getMessage(), $e->getTrace());
                 return null;
             }
         }

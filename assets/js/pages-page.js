@@ -464,7 +464,7 @@
             $panel.append($collapseIcon)
 
             if (!hasSecondaryTabs) {
-                $('.primary-tabs').parent().removeClass('min-size')
+                $(data.pane).find('.primary-tabs').parent().removeClass('min-size')
             }
 
             $collapseIcon.click(function(){

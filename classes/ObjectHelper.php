@@ -6,21 +6,25 @@ use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
 use Config;
 use Lang;
+use Session;
 
 class ObjectHelper
 {
-    protected static array $types = [
+    /**
+     * @var array
+     */
+    protected static $types = [
         'page'    => \Winter\Pages\Classes\Page::class,
         'menu'    => \Winter\Pages\Classes\Menu::class,
-        'content' => \Winter\Pages\Classes\Conten::class,
+        'content' => \Winter\Pages\Classes\Content::class,
     ];
 
     /**
-     * Get the session key for the preview data.
+     * Get the cache key for the preview data tied to session.
      */
-    public static function getTypePreviewSessionKeyPrefix(string $type,): string
+    public static function getTypePreviewSessionCacheKey(string $type, string $alias): string
     {
-        return "winter.pages.$type.preview:";
+        return "winter.pages.$type.preview:$alias" . Session::getId();
     }
 
     /**
@@ -103,15 +107,17 @@ class ObjectHelper
     /**
      * Fills the provided Winter.Pages object with the provided data
      */
-    public static function fillObject(Theme $theme, string $type, string $path, array $data): CmsObject
+    public static function fillObject(Theme $theme, string $type, string $path, array $data, ?CmsObject $object = null): CmsObject
     {
         $objectData = [];
 
         // Get the object to fill
-        $path = trim($path);
-        $object = !empty($path)
-            ? static::loadObject($theme, $type, $path)
-            : static::createObject($theme, $type);
+        if (is_null($object)) {
+            $path = trim($path);
+            $object = !empty($path)
+                ? static::loadObject($theme, $type, $path)
+                : static::createObject($theme, $type);
+        }
 
         // Set page layout super early because it cascades to other elements
         if ($type === 'page' && ($layout = $data['viewBag']['layout'] ?? null)) {

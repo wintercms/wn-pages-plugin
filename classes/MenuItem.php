@@ -16,7 +16,7 @@ class MenuItem
     /**
      * @var string Specifies the menu title
      */
-    public $title;
+    public $title = '';
 
     /**
      * @var array Specifies the item subitems
@@ -24,15 +24,14 @@ class MenuItem
     public $items = [];
 
     /**
-     * @var string Specifies the parent menu item.
-     * An object of the Winter\Pages\Classes\MenuItem class or null.
+     * @var self|null Specifies the parent menu item.
      */
-    public $parent;
+    public $parent = null;
 
     /**
      * @var boolean Determines whether the auto-generated menu items could have subitems.
      */
-    public $nesting;
+    public $nesting = false;
 
     /**
      * @var string Specifies the menu item type - URL, static page, etc.
@@ -40,30 +39,30 @@ class MenuItem
     public $type = 'url';
 
     /**
-     * @var string Specifies the URL for URL-type items.
+     * @var string|null Specifies the URL for URL-type items.
      */
-    public $url;
+    public $url = null;
 
     /**
-     * @var string Specifies the menu item code.
+     * @var string|null Specifies the menu item code.
      */
-    public $code;
+    public $code = null;
 
     /**
-     * @var string Specifies the object identifier the item refers to.
+     * @var string|null Specifies the object identifier the item refers to.
      * The identifier could be the database identifier or an object code.
      */
-    public $reference;
+    public $reference = null;
 
     /**
      * @var boolean Indicates that generated items should replace this item.
      */
-    public $replace;
+    public $replace = false;
 
     /**
-     * @var string Specifies the CMS page path to resolve dynamic menu items to.
+     * @var string|null Specifies the CMS page path to resolve dynamic menu items to.
      */
-    public $cmsPage;
+    public $cmsPage = null;
 
     /**
      * @var boolean Used by the system internally.
@@ -89,11 +88,10 @@ class MenuItem
     public $viewBag = [];
 
     /**
-     * Initializes a menu item from a data array.
-     * @param array $items Specifies the menu item data.
-     * @return Returns an array of the MenuItem objects.
+     * Initializes an array of MenuItem objects from an array of arrays
+     * containing menu item data.
      */
-    public static function initFromArray($items)
+    public static function initFromArray(array $items): array
     {
         $result = [];
 
@@ -119,9 +117,8 @@ class MenuItem
 
     /**
      * Returns a list of registered menu item types
-     * @return array Returns an array of registered item types
      */
-    public function getTypeOptions($keyValue = null)
+    public function getTypeOptions(): array
     {
         /*
          * Baked in types
@@ -148,17 +145,17 @@ class MenuItem
         return $result;
     }
 
-    public function getCmsPageOptions($keyValue = null)
+    public function getCmsPageOptions()
     {
         return []; // CMS Pages are loaded client-side
     }
 
-    public function getReferenceOptions($keyValue = null)
+    public function getReferenceOptions()
     {
         return []; // References are loaded client-side
     }
 
-    public static function getTypeInfo($type)
+    public static function getTypeInfo($type): array
     {
         $result = [];
         $apiResult = Event::fire('pages.menuitem.getTypeInfo', [$type]);
@@ -195,10 +192,9 @@ class MenuItem
     }
 
     /**
-     * Converts the menu item data to an array
-     * @return array Returns the menu item data as array
+     * Returns the menu item data to an array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $result = [];
 

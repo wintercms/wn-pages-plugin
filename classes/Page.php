@@ -12,13 +12,17 @@ use File;
 use Lang;
 use System\Helpers\View as ViewHelper;
 use Twig\Node\Node as TwigNode;
+use Url;
 use Validator;
 use Winter\Pages\Classes\PageList;
 use Winter\Pages\Classes\Snippet;
 use Winter\Storm\Parse\Bracket as TextParser;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Winter\Storm\Router\Helper as RouterHelper;
+use Winter\Storm\Router\Router;
 use Winter\Storm\Support\Str;
+use Winter\Translate\Classes\Translator;
+use Winter\Translate\Models\Locale;
 
 /**
  * Represents a static page.
@@ -705,6 +709,7 @@ class Page extends ContentBase
 
     /**
      * Handler for the pages.menuitem.getTypeInfo event.
+     *
      * Returns a menu item type information. The type information is returned as array
      * with the following elements:
      * - references - a list of the item type reference options. The options are returned in the
@@ -717,28 +722,32 @@ class Page extends ContentBase
      *   Optional, false if omitted.
      * - cmsPages - a list of CMS pages (objects of the Cms\Classes\Page class), if the item type requires a CMS page reference to
      *   resolve the item URL.
-     * @param string $type Specifies the menu item type
-     * @return array Returns an array
      */
-    public static function getMenuTypeInfo($type)
+    public static function getMenuTypeInfo(string $type): ?array
     {
-        if ($type == 'all-static-pages') {
-            return [
-                'dynamicItems' => true
-            ];
+        $result = null;
+
+        switch ($type) {
+            case 'all-static-pages':
+                $result = [
+                    'dynamicItems' => true
+                ];
+                break;
+            case 'static-page':
+                $result = [
+                    'references'   => self::listStaticPageMenuOptions(),
+                    'nesting'      => true,
+                    'dynamicItems' => true
+                ];
+                break;
         }
 
-        if ($type == 'static-page') {
-            return [
-                'references'   => self::listStaticPageMenuOptions(),
-                'nesting'      => true,
-                'dynamicItems' => true
-            ];
-        }
+        return $result;
     }
 
     /**
      * Handler for the pages.menuitem.resolveItem event.
+     *
      * Returns information about a menu item. The result is an array
      * with the following keys:
      * - url - the menu item URL. Not required for menu item types that return all available records.
@@ -748,31 +757,60 @@ class Page extends ContentBase
      *   return all available records.
      * - items - an array of arrays with the same keys (url, isActive, items) + the title key.
      *   The items array should be added only if the $item's $nesting property value is TRUE.
-     * @param \Winter\Pages\Classes\MenuItem $item Specifies the menu item.
-     * @param \Cms\Classes\Theme $theme Specifies the current theme.
-     * @param string $url Specifies the current page URL, normalized, in lower case
-     * The URL is specified relative to the website root, it includes the subdirectory name, if any.
-     * @return mixed Returns an array. Returns null if the item cannot be resolved.
+     *
+     * @param \Winter\Sitemap\Classes\DefinitionItem|\Winter\Pages\Classes\MenuItem $item Specifies the menu item.
      */
-    public static function resolveMenuItem($item, $url, $theme)
+    public static function resolveMenuItem(object $item, string $url, Theme $theme): ?array
     {
+        $result = null;
+
         $tree = self::buildMenuTree($theme);
 
         if ($item->type == 'static-page' && !isset($tree[$item->reference])) {
-            return;
+            return null;
         }
 
-        $result = [];
+        // Helper to get the processed localized urls from the raw locale URL data array
+        // that takes into account the enabled locales
+        $getLocalizedUrls = function (array $pageInfo) {
+            $localizedUrls = [];
+            $enabledLocales = class_exists(Locale::class) ? Locale::listEnabled() : [];
+
+            if ($enabledLocales) {
+                $localeUrls = $pageInfo['localeUrls'] ?? [];
+
+                foreach ($enabledLocales as $locale => $name) {
+                    $localeUrl = array_get($localeUrls, $locale) ?: $pageInfo['url'];
+                    $pageUrl = static::getLocalizedUrl($localeUrl, $locale);
+                    if ($pageUrl) {
+                        $localizedUrls[$locale] = Url::to($pageUrl);
+                    }
+                }
+            }
+
+            return $localizedUrls;
+        };
 
         if ($item->type == 'static-page') {
             $pageInfo = $tree[$item->reference];
-            $result['url'] = Cms::url($pageInfo['url']);
-            $result['mtime'] = $pageInfo['mtime'];
+            $result = [
+                'url' => Cms::url($pageInfo['url']),
+                'mtime' => $pageInfo['mtime'],
+            ];
             $result['isActive'] = self::urlsAreEqual($result['url'], $url);
+
+            $localizedUrls = $getLocalizedUrls($pageInfo);
+            if (count($localizedUrls) > 1) {
+                $result['alternateLinks'] = $localizedUrls;
+            }
         }
 
         if ($item->nesting || $item->type == 'all-static-pages') {
-            $iterator = function($items) use (&$iterator, &$tree, $url) {
+            $result = [
+                'items' => [],
+            ];
+
+            $iterator = function($items) use (&$iterator, &$tree, $url, $getLocalizedUrls) {
                 $branch = [];
 
                 foreach ($items as $itemName) {
@@ -792,6 +830,11 @@ class Page extends ContentBase
                     $branchItem['title'] = $itemInfo['title'];
                     $branchItem['mtime'] = $itemInfo['mtime'];
 
+                    $localizedUrls = $getLocalizedUrls($itemInfo);
+                    if (count($localizedUrls) > 1) {
+                        $branchItem['alternateLinks'] = $localizedUrls;
+                    }
+
                     if ($itemInfo['items']) {
                         $branchItem['items'] = $iterator($itemInfo['items']);
                     }
@@ -806,6 +849,18 @@ class Page extends ContentBase
         }
 
         return $result;
+    }
+
+    /**
+     * Gets the localized URL to this page
+     */
+    protected static function getLocalizedUrl(string $url, string $locale): ?string
+    {
+        $translator = Translator::instance();
+
+        $url = $translator->getPathInLocale($url, $locale);
+
+        return (new Router)->urlFromPattern($url);
     }
 
     /**
@@ -879,12 +934,14 @@ class Page extends ContentBase
                 $pageCode = $item->page->getBaseFileName();
                 $pageUrl = Str::lower(RouterHelper::normalizeUrl(array_get($viewBag, 'url')));
 
+
                 $itemData = [
                     'url'    => $pageUrl,
                     'title'  => array_get($viewBag, 'title'),
                     'mtime'  => $item->page->mtime,
                     'items'  => $iterator($item->subpages, $pageCode, $level+1),
                     'parent' => $parent,
+                    'localeUrls' => array_get($viewBag, 'localeUrl', []),
                     'navigation_hidden' => array_get($viewBag, 'navigation_hidden')
                 ];
 

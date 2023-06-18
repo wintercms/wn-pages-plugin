@@ -174,20 +174,20 @@ The next example shows an event handler registration code for the Blog plugin. T
 
     public function boot()
     {
-        Event::listen('pages.menuitem.listTypes', function() {
+        Event::listen('pages.menuitem.listTypes', function () {
             return [
                 'blog-category'=>'Blog category',
                 'all-blog-categories'=>'All blog categories',
             ];
         });
 
-        Event::listen('pages.menuitem.getTypeInfo', function($type) {
+        Event::listen('pages.menuitem.getTypeInfo', function ($type) {
             if ($type == 'blog-category' || $type == 'all-blog-categories') {
                 return Category::getMenuTypeInfo($type);
             }
         });
 
-        Event::listen('pages.menuitem.resolveItem', function($type, $item, $url, $theme) {
+        Event::listen('pages.menuitem.resolveItem', function ($type, $item, $url, $theme) {
             if ($type == 'blog-category' || $type == 'all-blog-categories') {
                 return Category::resolveMenuItem($item, $url, $theme);
             }
