@@ -29,7 +29,8 @@ class SnippetLoader
 
         // Make an unique alias for this snippet based on its name and parameters
         #$snippetInfo['code'] = uniqid($snippetInfo['code'] . '_' . md5(serialize($snippetInfo['properties'])) . '_');
-        // the line above was commented out to allow the overriden partials in theme to be used for the component alias
+        // the encoded snippet code line above is commented out because the snippet code must match the component alias,
+        // otherwise the overriden component markup in theme partials will not be found.
 
         static::attachComponentSnippetToController($snippetInfo, $controller, true);
         static::cacheSnippet($snippetInfo['code'], $snippetInfo);
