@@ -285,7 +285,7 @@ class Plugin extends PluginBase
              * Get rendered content
              */
             $contents = Controller::instance()->getPageContents($page);
-            if (($contents != null) and strlen($contents)) {
+            if (!empty($contents)) {
                 return $contents;
             }
         });
