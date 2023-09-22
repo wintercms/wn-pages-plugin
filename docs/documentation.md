@@ -415,7 +415,7 @@ All custom fields are placed in the Secondary tabs container (next to Content fi
 
 Alternatively you may use the field type as the tag name, here we use the `{text}` tag to directly render the `tagline` variable:
 
-    <h1>{text name="tagline" label="Tagline"}Our wonderful website{/text}</h1>
+    <h1>{text name="tagline" label="Tagline"}{/text}</h1>
 
 You may also use the `{repeater}` tag for repeating content:
 
