@@ -60,14 +60,14 @@ class ObjectHelper
     /**
      * Converts line endings based on the system's configuration
      */
-    public static function convertLineEndings(string $markup): string
+    public static function convertLineEndings(?string $markup): string
     {
         if (Config::get('cms.convertLineEndings', false) === true) {
             $markup = str_replace("\r\n", "\n", $markup);
             $markup = str_replace("\r", "\n", $markup);
         }
 
-        return $markup;
+        return $markup ?? '';
     }
 
     /**
