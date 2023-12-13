@@ -62,3 +62,16 @@
   - "Fixes rich editor usage inside repeaters."
   - "Fixes a lifecycle issue when switching the page layout."
   - "Fixes maintenance mode when using static pages."
+"2.0.2": "Add support for Winter 1.2"
+"2.0.3":
+  - "Fixed issue with Primary Tabs losing min-size class"
+  - "Added Vietnamese translation"
+  - "Fixed issue where subpages of home would get 2 slashes"
+  - "Fixed issue where allowed IPs couldn't access pages in maintenance mode"
+  - "Improved Swedish translation"
+"2.1.0": "Added support for live previews of the frontend-rendered pages"
+"2.1.1": "Improved French translation"
+"2.1.2":
+  - "Added support for multilingual sitemap URLs"
+  - "Fixed support for Winter.Translate"
+  - "Collapse all pages in the backend list of pages by default"

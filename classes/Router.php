@@ -1,12 +1,12 @@
 <?php namespace Winter\Pages\Classes;
 
 use Cache;
-use Event;
-use Config;
 use Cms\Classes\Theme;
+use Config;
+use Event;
 use Winter\Pages\Classes\Page;
-use Winter\Storm\Support\Str;
 use Winter\Storm\Router\Helper as RouterHelper;
+use Winter\Storm\Support\Str;
 
 /**
  * A router for static pages.
@@ -115,7 +115,8 @@ class Router
                 'titles' => []
             ];
             foreach ($pages as $page) {
-                $url = $page->getViewBag()->property('url');
+                $viewBag = $page->getViewBag();
+                $url = $viewBag ? $viewBag->property('url') : null;
                 if (!$url) {
                     continue;
                 }

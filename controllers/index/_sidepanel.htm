@@ -20,7 +20,7 @@
             <?php endif; ?>
 
             <?php if (in_array('snippetList', $activeWidgets)) : ?>
-                <form class="layout <?= !($activeWidgets[0] === 'snippetList') ? 'hide' : ''; ?>" data-content-id="snippet" data-object-type="snippet" data-type-icon="icon-newspaper-o" onsubmit="return false">
+                <form class="layout <?= !($activeWidgets[0] === 'snippetList') ? 'hide' : ''; ?>" data-content-id="snippets" data-object-type="snippet" data-type-icon="icon-newspaper-o" onsubmit="return false">
                     <?= $this->widget->snippetList->render() ?>
                 </form>
             <?php endif; ?>

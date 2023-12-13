@@ -2,11 +2,19 @@
 
 This plugin allows end users to create and edit static pages and menus with a simple WYSIWYG user interface.
 
+## Installation
+
+This plugin is available for installation via [Composer](http://getcomposer.org/).
+
+```bash
+composer require winter/wn-pages-plugin
+```
+
 ## Managing static pages
 
 Static pages are managed on the Pages tab of the Static Pages plugin. Static pages have three required parameters - **Title**, **URL** and **Layout**. The URL is generated automatically when the Title is entered, but it could be changed manually. URLs must start with the forward slash character. The Layout drop-down allows to select a layout created with the CMS. Only layouts that include the `staticPage` component are displayed in the drop-down.
 
-![image](https://raw.githubusercontent.com/wintercms/wn-pages-plugin/master/docs/images/static-page.png) {.img-responsive .frame}
+![image](https://raw.githubusercontent.com/wintercms/wn-pages-plugin/master/docs/images/static-page.png) 
 
 Pages are hierarchical. The page hierarchy is used when a new page URL is generated, but as URLs can be changed manually, the hierarchy doesn't really affect the routing process. The only place where the page hierarchy matters is the generated Menus. The generated menus reflect the page hierarchy. You can manage the page hierarchy by dragging pages in the page tree. The page drag handle appears when you move the mouse cursor over page item in the tree.
 
@@ -86,6 +94,6 @@ The Code field allows to assign the API code that you can use to set the active 
 
 ## See also
 
-Read the [Getting started with Static Pages](https://wintercms.com/blog/post/getting-started-static-pages) tutorial in the Blog.
+Read the [Getting started with Static Pages](https://octobercms.com/blog/post/getting-started-static-pages) tutorial in the October CMS Blog.
 
 Read the [documentation](/docs/documentation.md).

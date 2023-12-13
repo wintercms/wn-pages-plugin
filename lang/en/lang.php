@@ -22,6 +22,7 @@ return [
         'manage_pages' => 'Manage static pages',
         'manage_menus' => 'Manage static menus',
         'access_snippets' => 'Access snippets',
+        'access_preview' => 'Access preview',
         'manage_content' => 'Manage static content',
     ],
     'menu' => [

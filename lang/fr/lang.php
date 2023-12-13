@@ -22,6 +22,7 @@ return [
         'manage_pages' => 'Gérer les pages statiques',
         'manage_menus' => 'Gérer les menus statiques',
         'access_snippets' => 'Accès aux fragments',
+        'access_preview' => 'Accès à l’aperçu',
         'manage_content' => 'Gérer le contenu statique'
     ],
     'menu' => [
@@ -76,6 +77,7 @@ return [
     ],
     'content' => [
         'menu_label' => 'Contenu',
+        'saved' => 'Le contenu a été sauvegardé avec succès.',
         'cant_save_to_dir' => 'L’enregistrement des fichiers de contenu dans le répertoire des pages statiques n’est pas autorisé.'
     ],
     'sidebar' => [
@@ -84,6 +86,7 @@ return [
     ],
     'object' => [
         'invalid_type' => 'Type d’objet inconnu',
+        'unauthorized_type' => 'Vous n’êtes pas autorisé à gérer les objets de type :type',
         'not_found' => 'L’objet demandé n’a pas été trouvé.'
     ],
     'editor' => [

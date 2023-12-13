@@ -1,11 +1,14 @@
 <?php namespace Winter\Pages\Classes;
 
-use Lang;
+use Cache;
+use Cms\Classes\CmsException;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
-use Cms\Classes\CmsException;
-use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Exception;
+use Lang;
+use Log;
+use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
+use Winter\Storm\Support\Str;
 
 /**
  * Represents a static page controller.
@@ -41,7 +44,31 @@ class Controller
         $page = $router->findByUrl($url);
 
         if (!$page) {
-            return null;
+            // Attempt to render a page preview if one exists
+            if (!Str::startsWith($url, '/winter.pages/preview/')) {
+                return null;
+            }
+
+            $alias = Str::after($url, '/winter.pages/preview/');
+            $objectType = 'page';
+
+            $data = Cache::get(ObjectHelper::getTypePreviewSessionCacheKey($objectType, $alias));
+
+            if (empty($data)) {
+                return null;
+            }
+
+            try {
+                $page = ObjectHelper::fillObject(
+                    $this->theme,
+                    $objectType,
+                    $data['objectPath'] ?? $data['fileName'] ?? '',
+                    $data
+                );
+            } catch (\Throwable $e) {
+                Log::error($e->getMessage(), $e->getTrace());
+                return null;
+            }
         }
 
         $viewBag = $page->viewBag;
@@ -75,7 +102,7 @@ class Controller
 
         CmsException::mask($staticPage, 400);
         $loader->setObject($staticPage);
-        $template = $twig->loadTemplate($staticPage->getFilePath());
+        $template = $twig->load($staticPage->getFilePath());
         $template->render([]);
         CmsException::unmask();
     }
