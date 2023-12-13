@@ -281,6 +281,55 @@ class Index extends Controller
         return $result;
     }
 
+    public function onDuplicateObject(): array
+    {
+        $this->validateRequestTheme();
+        $type = $this->getObjectType();
+
+        $object = ObjectHelper::loadObject(
+            $this->theme,
+            $type,
+            trim(Request::input('objectPath'))
+        );
+        $parentPage = null;
+        $parent = null;
+
+        if ($type === 'page') {
+            $parentPage = $object->getParent() ?? null;
+
+            if ($parentPage) {
+                $fileName = $parentPage->fileName;
+                $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                $parent = substr(
+                    $fileName, 0, -strlen('.' . $ext)
+                );
+            }
+        }
+
+        $className = get_class($object);
+        $data = $object->toArray();
+        $duplicatedObject = new $className($data);
+
+        $widget = $this->makeObjectFormWidget($type, $duplicatedObject);
+        $this->vars['objectPath'] = '';
+        $this->vars['canCommit'] = $this->canCommitObject($duplicatedObject);
+        $this->vars['canReset'] = $this->canResetObject($duplicatedObject);
+
+        $result = [
+            'tabTitle' => $this->getTabTitle($type, $duplicatedObject),
+            'tab'      => $this->makePartial('form_page', [
+                'form'         => $widget,
+                'objectType'   => $type,
+                'objectTheme'  => $this->theme->getDirName(),
+                'objectMtime'  => null,
+                'objectParent' => $parent,
+                'parentPage'   => $parentPage
+            ])
+        ];
+
+        return $result;
+    }
+
     public function onDelete(): array
     {
         $this->validateRequestTheme();

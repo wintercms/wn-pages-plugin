@@ -95,6 +95,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Popis',
         'preview' => 'Náhľad',
+        'duplicate' => 'Duplikovať',
         'enter_fullscreen' => 'Zapnúť režim celej obrazovky',
         'exit_fullscreen' => 'Vypnúť režim celej obrazovky',
         'hidden' => 'Skrytá',

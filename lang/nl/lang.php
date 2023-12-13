@@ -86,6 +86,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Beschrijving',
         'preview' => 'Voorbeeld',
+        'duplicate' => 'Dupliceren',
         'enter_fullscreen' => 'Volledig scherm openen',
         'exit_fullscreen' => 'Volledig scherm afsluiten',
         'hidden' => 'Verborgen',

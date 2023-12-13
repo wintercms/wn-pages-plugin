@@ -84,6 +84,7 @@ return [
         'layout' => 'Layout',
         'description' => 'Beschreibung',
         'preview' => 'Vorschau',
+        'duplicate' => 'Duplizieren',
         'enter_fullscreen' => 'Vollbildmodus einschalten',
         'exit_fullscreen' => 'Vollbildmodus verlassen',
         'hidden' => 'Verstecken',
