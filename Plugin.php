@@ -120,7 +120,7 @@ class Plugin extends PluginBase
                         'label'       => 'winter.pages::lang.snippet.menu_label',
                         'icon'        => 'icon-newspaper-o',
                         'url'         => 'javascript:;',
-                        'attributes'  => ['data-menu-item'=>'snippet'],
+                        'attributes'  => ['data-menu-item'=>'snippets'],
                         'permissions' => ['winter.pages.access_snippets'],
                     ],
                 ],
