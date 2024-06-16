@@ -311,6 +311,8 @@ class Index extends Controller
         $duplicatedObject = new $className($data);
 
         $widget = $this->makeObjectFormWidget($type, $duplicatedObject);
+        $widget->bindToController();
+
         $this->vars['objectPath'] = '';
         $this->vars['canCommit'] = $this->canCommitObject($duplicatedObject);
         $this->vars['canReset'] = $this->canResetObject($duplicatedObject);
