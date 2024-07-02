@@ -286,11 +286,7 @@ class Index extends Controller
         $this->validateRequestTheme();
         $type = $this->getObjectType();
 
-        $object = ObjectHelper::loadObject(
-            $this->theme,
-            $type,
-            trim(Request::input('objectPath'))
-        );
+        $object = $this->getObjectFromRequest();
         $parentPage = null;
         $parent = null;
 
@@ -306,9 +302,10 @@ class Index extends Controller
             }
         }
 
-        $className = get_class($object);
-        $data = $object->toArray();
-        $duplicatedObject = new $className($data);
+        // simply clone the entire object
+        $duplicatedObject = clone $object;
+        // must remove the file name or this page will not be unique
+        unset($duplicatedObject->fileName);
 
         $widget = $this->makeObjectFormWidget($type, $duplicatedObject);
         $this->vars['objectPath'] = '';
