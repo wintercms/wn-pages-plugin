@@ -4,6 +4,8 @@ use ApplicationException;
 use Cache;
 use Cms\Classes\ComponentHelpers;
 use Cms\Classes\Controller as CmsController;
+use Cms\Classes\Partial;
+use Cms\Classes\Theme;
 use Config;
 use Event;
 use Lang;
@@ -52,15 +54,10 @@ class Snippet
      */
     protected $componentObj = null;
 
-    public function __construct()
-    {
-    }
-
     /**
      * Initializes the snippet from a CMS partial.
-     * @param \Cms\Classes\Partial $parital A partial to load the configuration from.
      */
-    public function initFromPartial($partial)
+    public function initFromPartial(Partial $partial): void
     {
         $viewBag = $partial->getViewBag();
 
@@ -72,10 +69,8 @@ class Snippet
 
     /**
      * Initializes the snippet from a CMS component information.
-     * @param string $componentClass Specifies the component class.
-     * @param string $componentCode Specifies the component code.
      */
-    public function initFromComponentInfo($componentClass, $componentCode)
+    public function initFromComponentInfo(string $componentClass, string $componentCode): void
     {
         $this->code = $componentCode;
         $this->componentClass = $componentClass;
@@ -84,9 +79,8 @@ class Snippet
     /**
      * Returns the snippet name.
      * This method should not be used in the front-end request handling.
-     * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         if ($this->name !== null) {
             return $this->name;
@@ -104,9 +98,8 @@ class Snippet
     /**
      * Returns the snippet description.
      * This method should not be used in the front-end request handling.
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         if ($this->description !== null) {
             return $this->description;
@@ -124,9 +117,8 @@ class Snippet
     /**
      * Returns the snippet component class name.
      * If the snippet is a partial snippet, returns NULL.
-     * @return string Returns the snippet component class name
      */
-    public function getComponentClass()
+    public function getComponentClass(): ?string
     {
         return $this->componentClass;
     }
@@ -138,19 +130,15 @@ class Snippet
     {
         if (!$this->componentClass) {
             return self::parseIniProperties($this->properties);
-        }
-        else {
+        } else {
             return ComponentHelpers::getComponentsPropertyConfig($this->getComponent(), false, true);
         }
     }
 
     /**
      * Returns a list of component definitions declared on the page.
-     * @param string $pageName Specifies the static page file name (the name of the corresponding content block file).
-     * @param \Cms\Classes\Theme $theme Specifies a parent theme.
-     * @return array Returns an array of component definitions
      */
-    public static function listPageComponents($pageName, $theme, $markup)
+    public static function listPageComponents(string $pageName, Theme $theme, string $markup): array
     {
         $map = self::extractSnippetsFromMarkupCached($theme, $pageName, $markup);
 
@@ -174,12 +162,11 @@ class Snippet
     /**
      * Extends the partial form with Snippet fields.
      */
-    public static function extendPartialForm($formWidget)
+    public static function extendPartialForm(\Backend\Widgets\Form $formWidget): void
     {
         /*
          * Snippet code field
          */
-
         $fieldConfig = [
             'tab'     => 'winter.pages::lang.snippet.partialtab',
             'type'    => 'text',
@@ -187,13 +174,11 @@ class Snippet
             'comment' => 'winter.pages::lang.snippet.code_comment',
             'span'    => 'left'
         ];
-
         $formWidget->tabs['fields']['viewBag[snippetCode]'] = $fieldConfig;
 
         /*
          * Snippet description field
          */
-
         $fieldConfig = [
             'tab'     => 'winter.pages::lang.snippet.partialtab',
             'type'    => 'text',
@@ -201,13 +186,11 @@ class Snippet
             'comment' => 'winter.pages::lang.snippet.name_comment',
             'span'    => 'right'
         ];
-
         $formWidget->tabs['fields']['viewBag[snippetName]'] = $fieldConfig;
 
         /*
          * Snippet properties field
          */
-
         $fieldConfig = [
             'tab'    => 'winter.pages::lang.snippet.partialtab',
             'type'   => 'datatable',
@@ -259,16 +242,14 @@ class Snippet
                 ]
             ]
         ];
-
        $formWidget->tabs['fields']['viewBag[snippetProperties]'] = $fieldConfig;
     }
 
     /**
      * Returns a component corresponding to the snippet.
      * This method should not be used in the front-end request handling code.
-     * @return \Cms\Classes\ComponentBase
      */
-    protected function getComponent()
+    protected function getComponent(): ?\Cms\Classes\ComponentBase
     {
         if ($this->componentClass === null) {
             return null;
@@ -289,12 +270,8 @@ class Snippet
 
     /**
      * Parses the static page markup and renders snippets defined on the page.
-     * @param string $pageName Specifies the static page file name (the name of the corresponding content block file).
-     * @param \Cms\Classes\Theme $theme Specifies a parent theme.
-     * @param string $markup Specifies the markup string to process.
-     * @return string Returns the processed string.
      */
-    public static function processPageMarkup($pageName, $theme, $markup)
+    public static function processPageMarkup(string $pageName, Theme $theme, string $markup): string
     {
         $map = self::extractSnippetsFromMarkupCached($theme, $pageName, $markup);
 
@@ -311,8 +288,7 @@ class Snippet
 
                 $partialName = $partialSnippetMap[$snippetCode];
                 $generatedMarkup = $controller->renderPartial($partialName, $snippetInfo['properties']);
-            }
-            else {
+            } else {
                 $generatedMarkup = $controller->renderComponent($snippetCode);
             }
 
@@ -323,7 +299,7 @@ class Snippet
         return $markup;
     }
 
-    public static function processTemplateSettingsArray($settingsArray)
+    public static function processTemplateSettingsArray(array $settingsArray): array
     {
         if (!isset($settingsArray['viewBag']['snippetProperties']['TableData'])) {
             return $settingsArray;
@@ -352,7 +328,7 @@ class Snippet
         return $settingsArray;
     }
 
-    public static function processTemplateSettings($template)
+    public static function processTemplateSettings($template): void
     {
         if (!isset($template->viewBag['snippetProperties'])) {
             return;
@@ -377,8 +353,11 @@ class Snippet
      * As snippet properties are defined with data attributes, they are lower case, whereas
      * real property names are case sensitive. This method finds original property names defined
      * in snippet classes or partials and replaces property names defined in the static page markup.
+     *
+     * @throws ApplicationException if the provided snippet cannot be found
+     * @throws SystemException if the snippet component class cannot be found
      */
-    protected static function preprocessPropertyValues($theme, $snippetCode, $componentClass, $properties)
+    protected static function preprocessPropertyValues(Theme $theme, string $snippetCode, string $componentClass, array $properties): array
     {
         $snippet = SnippetManager::instance()->findByCodeOrComponent($theme, $snippetCode, $componentClass, true);
         if (!$snippet) {
@@ -396,8 +375,7 @@ class Snippet
                 if (array_key_exists('default', $propertyInfo)) {
                     $properties[$propertyCode] = $propertyInfo['default'];
                 }
-            }
-            else {
+            } else {
                 $markupPropertyInfo = $properties[$lowercaseCode];
                 unset($properties[$lowercaseCode]);
                 $properties[$propertyCode] = $markupPropertyInfo;
@@ -409,9 +387,8 @@ class Snippet
 
     /**
      * Converts a keyed object to an array, converting the index to the "property" value.
-     * @return array
      */
-    protected static function parseIniProperties($properties)
+    protected static function parseIniProperties(array $properties): array
     {
         foreach ($properties as $index => $value) {
             $properties[$index]['property'] = $index;
@@ -420,7 +397,7 @@ class Snippet
         return array_values($properties);
     }
 
-    protected static function dropDownOptionsToArray($optionsString)
+    protected static function dropDownOptionsToArray(string $optionsString): array
     {
         $options = explode('|', $optionsString);
 
@@ -433,16 +410,14 @@ class Snippet
 
                 if (strlen($key)) {
                     if (!preg_match('/^[0-9a-z-_]+$/i', $key)) {
-                        throw new ValidationException(['snippetProperties' => Lang::get('winter.pages::lang.snippet.invalid_option_key', ['key'=>$key])]);
+                        throw new ValidationException(['snippetProperties' => Lang::get('winter.pages::lang.snippet.invalid_option_key', ['key' => $key])]);
                     }
 
                     $result[$key] = trim($parts[1]);
-                }
-                else {
+                } else {
                     $result[$index] = trim($optionStr);
                 }
-            }
-            else {
+            } else {
                 $result[$index] = trim($optionStr);
             }
         }
@@ -450,7 +425,7 @@ class Snippet
         return $result;
     }
 
-    protected static function dropDownOptionsToString($optionsArray)
+    protected static function dropDownOptionsToString(array $optionsArray): string
     {
         $result = [];
         $isAssoc = (bool) count(array_filter(array_keys($optionsArray), 'is_string'));
@@ -464,7 +439,40 @@ class Snippet
         return implode(' | ', $result);
     }
 
-    protected static function extractSnippetsFromMarkup($markup, $theme)
+    /**
+     * Parse content to render snippets
+     *
+     * @throws ApplicationException if the provided snippet cannot be found
+     * @throws SystemException if the snippet component class cannot be found
+     */
+    public static function parse(string $markup, array $params = []): string
+    {
+        $theme = Theme::getActiveTheme();
+        $controller = CmsController::getController();
+
+        $map = self::extractSnippetsFromMarkup($markup, $theme);
+
+        foreach ($map as $snippetDeclaration => $snippetInfo) {
+            $snippetCode = $snippetInfo['code'];
+
+            if (isset($snippetInfo['component'])) {
+                // The snippet is a component registered as a snippet
+                $snippetAlias = SnippetLoader::registerComponentSnippet($snippetInfo);
+                $generatedMarkup = $controller->renderComponent($snippetAlias, $params);
+            } else {
+                // The snippet is a partial
+                $partialName = SnippetLoader::registerPartialSnippet($snippetInfo);
+                $generatedMarkup = $controller->renderPartial($partialName, array_merge($params, $snippetInfo['properties']));
+            }
+
+            $pattern = preg_quote($snippetDeclaration);
+            $markup = mb_ereg_replace($pattern, $generatedMarkup, $markup);
+        }
+
+        return $markup;
+    }
+
+    protected static function extractSnippetsFromMarkup(string $markup, Theme $theme): array
     {
         $map = [];
         $matches = [];
@@ -510,7 +518,7 @@ class Snippet
         return $map;
     }
 
-    protected static function extractSnippetsFromMarkupCached($theme, $pageName, $markup)
+    protected static function extractSnippetsFromMarkupCached(Theme $theme, string $pageName, string $markup): array
     {
         if (array_key_exists($pageName, self::$pageSnippetMap)) {
             return self::$pageSnippetMap[$pageName];
@@ -547,7 +555,7 @@ class Snippet
     /**
      * Returns a cache key for this record.
      */
-    protected static function getMapCacheKey($theme)
+    protected static function getMapCacheKey(Theme $theme): string
     {
         $key = crc32($theme->getPath()).'snippet-map';
         /**
@@ -567,9 +575,8 @@ class Snippet
 
     /**
      * Clears the snippet map item cache
-     * @param \Cms\Classes\Theme $theme Specifies the current theme.
      */
-    public static function clearMapCache($theme)
+    public static function clearMapCache(Theme $theme): void
     {
         Cache::forget(self::getMapCacheKey($theme));
     }
