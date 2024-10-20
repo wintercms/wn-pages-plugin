@@ -6,6 +6,7 @@ This plugin allows end users to create and edit static pages and menus with a si
 
 Supports:
 - Static Pages
+- [Child Pages](https://github.com/wintercms/wn-pages-plugin/blob/main/docs/component-childpages.md)
 - [Placeholders](https://github.com/wintercms/wn-pages-plugin/blob/main/docs/documentation.md#placeholders)
 - [Snippets](https://github.com/wintercms/wn-pages-plugin/blob/main/docs/documentation.md#snippets)
 - [Menus](https://github.com/wintercms/wn-pages-plugin/blob/main/docs/documentation.md#static-menus)
