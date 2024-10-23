@@ -2,6 +2,7 @@
     class="layout-absolute"
     data-control="menu-item-editor"
     data-alias="<?= $this->alias ?>"
+    data-field-name="<?= $this->getFieldName() ?>"
     data-item-properties="<?= e($itemProperties) ?>"
     data-storage-media-path="<?= url(Config::get('cms.storage.media.path')); ?>"
 >
