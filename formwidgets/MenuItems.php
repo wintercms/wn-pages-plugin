@@ -58,7 +58,7 @@ class MenuItems extends FormWidgetBase
         $menuItem = new MenuItem;
 
         $this->vars['itemProperties'] = json_encode($menuItem->fillable);
-        $this->vars['items'] = $this->model->items;
+        $this->vars['items'] = $this->model->{$this->fieldName};
 
         $emptyItem = new MenuItem;
         $emptyItem->title = trans($this->newItemTitle);
