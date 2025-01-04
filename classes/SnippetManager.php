@@ -91,7 +91,7 @@ class SnippetManager
      * @param string $code Specifies the snippet code.
      * @param string $$componentClass Specifies the snippet component class, if available.
      * @param boolean $allowCaching Specifies whether caching is allowed for the call.
-     * @return array Returns an array of Snippet objects.
+     * @return Snippet|null Returns the Snippet object if found
      */
     public function findByCodeOrComponent($theme, $code, $componentClass, $allowCaching = false)
     {
@@ -185,7 +185,7 @@ class SnippetManager
     /**
      * Returns a list of partial-based snippets and corresponding partial names.
      * @param \Cms\Classes\Theme $theme Specifies a parent theme.
-     * @return Returns an associative array with the snippet code in keys and partial file names in values.
+     * @return array Returns an associative array with the snippet code in keys and partial file names in values.
      */
     public function getPartialSnippetMap($theme)
     {

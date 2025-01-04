@@ -363,7 +363,7 @@ class Snippet
         foreach ($parsedProperties as $index => &$property) {
             $property['id'] = $index;
 
-            if (isset($property['options'])) {
+            if (isset($property['options']) && is_array($property['options'])) {
                 $property['options'] = self::dropDownOptionsToString($property['options']);
             }
         }
@@ -408,18 +408,26 @@ class Snippet
 
     /**
      * Converts a keyed object to an array, converting the index to the "property" value.
-     * @return array
      */
-    protected static function parseIniProperties($properties)
+    protected static function parseIniProperties($properties): array
     {
         foreach ($properties as $index => $value) {
-            $properties[$index]['property'] = $index;
+            if (!is_array($value['options'])) {
+                $value['options'] = self::dropDownOptionsToArray($value['options']);
+            }
+
+            if (is_int($index)) {
+                $properties[$value['property']] = $value;
+                unset($properties[$index]);
+            } elseif (is_string($index)) {
+                $properties[$index]['property'] = $index;
+            }
         }
 
         return array_values($properties);
     }
 
-    protected static function dropDownOptionsToArray($optionsString)
+    protected static function dropDownOptionsToArray(string $optionsString): array
     {
         $options = explode('|', $optionsString);
 
@@ -447,7 +455,7 @@ class Snippet
         return $result;
     }
 
-    protected static function dropDownOptionsToString($optionsArray)
+    protected static function dropDownOptionsToString(array $optionsArray)
     {
         $result = [];
         $isAssoc = (bool) count(array_filter(array_keys($optionsArray), 'is_string'));
