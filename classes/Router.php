@@ -1,11 +1,12 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use Cache;
+namespace Winter\Pages\Classes;
+
 use Cms\Classes\Theme;
-use Config;
-use Event;
-use Winter\Pages\Classes\Page;
+use Illuminate\Support\Facades\Cache;
 use Winter\Storm\Router\Helper as RouterHelper;
+use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
 use Winter\Storm\Support\Str;
 
 /**
@@ -112,7 +113,7 @@ class Router
             $map = [
                 'urls'   => [],
                 'files'  => [],
-                'titles' => []
+                'titles' => [],
             ];
             foreach ($pages as $page) {
                 $viewBag = $page->getViewBag();
@@ -151,7 +152,7 @@ class Router
      */
     protected function getCacheKey($keyName)
     {
-        $key = crc32($this->theme->getPath()).$keyName;
+        $key = crc32($this->theme->getPath()) . $keyName;
         /**
          * @event pages.router.getCacheKey
          * Enables modifying the key used to reference cached Winter.Pages routes

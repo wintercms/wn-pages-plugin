@@ -72,7 +72,7 @@ return [
         'external_link' => 'Externý odkaz',
         'external_link_comment' => 'Otvoriť odkaz tejto položky menu v novom okne.',
         'static_page' => 'Statická stránka',
-        'all_static_pages' => 'Všetky statické stránky'
+        'all_static_pages' => 'Všetky statické stránky',
     ],
     'content' => [
         'menu_label' => 'Obsah',
@@ -138,5 +138,5 @@ return [
         'static_menu_code_description' => 'Zadajte kód menu, ktoré má komponent zobraziť.',
         'static_breadcrumbs_name' => 'Statická navigačná cesta',
         'static_breadcrumbs_description' => 'Zobrazí navigačnú cestu na stránke.',
-    ]
+    ],
 ];

@@ -23,7 +23,7 @@ return [
         'manage_menus' => 'Gérer les menus statiques',
         'access_snippets' => 'Accès aux fragments',
         'access_preview' => 'Accès à l’aperçu',
-        'manage_content' => 'Gérer le contenu statique'
+        'manage_content' => 'Gérer le contenu statique',
     ],
     'menu' => [
         'menu_label' => 'Menus',
@@ -39,7 +39,7 @@ return [
         'items' => 'Éléments du menu',
         'add_subitem' => 'Ajouter un élément',
         'code_required' => 'Le Code est requis',
-        'invalid_code' => 'Le format du Code est invalide. Le Code peut contenir des chiffres, des lettres et les symboles suivants : _-'
+        'invalid_code' => 'Le format du Code est invalide. Le Code peut contenir des chiffres, des lettres et les symboles suivants : _-',
     ],
     'menuitem' => [
         'title' => 'Titre',
@@ -73,21 +73,21 @@ return [
         'external_link' => 'Lien externe',
         'external_link_comment' => 'Ouvrir les liens pour ce menu dans une nouvelle fenêtre.',
         'static_page' => 'Page Statique',
-        'all_static_pages' => 'Toutes les pages'
+        'all_static_pages' => 'Toutes les pages',
     ],
     'content' => [
         'menu_label' => 'Contenu',
         'saved' => 'Le contenu a été sauvegardé avec succès.',
-        'cant_save_to_dir' => 'L’enregistrement des fichiers de contenu dans le répertoire des pages statiques n’est pas autorisé.'
+        'cant_save_to_dir' => 'L’enregistrement des fichiers de contenu dans le répertoire des pages statiques n’est pas autorisé.',
     ],
     'sidebar' => [
         'add' => 'Ajouter',
-        'search' => 'Rechercher...'
+        'search' => 'Rechercher...',
     ],
     'object' => [
         'invalid_type' => 'Type d’objet inconnu',
         'unauthorized_type' => 'Vous n’êtes pas autorisé à gérer les objets de type :type',
-        'not_found' => 'L’objet demandé n’a pas été trouvé.'
+        'not_found' => 'L’objet demandé n’a pas été trouvé.',
     ],
     'editor' => [
         'title' => 'Titre',
@@ -124,7 +124,7 @@ return [
         'column_type_dropdown' => 'Menu déroulant',
         'not_found' => 'Le fragment demandé avec le code :code n’a pas été trouvé dans le thème.',
         'property_format_error' => 'Le code de la propriété devrait commencer par une lettre et ne peut contenir que des lettres et des chiffres',
-        'invalid_option_key' => 'Clé de l’option de la liste déroulante invalide. Les clés des options ne peuvent contenir que des chiffres, des lettres et les symboles _ et -'
+        'invalid_option_key' => 'Clé de l’option de la liste déroulante invalide. Les clés des options ne peuvent contenir que des chiffres, des lettres et les symboles _ et -',
     ],
     'component' => [
         'static_page_name' => 'Page Statique',

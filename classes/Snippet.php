@@ -1,13 +1,15 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use ApplicationException;
-use Cache;
+namespace Winter\Pages\Classes;
+
 use Cms\Classes\ComponentHelpers;
 use Cms\Classes\Controller as CmsController;
-use Config;
-use Event;
-use Lang;
-use ValidationException;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Lang;
+use Winter\Storm\Exception\ApplicationException;
+use Winter\Storm\Exception\ValidationException;
+use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
 
 /**
  * Represents a static page snippet.
@@ -138,8 +140,7 @@ class Snippet
     {
         if (!$this->componentClass) {
             return self::parseIniProperties($this->properties);
-        }
-        else {
+        } else {
             return ComponentHelpers::getComponentsPropertyConfig($this->getComponent(), false, true);
         }
     }
@@ -164,7 +165,7 @@ class Snippet
             $result[] = [
                 'class'      => $snippetInfo['component'],
                 'alias'      => $snippetInfo['code'],
-                'properties' => $snippetInfo['properties']
+                'properties' => $snippetInfo['properties'],
             ];
         }
 
@@ -185,7 +186,7 @@ class Snippet
             'type'    => 'text',
             'label'   => 'winter.pages::lang.snippet.code',
             'comment' => 'winter.pages::lang.snippet.code_comment',
-            'span'    => 'left'
+            'span'    => 'left',
         ];
 
         $formWidget->tabs['fields']['viewBag[snippetCode]'] = $fieldConfig;
@@ -199,7 +200,7 @@ class Snippet
             'type'    => 'text',
             'label'   => 'winter.pages::lang.snippet.name',
             'comment' => 'winter.pages::lang.snippet.name_comment',
-            'span'    => 'right'
+            'span'    => 'right',
         ];
 
         $formWidget->tabs['fields']['viewBag[snippetName]'] = $fieldConfig;
@@ -219,23 +220,23 @@ class Snippet
                     'validation' => [
                         'required' => [
                             'message' => 'Please provide the property title',
-                            'requiredWith' => 'property'
-                        ]
-                    ]
+                            'requiredWith' => 'property',
+                        ],
+                    ],
                 ],
                 'property' => [
                     'title' => 'winter.pages::lang.snippet.column_code',
                     'validation' => [
                         'required' => [
                             'message' => 'Please provide the property code',
-                            'requiredWith' => 'title'
+                            'requiredWith' => 'title',
                         ],
                         'regex' => [
                             'pattern'   => '^[a-z][a-z0-9]*$',
                             'modifiers' => 'i',
-                            'message'   => Lang::get('winter.pages::lang.snippet.property_format_error')
-                        ]
-                    ]
+                            'message'   => Lang::get('winter.pages::lang.snippet.property_format_error'),
+                        ],
+                    ],
                 ],
                 'type' => [
                     'title'   => 'winter.pages::lang.snippet.column_type',
@@ -243,24 +244,24 @@ class Snippet
                     'options' => [
                         'string'   => 'winter.pages::lang.snippet.column_type_string',
                         'checkbox' => 'winter.pages::lang.snippet.column_type_checkbox',
-                        'dropdown' => 'winter.pages::lang.snippet.column_type_dropdown'
+                        'dropdown' => 'winter.pages::lang.snippet.column_type_dropdown',
                     ],
                     'validation' => [
                         'required' => [
-                            'requiredWith' => 'title'
-                        ]
-                    ]
+                            'requiredWith' => 'title',
+                        ],
+                    ],
                 ],
                 'default' => [
-                    'title' => 'winter.pages::lang.snippet.column_default'
+                    'title' => 'winter.pages::lang.snippet.column_default',
                 ],
                 'options' => [
-                    'title' => 'winter.pages::lang.snippet.column_options'
-                ]
-            ]
+                    'title' => 'winter.pages::lang.snippet.column_options',
+                ],
+            ],
         ];
 
-       $formWidget->tabs['fields']['viewBag[snippetProperties]'] = $fieldConfig;
+        $formWidget->tabs['fields']['viewBag[snippetProperties]'] = $fieldConfig;
     }
 
     /**
@@ -311,8 +312,7 @@ class Snippet
 
                 $partialName = $partialSnippetMap[$snippetCode];
                 $generatedMarkup = $controller->renderPartial($partialName, $snippetInfo['properties']);
-            }
-            else {
+            } else {
                 $generatedMarkup = $controller->renderComponent($snippetCode);
             }
 
@@ -396,8 +396,7 @@ class Snippet
                 if (array_key_exists('default', $propertyInfo)) {
                     $properties[$propertyCode] = $propertyInfo['default'];
                 }
-            }
-            else {
+            } else {
                 $markupPropertyInfo = $properties[$lowercaseCode];
                 unset($properties[$lowercaseCode]);
                 $properties[$propertyCode] = $markupPropertyInfo;
@@ -428,21 +427,19 @@ class Snippet
         foreach ($options as $index => $optionStr) {
             $parts = explode(':', $optionStr, 2);
 
-            if (count($parts) > 1 ) {
+            if (count($parts) > 1) {
                 $key = trim($parts[0]);
 
                 if (strlen($key)) {
                     if (!preg_match('/^[0-9a-z-_]+$/i', $key)) {
-                        throw new ValidationException(['snippetProperties' => Lang::get('winter.pages::lang.snippet.invalid_option_key', ['key'=>$key])]);
+                        throw new ValidationException(['snippetProperties' => Lang::get('winter.pages::lang.snippet.invalid_option_key', ['key' => $key])]);
                     }
 
                     $result[$key] = trim($parts[1]);
-                }
-                else {
+                } else {
                     $result[$index] = trim($optionStr);
                 }
-            }
-            else {
+            } else {
                 $result[$index] = trim($optionStr);
             }
         }
@@ -457,7 +454,7 @@ class Snippet
 
         foreach ($optionsArray as $optionIndex => $optionValue) {
             $result[] = $isAssoc
-                ? $optionIndex.':'.$optionValue
+                ? $optionIndex . ':' . $optionValue
                 : $optionValue;
         }
 
@@ -502,7 +499,7 @@ class Snippet
                 $map[$snippetDeclaration] = [
                     'code'       => $snippetCode,
                     'component'  => $componentClass,
-                    'properties' => $properties
+                    'properties' => $properties,
                 ];
             }
         }
@@ -549,7 +546,7 @@ class Snippet
      */
     protected static function getMapCacheKey($theme)
     {
-        $key = crc32($theme->getPath()).'snippet-map';
+        $key = crc32($theme->getPath()) . 'snippet-map';
         /**
          * @event pages.snippet.getMapCacheKey
          * Enables modifying the key used to reference cached Winter.Pages snippet maps

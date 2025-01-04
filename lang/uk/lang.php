@@ -1,4 +1,6 @@
-<?php return [
+<?php
+
+return [
     'plugin' => [
         'name' => 'Сторінки',
         'description' => 'Сторінки і меню.',

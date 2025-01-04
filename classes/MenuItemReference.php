@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\Classes;
+<?php
+
+namespace Winter\Pages\Classes;
 
 /**
  * Represents a front-end menu item.

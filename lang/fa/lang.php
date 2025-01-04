@@ -1,4 +1,6 @@
-<?php return [
+<?php
+
+return [
     'plugin' => [
         'name' => 'صفحات',
         'description' => 'مدیریت صفحات و فهرست ها',
@@ -127,5 +129,5 @@
         'static_menu_code_description' => 'کد فهرستی را که میخواهید به نمایش درآید انتخاب نمایید.',
         'static_breadcrumbs_name' => 'نشان گرها',
         'static_breadcrumbs_description' => 'نمایش نشان گرهای صفحه.',
-    ]
+    ],
 ];

@@ -21,7 +21,7 @@ return [
         'manage_pages' => 'Verwalte statische Seiten',
         'manage_menus' => 'Verwalte statische Menüs',
         'access_snippets' => 'Verwalte Snippets',
-      'manage_content' => 'Verwalte den Inhalt'
+        'manage_content' => 'Verwalte den Inhalt',
     ],
     'menu' => [
         'menu_label' => 'Menüs',
@@ -38,7 +38,7 @@ return [
         'add_subitem' => 'Neuer Menüpunkt',
         'no_records' => 'Keine Menüpunkte gefunden',
         'code_required' => 'Ein Code ist erforderlich',
-        'invalid_code' => 'Ungültiges Code Format. Der Code darf Ziffern, Buchstaben und folgenden Symbole enthalten: _-/'
+        'invalid_code' => 'Ungültiges Code Format. Der Code darf Ziffern, Buchstaben und folgenden Symbole enthalten: _-/',
     ],
     'menuitem' => [
         'title' => 'Titel',
@@ -61,19 +61,19 @@ return [
         'url_required' => 'Eine URL ist erforderlich',
         'cms_page_required' => 'Bitten wählen Sie eine CMS Seite',
         'code' => 'Code',
-        'code_comment' => 'Geben Sie einen Menüpunkt-Code ein, wenn Sie diesen mit der API ansprechen möchten.'
+        'code_comment' => 'Geben Sie einen Menüpunkt-Code ein, wenn Sie diesen mit der API ansprechen möchten.',
     ],
     'content' => [
         'menu_label' => 'Inhalte',
-        'cant_save_to_dir' => 'Das Speichern von Inhaltsdateien in den Statische-Seiten Ordner ist nicht erlaubt.'
+        'cant_save_to_dir' => 'Das Speichern von Inhaltsdateien in den Statische-Seiten Ordner ist nicht erlaubt.',
     ],
     'sidebar' => [
         'add' => 'Neu',
-        'search' => 'Suche...'
+        'search' => 'Suche...',
     ],
     'object' => [
         'invalid_type' => 'Unbekannter Objekttyp',
-        'not_found' => 'Das angeforderte Objekt wurde nicht gefunden.'
+        'not_found' => 'Das angeforderte Objekt wurde nicht gefunden.',
     ],
     'editor' => [
         'title' => 'Titel',
@@ -110,6 +110,6 @@ return [
         'column_type_dropdown' => 'Dropdown',
         'not_found' => 'Das Snippet mit dem angeforderten code :code wurde nicht im Theme gefunden.',
         'property_format_error' => 'Der Code für die Eigenschaft muss mit einem Buchstaben anfangen, und darf nur Buchstaben und Zahlen enthalten',
-        'invalid_option_key' => 'Ungültiger Dropdown Optionsschlüssel: %s. Optionsschlüssel dürfen nur Zahlen, Buchstaben und die Zeichen _ und - enthalten'
-    ]
-  ];
+        'invalid_option_key' => 'Ungültiger Dropdown Optionsschlüssel: %s. Optionsschlüssel dürfen nur Zahlen, Buchstaben und die Zeichen _ und - enthalten',
+    ],
+];

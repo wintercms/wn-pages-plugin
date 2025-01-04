@@ -1,10 +1,12 @@
-<?php namespace Winter\Pages\Widgets;
+<?php
+
+namespace Winter\Pages\Widgets;
 
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;
-use Input;
-use Str;
 use Winter\Pages\Classes\SnippetManager;
+use Winter\Storm\Support\Facades\Input;
+use Winter\Storm\Support\Str;
 
 /**
  * Snippet list widget.
@@ -26,7 +28,7 @@ class SnippetList extends WidgetBase
     {
         $this->alias = $alias;
         $this->theme = Theme::getEditTheme();
-        $this->dataIdPrefix = 'snippet-'.$this->theme->getDirName();
+        $this->dataIdPrefix = 'snippet-' . $this->theme->getDirName();
 
         parent::__construct($controller, []);
         $this->bindToController();
@@ -39,7 +41,7 @@ class SnippetList extends WidgetBase
     public function render()
     {
         return $this->makePartial('body', [
-            'data' => $this->getData()
+            'data' => $this->getData(),
         ]);
     }
 
@@ -70,7 +72,7 @@ class SnippetList extends WidgetBase
             $filteredSnippets = [];
 
             foreach ($snippets as $snippet) {
-                if ($this->textMatchesSearch($words, $snippet->getName().' '.$snippet->code.' '.$snippet->getDescription())) {
+                if ($this->textMatchesSearch($words, $snippet->getName() . ' ' . $snippet->code . ' ' . $snippet->getDescription())) {
                     $filteredSnippets[] = $snippet;
                 }
             }
@@ -78,7 +80,7 @@ class SnippetList extends WidgetBase
             $snippets = $filteredSnippets;
         }
 
-        usort($snippets, function($a, $b) {
+        usort($snippets, function ($a, $b) {
             return strcmp($a->getName(), $b->getName());
         });
 
@@ -87,12 +89,12 @@ class SnippetList extends WidgetBase
 
     protected function updateList()
     {
-        return ['#'.$this->getId('snippet-list') => $this->makePartial('items', ['items' => $this->getData()])];
+        return ['#' . $this->getId('snippet-list') => $this->makePartial('items', ['items' => $this->getData()])];
     }
 
     protected function getThemeSessionKey($prefix)
     {
-        return $prefix.$this->theme->getDirName();
+        return $prefix . $this->theme->getDirName();
     }
 
     protected function getSession($key = null, $default = null)

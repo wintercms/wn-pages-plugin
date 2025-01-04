@@ -1,7 +1,8 @@
-<?php namespace Winter\Pages\Classes;
+<?php
+
+namespace Winter\Pages\Classes;
 
 use Cms\Classes\Meta;
-use Winter\Pages\Classes\Page;
 
 /**
  * The page list class reads and manages the static page hierarchy.
@@ -53,7 +54,7 @@ class PageList
             return $page->getBaseFileName();
         })->all();
 
-        $iterator = function($configPages) use (&$iterator, $pagesArray) {
+        $iterator = function ($configPages) use (&$iterator, $pagesArray) {
             $result = [];
 
             foreach ($configPages as $fileName => $subpages) {
@@ -83,14 +84,13 @@ class PageList
 
         $parent = null;
 
-        $iterator = function($configPages) use (&$iterator, &$parent, $requestedFileName) {
+        $iterator = function ($configPages) use (&$iterator, &$parent, $requestedFileName) {
             foreach ($configPages as $fileName => $subpages) {
                 if ($fileName == $requestedFileName) {
                     return true;
                 }
 
                 if ($iterator($subpages) == true && is_null($parent)) {
-
                     $parent = $fileName;
 
                     return true;
@@ -115,7 +115,7 @@ class PageList
 
         $subTree = [];
 
-        $iterator = function($configPages) use (&$iterator, &$subTree, $requestedFileName) {
+        $iterator = function ($configPages) use (&$iterator, &$subTree, $requestedFileName) {
             if (is_array($configPages)) {
                 foreach ($configPages as $fileName => $subpages) {
                     if ($fileName == $requestedFileName) {
@@ -149,9 +149,8 @@ class PageList
 
         if (!strlen($parent)) {
             $structure[$page->getBaseFileName()] = [];
-        }
-        else {
-            $iterator = function(&$configPages) use (&$iterator, $parent, $page) {
+        } else {
+            $iterator = function (&$configPages) use (&$iterator, $parent, $page) {
                 foreach ($configPages as $fileName => &$subpages) {
                     if ($fileName == $parent) {
                         $subpages[$page->getBaseFileName()] = [];
@@ -159,8 +158,9 @@ class PageList
                         return true;
                     }
 
-                    if ($iterator($subpages) == true)
+                    if ($iterator($subpages) == true) {
                         return true;
+                    }
                 }
             };
 
@@ -181,7 +181,7 @@ class PageList
 
         $tree = [];
 
-        $iterator = function($configPages) use (&$iterator, &$pages, $requestedFileName) {
+        $iterator = function ($configPages) use (&$iterator, &$pages, $requestedFileName) {
             $result = [];
 
             foreach ($configPages as $fileName => $subpages) {

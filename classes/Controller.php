@@ -1,12 +1,14 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use Cache;
+namespace Winter\Pages\Classes;
+
 use Cms\Classes\CmsException;
 use Cms\Classes\Page as CmsPage;
 use Cms\Classes\Theme;
 use Exception;
-use Lang;
-use Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Winter\Storm\Support\Str;
 
@@ -139,10 +141,9 @@ class Controller
         try {
             return SyntaxParser::parse($content, [
                 'varPrefix' => 'extraData.',
-                'tagPrefix' => 'page:'
+                'tagPrefix' => 'page:',
             ])->toTwig();
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             return $content;
         }
     }

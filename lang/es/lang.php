@@ -22,7 +22,7 @@ return [
         'manage_pages' => 'Administrar páginas',
         'manage_menus' => 'Administrar menús',
         'access_snippets' => 'Acceder a fragmentos',
-        'manage_content' => 'Administrar contenidos'
+        'manage_content' => 'Administrar contenidos',
     ],
     'menu' => [
         'menu_label' => 'Menus',
@@ -39,7 +39,7 @@ return [
         'add_subitem' => 'Añadir sub-elemento',
         'no_records' => 'No se han encontrado elementos.',
         'code_required' => 'El código es obligatorio',
-        'invalid_code' => 'El formato del código no es válido. Puede contener letras, números y los siguientes símbolos: _ - '
+        'invalid_code' => 'El formato del código no es válido. Puede contener letras, números y los siguientes símbolos: _ - ',
     ],
     'menuitem' => [
         'title' => 'Título',
@@ -62,19 +62,19 @@ return [
         'url_required' => 'La URL es obligatoria',
         'cms_page_required' => 'Selecciona una página del CMS',
         'code' => 'Código',
-        'code_comment' => 'Introduce el código del elemento para acceder mediante la API.'
+        'code_comment' => 'Introduce el código del elemento para acceder mediante la API.',
     ],
     'content' => [
         'menu_label' => 'Contenido',
-        'cant_save_to_dir' => 'No está permitido guardar archivos de contenido en el directorio de las páginas.'
+        'cant_save_to_dir' => 'No está permitido guardar archivos de contenido en el directorio de las páginas.',
     ],
     'sidebar' => [
         'add' => 'Añadir',
-        'search' => 'Buscar...'
+        'search' => 'Buscar...',
     ],
     'object' => [
         'invalid_type' => 'Tipo de objeto desconocido',
-        'not_found' => 'No se ha encontrado el objeto solicitado.'
+        'not_found' => 'No se ha encontrado el objeto solicitado.',
     ],
     'editor' => [
         'title' => 'Título',
@@ -110,6 +110,6 @@ return [
         'column_type_dropdown' => 'Desplegable',
         'not_found' => 'No se ha encontrado ningún fragmento con el código :code en este tema.',
         'property_format_error' => 'El código de propiedad debería comenzar por una letra. Sólo puede contener letras y números.',
-        'invalid_option_key' => 'La clave de opción del desplegable no es válida : %s. Estas claves sólo pueden contener números, letras y los símbolos _ y -'
-    ]
+        'invalid_option_key' => 'La clave de opción del desplegable no es válida : %s. Estas claves sólo pueden contener números, letras y los símbolos _ y -',
+    ],
 ];

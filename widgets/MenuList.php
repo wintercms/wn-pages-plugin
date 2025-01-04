@@ -1,10 +1,12 @@
-<?php namespace Winter\Pages\Widgets;
+<?php
+
+namespace Winter\Pages\Widgets;
 
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;
-use Input;
-use Str;
 use Winter\Pages\Classes\Menu;
+use Winter\Storm\Support\Facades\Input;
+use Winter\Storm\Support\Str;
 
 /**
  * Menu list widget.
@@ -32,7 +34,7 @@ class MenuList extends WidgetBase
     {
         $this->alias = $alias;
         $this->theme = Theme::getEditTheme();
-        $this->dataIdPrefix = 'page-'.$this->theme->getDirName();
+        $this->dataIdPrefix = 'page-' . $this->theme->getDirName();
 
         parent::__construct($controller, []);
         $this->bindToController();
@@ -45,7 +47,7 @@ class MenuList extends WidgetBase
     public function render()
     {
         return $this->makePartial('body', [
-            'data' => $this->getData()
+            'data' => $this->getData(),
         ]);
     }
 
@@ -83,7 +85,7 @@ class MenuList extends WidgetBase
             $filteredMenus = [];
 
             foreach ($menus as $menu) {
-                if ($this->textMatchesSearch($words, $menu->name.' '.$menu->fileName)) {
+                if ($this->textMatchesSearch($words, $menu->name . ' ' . $menu->fileName)) {
                     $filteredMenus[] = $menu;
                 }
             }
@@ -97,7 +99,7 @@ class MenuList extends WidgetBase
     protected function updateList()
     {
         $vars = ['items' => $this->getData()];
-        return ['#'.$this->getId('menu-list') => $this->makePartial('items', $vars)];
+        return ['#' . $this->getId('menu-list') => $this->makePartial('items', $vars)];
     }
 
     protected function getThemeSessionKey($prefix)

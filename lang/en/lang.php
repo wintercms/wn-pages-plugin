@@ -73,7 +73,7 @@ return [
         'external_link' => 'External link',
         'external_link_comment' => 'Open links for this menu item in a new window.',
         'static_page' => 'Static Page',
-        'all_static_pages' => 'All Static Pages'
+        'all_static_pages' => 'All Static Pages',
     ],
     'content' => [
         'menu_label' => 'Content',
@@ -143,5 +143,5 @@ return [
         'static_breadcrumbs_description' => 'Outputs breadcrumbs for a static page.',
         'child_pages_name' => 'Child pages',
         'child_pages_description' => 'Displays a list of child pages for the current page',
-    ]
+    ],
 ];

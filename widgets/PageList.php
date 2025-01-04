@@ -1,10 +1,12 @@
-<?php namespace Winter\Pages\Widgets;
+<?php
+
+namespace Winter\Pages\Widgets;
 
 use Backend\Classes\WidgetBase;
 use Cms\Classes\Theme;
-use Input;
-use Str;
 use Winter\Pages\Classes\PageList as StaticPageList;
+use Winter\Storm\Support\Facades\Input;
+use Winter\Storm\Support\Str;
 
 /**
  * Static page list widget.
@@ -36,7 +38,7 @@ class PageList extends WidgetBase
     {
         $this->alias = $alias;
         $this->theme = Theme::getEditTheme();
-        $this->dataIdPrefix = 'page-'.$this->theme->getDirName();
+        $this->dataIdPrefix = 'page-' . $this->theme->getDirName();
 
         parent::__construct($controller, []);
         $this->bindToController();
@@ -49,7 +51,7 @@ class PageList extends WidgetBase
     public function render()
     {
         return $this->makePartial('body', [
-            'data' => $this->getData()
+            'data' => $this->getData(),
         ]);
     }
 
@@ -97,14 +99,14 @@ class PageList extends WidgetBase
         if (strlen($searchTerm)) {
             $words = explode(' ', $searchTerm);
 
-            $iterator = function($pages) use (&$iterator, $words) {
+            $iterator = function ($pages) use (&$iterator, $words) {
                 $result = [];
 
                 foreach ($pages as $page) {
                     if ($this->textMatchesSearch($words, $this->subtreeToText($page))) {
                         $result[] = (object) [
                             'page'     => $page->page,
-                            'subpages' => $iterator($page->subpages)
+                            'subpages' => $iterator($page->subpages),
                         ];
                     }
                 }
@@ -120,21 +122,21 @@ class PageList extends WidgetBase
 
     protected function getThemeSessionKey($prefix)
     {
-        return $prefix.$this->theme->getDirName();
+        return $prefix . $this->theme->getDirName();
     }
 
     protected function updateList()
     {
-        return ['#'.$this->getId('page-list') => $this->makePartial('items', ['items' => $this->getData()])];
+        return ['#' . $this->getId('page-list') => $this->makePartial('items', ['items' => $this->getData()])];
     }
 
     protected function subtreeToText($page)
     {
         $result = $this->pageToText($page->page);
 
-        $iterator = function($pages) use (&$iterator, &$result) {
+        $iterator = function ($pages) use (&$iterator, &$result) {
             foreach ($pages as $page) {
-                $result .= ' '.$this->pageToText($page->page);
+                $result .= ' ' . $this->pageToText($page->page);
                 $iterator($page->subpages);
             }
         };
@@ -148,7 +150,7 @@ class PageList extends WidgetBase
     {
         $viewBag = $page->getViewBag();
 
-        return $page->getViewBag()->property('title').' '.$page->getViewBag()->property('url');
+        return $page->getViewBag()->property('title') . ' ' . $page->getViewBag()->property('url');
     }
 
     protected function getSession($key = null, $default = null)

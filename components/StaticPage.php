@@ -1,10 +1,12 @@
-<?php namespace Winter\Pages\Components;
+<?php
 
-use BackendAuth;
+namespace Winter\Pages\Components;
+
+use Backend\Facades\BackendAuth;
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Theme;
 use Cms\Models\MaintenanceSetting;
-use Request;
+use Illuminate\Support\Facades\Request;
 use Winter\Pages\Classes\Router;
 
 /**
@@ -39,7 +41,7 @@ class StaticPage extends ComponentBase
     {
         return [
             'name'        => 'winter.pages::lang.component.static_page_name',
-            'description' => 'winter.pages::lang.component.static_page_description'
+            'description' => 'winter.pages::lang.component.static_page_description',
         ];
     }
 
@@ -51,21 +53,21 @@ class StaticPage extends ComponentBase
                 'description'       => 'winter.pages::lang.component.static_page_use_content_description',
                 'default'           => 1,
                 'type'              => 'checkbox',
-                'showExternalParam' => false
+                'showExternalParam' => false,
             ],
             'default' => [
                 'title'             => 'winter.pages::lang.component.static_page_default_name',
                 'description'       => 'winter.pages::lang.component.static_page_default_description',
                 'default'           => 0,
                 'type'              => 'checkbox',
-                'showExternalParam' => false
+                'showExternalParam' => false,
             ],
             'childLayout' => [
                 'title'             => 'winter.pages::lang.component.static_page_child_layout_name',
                 'description'       => 'winter.pages::lang.component.static_page_child_layout_description',
                 'type'              => 'string',
-                'showExternalParam' => false
-            ]
+                'showExternalParam' => false,
+            ],
         ];
     }
 
@@ -140,7 +142,7 @@ class StaticPage extends ComponentBase
             'is_hidden',
             'navigation_hidden',
             'meta_title',
-            'meta_description'
+            'meta_description',
         ];
 
         $extraData = array_diff_key(

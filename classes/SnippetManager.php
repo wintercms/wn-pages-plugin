@@ -1,12 +1,13 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use Cache;
+namespace Winter\Pages\Classes;
+
 use Cms\Classes\Partial;
-use Config;
-use Event;
+use Illuminate\Support\Facades\Cache;
 use System\Classes\PluginManager;
-use SystemException;
-use Winter\Pages\Classes\Snippet;
+use Winter\Storm\Exception\SystemException;
+use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
 
 /**
  * Returns information about snippets based on partials and components.
@@ -130,12 +131,11 @@ class SnippetManager
                 return null;
             }
 
-            $snippet = new Snippet;
+            $snippet = new Snippet();
             $snippet->initFromPartial($partial);
 
             return $snippet;
-        }
-        else {
+        } else {
             // If the snippet is a component snippet, initialize it
             // from the component
 
@@ -143,7 +143,7 @@ class SnippetManager
                 throw new SystemException(sprintf('The snippet component class %s is not found.', $componentClass));
             }
 
-            $snippet = new Snippet;
+            $snippet = new Snippet();
             $snippet->initFromComponentInfo($componentClass, $code);
 
             return $snippet;
@@ -166,7 +166,7 @@ class SnippetManager
      */
     protected static function getPartialMapCacheKey($theme)
     {
-        $key = crc32($theme->getPath()).'snippet-partial-map';
+        $key = crc32($theme->getPath()) . 'snippet-partial-map';
         /**
          * @event pages.snippet.getPartialMapCacheKey
          * Enables modifying the key used to reference cached Winter.Pages partial maps
@@ -232,7 +232,7 @@ class SnippetManager
             $viewBag = $partial->getViewBag();
 
             if (strlen($viewBag->property('snippetCode'))) {
-                $snippet = new Snippet;
+                $snippet = new Snippet();
                 $snippet->initFromPartial($partial);
                 $result[] = $snippet;
             }
@@ -265,7 +265,7 @@ class SnippetManager
             foreach ($snippets as $componentClass => $componentCode) {
                 // TODO: register snippet components later, during
                 // the page life cycle.
-                $snippet = new Snippet;
+                $snippet = new Snippet();
                 $snippet->initFromComponentInfo($componentClass, $componentCode);
                 $result[] = $snippet;
             }

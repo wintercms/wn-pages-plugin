@@ -1,4 +1,5 @@
 <?php
+
 return [
     'plugin' => [
         'name' => '页面',
@@ -63,7 +64,7 @@ return [
         'code' => '编码',
         'code_comment' => '如果要使用 API 访问菜单项代码，请输入。',
         'static_page' => '静态页面',
-        'all_static_pages' => '所有静态页'
+        'all_static_pages' => '所有静态页',
     ],
     'content' => [
         'menu_label' => '内容',
@@ -128,5 +129,5 @@ return [
         'static_menu_code_description' => '指定组件应输出的菜单代码。',
         'static_breadcrumbs_name' => '静态面包屑导航',
         'static_breadcrumbs_description' => '输出静态页面的面包屑导航。',
-    ]
+    ],
 ];

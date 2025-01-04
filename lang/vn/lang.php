@@ -72,7 +72,7 @@ return [
         'external_link' => 'Liên kết bên ngoài',
         'external_link_comment' => 'Mở liên kết cho menu này trong một cửa sổ mới.',
         'static_page' => 'Trang nội dung tĩnh',
-        'all_static_pages' => 'Tất cả các trang nội dung tĩnh'
+        'all_static_pages' => 'Tất cả các trang nội dung tĩnh',
     ],
     'content' => [
         'menu_label' => 'Nội dung',
@@ -141,5 +141,5 @@ return [
         'static_breadcrumbs_description' => 'Hiển thị đường dẫn của trang.',
         'child_pages_name' => 'Trang con',
         'child_pages_description' => 'Hiển thị danh sách các trang con cho trang hiện tại',
-    ]
+    ],
 ];

@@ -64,7 +64,7 @@ return [
         'code' => 'Κωδικός',
         'code_comment' => 'Εισάγετε το κωδικό του μενού εάν θέλετε να έχετε πρόσβαση μέσω του API.',
         'static_page' => 'Στατική σελίδα',
-        'all_static_pages' => 'Όλες οι Στατικές Σελίδες'
+        'all_static_pages' => 'Όλες οι Στατικές Σελίδες',
     ],
     'content' => [
         'menu_label' => 'Περιεχόμενο',
@@ -129,5 +129,5 @@ return [
         'static_menu_code_description' => 'Ορίστε ένα κωδικό του μενού που το Δομικό Στοιχείο θα πρέπει να εξάγει.',
         'static_breadcrumbs_name' => 'Στατικά breadcrumbs',
         'static_breadcrumbs_description' => 'Παράγει breadcrumbs για μία στατική σελίδα.',
-    ]
+    ],
 ];

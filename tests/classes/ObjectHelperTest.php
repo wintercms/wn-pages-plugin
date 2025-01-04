@@ -3,10 +3,10 @@
 namespace Winter\Pages\Tests\Classes;
 
 use Cms\Classes\Theme;
-use Config;
 use PluginTestCase;
 use Winter\Pages\Classes\ObjectHelper;
 use Winter\Storm\Exception\ApplicationException;
+use Winter\Storm\Support\Facades\Config;
 
 class ObjectHelperTest extends PluginTestCase
 {

@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\Classes;
+<?php
+
+namespace Winter\Pages\Classes;
 
 use Cms\Classes\Content as ContentBase;
 
@@ -16,7 +18,7 @@ class Content extends ContentBase
      * @var array Attributes that support translation, if available.
      */
     public $translatable = [
-        'markup'
+        'markup',
     ];
 
     public $translatableModel = 'Winter\Translate\Classes\MLContent';

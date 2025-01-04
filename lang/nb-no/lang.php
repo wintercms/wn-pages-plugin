@@ -21,7 +21,7 @@ return [
         'manage_pages' => 'Administrer statiske sider',
         'manage_menus' => 'Administrer statiske menyer',
         'access_snippets' => 'Tilgang til snippets',
-        'manage_content' => 'Administrer statisk innhold'
+        'manage_content' => 'Administrer statisk innhold',
     ],
     'menu' => [
         'menu_label' => 'Menyer',
@@ -38,7 +38,7 @@ return [
         'add_subitem' => 'Nytt underelement',
         'no_records' => 'Ingen elementer funnet',
         'code_required' => 'En kode kreves.',
-        'invalid_code' => 'Ugyldig kode-format. Koden kan inneholde tall, latinske bokstaver og følgende symboler: _-'
+        'invalid_code' => 'Ugyldig kode-format. Koden kan inneholde tall, latinske bokstaver og følgende symboler: _-',
     ],
     'menuitem' => [
         'title' => 'Tittel',
@@ -61,19 +61,19 @@ return [
         'url_required' => 'En URL kreves.',
         'cms_page_required' => 'Vennligst velg en CMS-side',
         'code' => 'Kode',
-        'code_comment' => 'Velg en elementkode hvis du trenger tilgang via API-en. (valgfritt)'
+        'code_comment' => 'Velg en elementkode hvis du trenger tilgang via API-en. (valgfritt)',
     ],
     'content' => [
         'menu_label' => 'Innhold',
-        'cant_save_to_dir' => 'Å lagre innhold til files i static-pages-mappen er ikke tillatt.'
+        'cant_save_to_dir' => 'Å lagre innhold til files i static-pages-mappen er ikke tillatt.',
     ],
     'sidebar' => [
         'add' => 'Legg til',
-        'search' => 'Søk...'
+        'search' => 'Søk...',
     ],
     'object' => [
         'invalid_type' => 'Ukjent objekttype',
-        'not_found' => 'Det forespurte objektet ble ikke funnet.'
+        'not_found' => 'Det forespurte objektet ble ikke funnet.',
     ],
     'editor' => [
         'title' => 'Tittel',
@@ -109,6 +109,6 @@ return [
         'column_type_dropdown' => 'Dropdown',
         'not_found' => 'En snippet med koden :code ble ikke funnet.',
         'property_format_error' => 'Egenskapkoden skal starte med en latinsk bokstav og kan kun inneholde bokstver og tall.',
-        'invalid_option_key' => 'Ugyldig dropdown-alternativ kode: %s. Alternativkoder kan bare inneholde tall, latinske bokstaver, _ og -'
-    ]
+        'invalid_option_key' => 'Ugyldig dropdown-alternativ kode: %s. Alternativkoder kan bare inneholde tall, latinske bokstaver, _ og -',
+    ],
 ];

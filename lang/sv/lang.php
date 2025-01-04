@@ -22,7 +22,7 @@ return [
         'manage_pages' => 'Hantera statiska sidor',
         'manage_menus' => 'Hantera statiska menyer',
         'access_snippets' => 'Hantera stumpar',
-        'manage_content' => 'Hantera statiskt innehåll'
+        'manage_content' => 'Hantera statiskt innehåll',
     ],
     'menu' => [
         'menu_label' => 'Menyer',
@@ -39,7 +39,7 @@ return [
         'add_subitem' => 'Lägg till undermeny',
         'no_records' => 'Inga föremål kunde hittas',
         'code_required' => 'Koden är obligatorisk',
-        'invalid_code' => 'Ogiltigt kodformat. Koden kan innehålla siffror, latinska bokstäver och följande symboler: _-'
+        'invalid_code' => 'Ogiltigt kodformat. Koden kan innehålla siffror, latinska bokstäver och följande symboler: _-',
     ],
     'menuitem' => [
         'title' => 'Titel',
@@ -62,19 +62,19 @@ return [
         'url_required' => 'URL:en är obligatorisk',
         'cms_page_required' => 'Vänligen välj en CMS-sida',
         'code' => 'Kod',
-        'code_comment' => 'Ange kod om du vill få tillgång till menyobjektet i API:t.'
+        'code_comment' => 'Ange kod om du vill få tillgång till menyobjektet i API:t.',
     ],
     'content' => [
         'menu_label' => 'Innehåll',
-        'cant_save_to_dir' => 'Att spara innehållsfiler till mappen för statiska sidor är inte tillåtet.'
+        'cant_save_to_dir' => 'Att spara innehållsfiler till mappen för statiska sidor är inte tillåtet.',
     ],
     'sidebar' => [
         'add' => 'Lägg till',
-        'search' => 'Sök...'
+        'search' => 'Sök...',
     ],
     'object' => [
         'invalid_type' => 'Ogiltig objekttyp',
-        'not_found' => 'Det begärda objektet kunde inte finnas.'
+        'not_found' => 'Det begärda objektet kunde inte finnas.',
     ],
     'editor' => [
         'title' => 'Titel',
@@ -110,6 +110,6 @@ return [
         'column_type_dropdown' => 'Rullgardinsmeny',
         'not_found' => 'En stump med den begärda koden :code kunde inte hittas i temat.',
         'property_format_error' => 'Egenskapskoden ska börja med en latisk bokstav kan bara innehålla latinska bokstäver samt siffror',
-        'invalid_option_key' => 'Nyckeln: %s, i Rullgardinsmenyn är ogiltig. Alternativnycklarna kan bara innehålla siffror, latinska bokstäver och karaktärerna _ samt -'
-    ]
+        'invalid_option_key' => 'Nyckeln: %s, i Rullgardinsmenyn är ogiltig. Alternativnycklarna kan bara innehålla siffror, latinska bokstäver och karaktärerna _ samt -',
+    ],
 ];

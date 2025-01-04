@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\FormWidgets;
+<?php
+
+namespace Winter\Pages\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use Winter\Pages\Classes\MenuItem;
@@ -55,12 +57,12 @@ class MenuItems extends FormWidgetBase
      */
     public function prepareVars()
     {
-        $menuItem = new MenuItem;
+        $menuItem = new MenuItem();
 
         $this->vars['itemProperties'] = json_encode($menuItem->fillable);
         $this->vars['items'] = $this->model->{$this->fieldName};
 
-        $emptyItem = new MenuItem;
+        $emptyItem = new MenuItem();
         $emptyItem->title = trans($this->newItemTitle);
         $emptyItem->type = 'url';
         $emptyItem->url = '/';
@@ -69,7 +71,7 @@ class MenuItems extends FormWidgetBase
 
         $widgetConfig = $this->makeConfig('~/plugins/winter/pages/classes/menuitem/fields.yaml');
         $widgetConfig->model = $menuItem;
-        $widgetConfig->alias = $this->alias.'MenuItem';
+        $widgetConfig->alias = $this->alias . 'MenuItem';
 
         $this->vars['itemFormWidget'] = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
     }
@@ -114,15 +116,12 @@ class MenuItems extends FormWidgetBase
 
             if ($item->type !== 'url') {
                 if (isset($this->typeInfoCache[$item->type]['references'])) {
-                    $result .= ': '.$this->findReferenceName($item->reference, $this->typeInfoCache[$item->type]['references']);
+                    $result .= ': ' . $this->findReferenceName($item->reference, $this->typeInfoCache[$item->type]['references']);
                 }
+            } else {
+                $result .= ': ' . $item->url;
             }
-            else {
-                $result .= ': '.$item->url;
-            }
-
-        }
-        else {
+        } else {
             $result = trans('winter.pages::lang.menuitem.unknown_type');
         }
 
@@ -131,19 +130,19 @@ class MenuItems extends FormWidgetBase
 
     protected function findReferenceName($search, $typeOptionList)
     {
-        $iterator = function($optionList, $path) use ($search, &$iterator) {
+        $iterator = function ($optionList, $path) use ($search, &$iterator) {
             foreach ($optionList as $reference => $info) {
                 if ($reference == $search) {
                     $result = $this->getMenuItemTitle($info);
 
-                    return strlen($path) ? $path.' / ' .$result : $result;
+                    return strlen($path) ? $path . ' / ' . $result : $result;
                 }
 
                 if (is_array($info) && isset($info['items'])) {
-                    $result = $iterator($info['items'], $path.' / '.$this->getMenuItemTitle($info));
+                    $result = $iterator($info['items'], $path . ' / ' . $this->getMenuItemTitle($info));
 
                     if (strlen($result)) {
-                        return strlen($path) ? $path.' / '.$result : $result;
+                        return strlen($path) ? $path . ' / ' . $result : $result;
                     }
                 }
             }

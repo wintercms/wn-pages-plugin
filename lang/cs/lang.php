@@ -22,7 +22,7 @@ return [
         'manage_pages' => 'Spravovat stránky',
         'manage_menus' => 'Spravovat menu',
         'access_snippets' => 'Používat snippety',
-        'manage_content' => 'Spravovat obsah'
+        'manage_content' => 'Spravovat obsah',
     ],
     'menu' => [
         'menu_label' => 'Menu',
@@ -38,7 +38,7 @@ return [
         'items' => 'Položky menu',
         'add_subitem' => 'Přidat položku',
         'code_required' => 'Pole kód je povinné.',
-        'invalid_code' => 'Pole kód obsahuje neplatné znaky. Může obsahovat pouze číslice, písmena a znaky: _-'
+        'invalid_code' => 'Pole kód obsahuje neplatné znaky. Může obsahovat pouze číslice, písmena a znaky: _-',
     ],
     'menuitem' => [
         'title' => 'Titulek',
@@ -72,19 +72,19 @@ return [
         'external_link' => 'Externí odkaz',
         'external_link_comment' => 'Otevřít odkaz této položky v novém okně.',
         'static_page' => 'Statická stránka',
-        'all_static_pages' => 'Všechny statické stránky'
+        'all_static_pages' => 'Všechny statické stránky',
     ],
     'content' => [
         'menu_label' => 'Obsah',
-        'cant_save_to_dir' => 'Ukládat obsah do složky statických stránek není povoleno.'
+        'cant_save_to_dir' => 'Ukládat obsah do složky statických stránek není povoleno.',
     ],
     'sidebar' => [
         'add' => 'Přidat',
-        'search' => 'Hledat...'
+        'search' => 'Hledat...',
     ],
     'object' => [
         'invalid_type' => 'Neznámý typ objektu',
-        'not_found' => 'Požadovaný objekt nebyl nalezen.'
+        'not_found' => 'Požadovaný objekt nebyl nalezen.',
     ],
     'editor' => [
         'title' => 'Titulek',
@@ -120,6 +120,6 @@ return [
         'column_type_dropdown' => 'Seznam',
         'not_found' => 'Snippet s kódem :code nebyl nalezen v rámci tématu.',
         'property_format_error' => 'Kód vlastnosti by měl začínat písmenem a může obsahovat pouze písmena nebo číslice.',
-        'invalid_option_key' => 'Neplatný klíč položky seznamu: %s. Klíč položky seznamu může obsahovat pouze písmena, číslice a znaky: _-'
-    ]
+        'invalid_option_key' => 'Neplatný klíč položky seznamu: %s. Klíč položky seznamu může obsahovat pouze písmena, číslice a znaky: _-',
+    ],
 ];

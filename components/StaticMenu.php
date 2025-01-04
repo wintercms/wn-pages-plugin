@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\Components;
+<?php
+
+namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Theme;
@@ -27,7 +29,7 @@ class StaticMenu extends ComponentBase
     {
         return [
             'name'        => 'winter.pages::lang.component.static_menu_name',
-            'description' => 'winter.pages::lang.component.static_menu_description'
+            'description' => 'winter.pages::lang.component.static_menu_description',
         ];
     }
 
@@ -37,8 +39,8 @@ class StaticMenu extends ComponentBase
             'code' => [
                 'title'       => 'winter.pages::lang.component.static_menu_code_name',
                 'description' => 'winter.pages::lang.component.static_menu_code_description',
-                'type'        => 'dropdown'
-            ]
+                'type'        => 'dropdown',
+            ],
         ];
     }
 
@@ -87,7 +89,7 @@ class StaticMenu extends ComponentBase
      */
     public function totalItems()
     {
-        $countAll = function($items) use (&$countAll) {
+        $countAll = function ($items) use (&$countAll) {
             $count = count($items);
 
             foreach ($items as $item) {

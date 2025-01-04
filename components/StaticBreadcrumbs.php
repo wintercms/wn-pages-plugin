@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\Components;
+<?php
+
+namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
 use Cms\Classes\Theme;
@@ -23,7 +25,7 @@ class StaticBreadcrumbs extends ComponentBase
     {
         return [
             'name'        => 'winter.pages::lang.component.static_breadcrumbs_name',
-            'description' => 'winter.pages::lang.component.static_breadcrumbs_description'
+            'description' => 'winter.pages::lang.component.static_breadcrumbs_description',
         ];
     }
 

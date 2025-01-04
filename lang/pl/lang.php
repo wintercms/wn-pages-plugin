@@ -1,4 +1,6 @@
-<?php return [
+<?php
+
+return [
     'plugin' => [
         'name' => 'Strony',
         'description' => 'Strony statyczne oraz menu.',

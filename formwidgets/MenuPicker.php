@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\FormWidgets;
+<?php
+
+namespace Winter\Pages\FormWidgets;
 
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;

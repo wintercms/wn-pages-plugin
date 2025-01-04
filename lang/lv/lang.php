@@ -1,4 +1,5 @@
 <?php
+
 return [
     'plugin' => [
         'name' => 'Lapas',
@@ -61,7 +62,7 @@ return [
         'code' => 'Kods',
         'code_comment' => 'Ievadi izvēlnes priekšmeta kodu, ja tam vēlies piekļūt izmantojot API.',
         'static_page' => 'Statiska lapa',
-        'all_static_pages' => 'Visas statiskās lapas'
+        'all_static_pages' => 'Visas statiskās lapas',
     ],
     'content' => [
         'menu_label' => 'Saturs',

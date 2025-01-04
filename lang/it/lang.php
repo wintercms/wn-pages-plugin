@@ -22,7 +22,7 @@ return [
         'manage_pages' => 'Gestisci pagine',
         'manage_menus' => 'Gestisci menu',
         'access_snippets' => 'Accedi agli snippet',
-        'manage_content' => 'Gestisci contenuti'
+        'manage_content' => 'Gestisci contenuti',
     ],
     'menu' => [
         'menu_label' => 'Menu',
@@ -38,7 +38,7 @@ return [
         'items' => 'Voci di menu',
         'add_subitem' => 'Aggiungi sottomenu',
         'code_required' => 'Il Codice è obbligatorio',
-        'invalid_code' => 'Formato del Codice non valido. Il Codice può contenere numeri, lettere latine e i seguenti simboli: _-'
+        'invalid_code' => 'Formato del Codice non valido. Il Codice può contenere numeri, lettere latine e i seguenti simboli: _-',
     ],
     'menuitem' => [
         'title' => 'Titolo',
@@ -63,19 +63,19 @@ return [
         'code' => 'Codice',
         'code_comment' => 'Inserisci il codice della voce di menu se vuoi accedervi con l\'API.',
         'static_page' => 'Pagine',
-        'all_static_pages' => 'Tutte le pagine'
+        'all_static_pages' => 'Tutte le pagine',
     ],
     'content' => [
         'menu_label' => 'Contenuti',
-        'cant_save_to_dir' => 'Salvataggio dei file di contenuto nella directory static-pages non consentito.'
+        'cant_save_to_dir' => 'Salvataggio dei file di contenuto nella directory static-pages non consentito.',
     ],
     'sidebar' => [
         'add' => 'Aggiungi',
-        'search' => 'Cerca...'
+        'search' => 'Cerca...',
     ],
     'object' => [
         'invalid_type' => 'Tipo di oggetto sconosciuto',
-        'not_found' => 'Oggetto richiesto non trovato.'
+        'not_found' => 'Oggetto richiesto non trovato.',
     ],
     'editor' => [
         'title' => 'Titolo',
@@ -111,6 +111,6 @@ return [
         'column_type_dropdown' => 'Menu a cascata',
         'not_found' => 'Snippet con codice :code non trovato nel tema.',
         'property_format_error' => 'Il codice della proprietà deve iniziare con una lettera latina e può contenere solo lettere latine e numeri',
-        'invalid_option_key' => 'Opzione del menu a cascata non valida: %s. Le opzioni possono contenere solo numeri, lettere latine e i caratteri _ e -'
-    ]
+        'invalid_option_key' => 'Opzione del menu a cascata non valida: %s. Le opzioni possono contenere solo numeri, lettere latine e i caratteri _ e -',
+    ],
 ];

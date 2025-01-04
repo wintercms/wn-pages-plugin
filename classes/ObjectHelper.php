@@ -1,12 +1,14 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use ApplicationException;
+namespace Winter\Pages\Classes;
+
 use Cms\Classes\CmsCompoundObject;
 use Cms\Classes\CmsObject;
 use Cms\Classes\Theme;
-use Config;
-use Lang;
-use Session;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
+use Winter\Storm\Exception\ApplicationException;
+use Winter\Storm\Support\Facades\Config;
 
 class ObjectHelper
 {

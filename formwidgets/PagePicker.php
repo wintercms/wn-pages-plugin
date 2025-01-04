@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\FormWidgets;
+<?php
+
+namespace Winter\Pages\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
 use Cms\Classes\Theme;
@@ -44,13 +46,13 @@ class PagePicker extends FormWidgetBase
 
         // Flatten page tree for dropdown options
         $options = [];
-        $iterator = function($items, $depth=0) use(&$iterator, &$tree, &$options, $indent) {
+        $iterator = function ($items, $depth = 0) use (&$iterator, &$tree, &$options, $indent) {
 
             foreach ($items as $code) {
                 $itemData = $tree[$code];
                 $options[$code] = str_repeat($indent, $depth) . $itemData['title'];
                 if (!empty($itemData['items'])) {
-                    $iterator($itemData['items'], $depth+1);
+                    $iterator($itemData['items'], $depth + 1);
                 }
             }
 

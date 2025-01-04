@@ -1,6 +1,8 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use Event;
+namespace Winter\Pages\Classes;
+
+use Winter\Storm\Support\Facades\Event;
 
 /**
  * Represents a menu item.
@@ -78,7 +80,7 @@ class MenuItem
         'reference',
         'cmsPage',
         'replace',
-        'viewBag'
+        'viewBag',
     ];
 
     /**
@@ -96,15 +98,14 @@ class MenuItem
         $result = [];
 
         foreach ($items as $itemData) {
-            $obj = new self;
+            $obj = new self();
 
             foreach ($itemData as $name => $value) {
                 if ($name != 'items') {
                     if (property_exists($obj, $name)) {
                         $obj->$name = $value;
                     }
-                }
-                else {
+                } else {
                     $obj->items = self::initFromArray($value);
                 }
             }
@@ -174,9 +175,9 @@ class MenuItem
                             $baseName = $page->getBaseFileName();
                             $pos = strrpos($baseName, '/');
 
-                            $dir = $pos !== false ? substr($baseName, 0, $pos).' / ' : null;
+                            $dir = $pos !== false ? substr($baseName, 0, $pos) . ' / ' : null;
                             $cmsPages[$baseName] = strlen($page->title)
-                                ? $dir.$page->title
+                                ? $dir . $page->title
                                 : $baseName;
                         }
 

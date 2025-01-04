@@ -1,9 +1,11 @@
-<?php namespace Winter\Pages\FormWidgets;
+<?php
+
+namespace Winter\Pages\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
-use Input;
-use Str;
 use Winter\Pages\Classes\MenuItem;
+use Winter\Storm\Support\Facades\Input;
+use Winter\Storm\Support\Str;
 
 /**
  * Menu item reference search.
@@ -42,7 +44,7 @@ class MenuItemSearch extends FormWidgetBase
     protected function getData()
     {
         return [
-            'results' => $this->getMatches()
+            'results' => $this->getMatches(),
         ];
     }
 
@@ -66,7 +68,7 @@ class MenuItemSearch extends FormWidgetBase
                 if ($this->textMatchesSearch($words, $title)) {
                     $typeMatches[] = [
                         'id'   => "$type::$key",
-                        'text' => $title
+                        'text' => $title,
                     ];
                 }
 
@@ -91,7 +93,7 @@ class MenuItemSearch extends FormWidgetBase
             if (!empty($typeMatches)) {
                 $types[] = [
                     'text' => trans($typeTitle),
-                    'children' => $typeMatches
+                    'children' => $typeMatches,
                 ];
             }
         }

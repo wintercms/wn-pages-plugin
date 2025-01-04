@@ -22,7 +22,7 @@ return [
         'manage_pages' => 'Gerenciar páginas estáticas',
         'manage_menus' => 'Gerenciar menus estáticos',
         'access_snippets' => 'Acessar fragmentos',
-        'manage_content' => 'Gerenciar conteúdos estáticos'
+        'manage_content' => 'Gerenciar conteúdos estáticos',
     ],
     'menu' => [
         'menu_label' => 'Menus',
@@ -39,7 +39,7 @@ return [
         'add_subitem' => 'Adicionar subitem',
         'no_records' => 'Nenhum item encontrado',
         'code_required' => 'O código é necessário',
-        'invalid_code' => 'Formato inválido de código. O código pode conter dígitos, letras latinas e os seguintes símbolos: _-'
+        'invalid_code' => 'Formato inválido de código. O código pode conter dígitos, letras latinas e os seguintes símbolos: _-',
     ],
     'menuitem' => [
         'title' => 'Título',
@@ -62,19 +62,19 @@ return [
         'url_required' => 'A URL é necessária',
         'cms_page_required' => 'Por favor, selecione uma página CMS',
         'code' => 'Código',
-        'code_comment' => 'Entre com o código do item se deseja acessar com a API.'
+        'code_comment' => 'Entre com o código do item se deseja acessar com a API.',
     ],
     'content' => [
         'menu_label' => 'Conteúdo',
-        'cant_save_to_dir' => 'Não é permitido salvar arquivos de conteúdo no diretório de páginas estáticas.'
+        'cant_save_to_dir' => 'Não é permitido salvar arquivos de conteúdo no diretório de páginas estáticas.',
     ],
     'sidebar' => [
         'add' => 'Adicionar',
-        'search' => 'Buscar...'
+        'search' => 'Buscar...',
     ],
     'object' => [
         'invalid_type' => 'Tipo de objeto desconhecido',
-        'not_found' => 'O objeto requisitado não foi encontrado.'
+        'not_found' => 'O objeto requisitado não foi encontrado.',
     ],
     'editor' => [
         'title' => 'Título',
@@ -110,6 +110,6 @@ return [
         'column_type_dropdown' => 'Caixa de seleção suspensa',
         'not_found' => 'Fragmento com o código :code não foi encontrado.',
         'property_format_error' => 'Código da propriedade deve iniciar com uma letra latina e pode conter apenas letras latinas e dígitos',
-        'invalid_option_key' => 'Chave de opção inválida: %s. Chaves de opção podem conter apenas dígitos, letras latinas e os caracteres _ e -'
-    ]
+        'invalid_option_key' => 'Chave de opção inválida: %s. Chaves de opção podem conter apenas dígitos, letras latinas e os caracteres _ e -',
+    ],
 ];

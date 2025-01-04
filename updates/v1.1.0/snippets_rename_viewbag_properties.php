@@ -1,10 +1,11 @@
-<?php namespace Winter\User\Updates;
+<?php
 
-use File;
-use Schema;
-use Winter\Storm\Database\Updates\Migration;
-use Cms\Classes\Theme;
+namespace Winter\User\Updates;
+
 use Cms\Classes\Partial;
+use Cms\Classes\Theme;
+use Winter\Storm\Database\Updates\Migration;
+use Winter\Storm\Support\Facades\File;
 
 class SnippetsRenameViewbagProperties extends Migration
 {
@@ -17,13 +18,16 @@ class SnippetsRenameViewbagProperties extends Migration
                 try {
                     $path = $partial->getFilePath();
                     $contents = File::get($path);
-                    if (strpos($contents, 'staticPageSnippetCode') === false) continue;
+                    if (strpos($contents, 'staticPageSnippetCode') === false) {
+                        continue;
+                    }
                     $contents = str_replace('staticPageSnippetName', 'snippetName', $contents);
                     $contents = str_replace('staticPageSnippetCode', 'snippetCode', $contents);
                     $contents = str_replace('staticPageSnippetProperties', 'snippetProperties', $contents);
                     File::put($path, $contents);
+                } catch (\Exception $ex) {
+                    continue;
                 }
-                catch (\Exception $ex) { continue; }
             }
         }
     }

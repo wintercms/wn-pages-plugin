@@ -72,7 +72,7 @@ return [
         'external_link' => 'Ulkoinen linkki',
         'external_link_comment' => 'Avaa linkki tämän valikon kohteesta uudessa ikkunassa.',
         'static_page' => 'Staattinen sivu',
-        'all_static_pages' => 'Kaikki staattiset sivut'
+        'all_static_pages' => 'Kaikki staattiset sivut',
     ],
     'content' => [
         'menu_label' => 'Sisältö',
@@ -149,5 +149,5 @@ return [
         'static_breadcrumbs_description' => 'Näyttää murupolun staattisella sivulla.',
         'child_pages_name' => 'Alasivut',
         'child_pages_description' => 'Näyttää listan nykyisen sivun alasivuista',
-    ]
+    ],
 ];

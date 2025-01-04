@@ -1,4 +1,6 @@
-<?php namespace Winter\Pages\Components;
+<?php
+
+namespace Winter\Pages\Components;
 
 use Cms\Classes\ComponentBase;
 
@@ -31,7 +33,7 @@ class ChildPages extends ComponentBase
     {
         return [
             'name'        => 'winter.pages::lang.component.child_pages_name',
-            'description' => 'winter.pages::lang.component.child_pages_description'
+            'description' => 'winter.pages::lang.component.child_pages_description',
         ];
     }
 
@@ -52,7 +54,8 @@ class ChildPages extends ComponentBase
                         'viewBag'            => $viewBag,
                         'is_hidden'          => @$viewBag['is_hidden'],
                         'navigation_hidden'  => @$viewBag['navigation_hidden'],
-                    ]]);
+                    ],
+                    ]);
                 }
             }
         }

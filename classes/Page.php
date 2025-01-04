@@ -1,25 +1,25 @@
-<?php namespace Winter\Pages\Classes;
+<?php
 
-use Cache;
-use Cms;
+namespace Winter\Pages\Classes;
+
 use Cms\Classes\ComponentManager;
 use Cms\Classes\Content as ContentBase;
 use Cms\Classes\Layout;
 use Cms\Classes\Theme;
-use Config;
-use Event;
-use File;
-use Lang;
+use Cms\Facades\Cms;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Lang;
 use System\Helpers\View as ViewHelper;
 use Twig\Node\Node as TwigNode;
-use Url;
-use Validator;
-use Winter\Pages\Classes\PageList;
-use Winter\Pages\Classes\Snippet;
 use Winter\Storm\Parse\Bracket as TextParser;
 use Winter\Storm\Parse\Syntax\Parser as SyntaxParser;
 use Winter\Storm\Router\Helper as RouterHelper;
 use Winter\Storm\Router\Router;
+use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
+use Winter\Storm\Support\Facades\File;
+use Winter\Storm\Support\Facades\URL;
+use Winter\Storm\Support\Facades\Validator;
 use Winter\Storm\Support\Str;
 use Winter\Translate\Classes\Translator;
 use Winter\Translate\Models\Locale;
@@ -34,7 +34,7 @@ class Page extends ContentBase
 {
     public $implement = [
         '@Winter.Translate.Behaviors.TranslatablePageUrl',
-        '@Winter.Translate.Behaviors.TranslatableCmsObject'
+        '@Winter.Translate.Behaviors.TranslatableCmsObject',
     ];
 
     /**
@@ -66,7 +66,7 @@ class Page extends ContentBase
      */
     public $rules = [
         'title' => 'required',
-        'url'   => ['required', 'regex:/^\/[a-z0-9\/_\-\.]*$/i', 'uniqueUrl']
+        'url'   => ['required', 'regex:/^\/[a-z0-9\/_\-\.]*$/i', 'uniqueUrl'],
     ];
 
     /**
@@ -162,7 +162,7 @@ class Page extends ContentBase
     {
         $pages = Page::listInTheme($this->theme, true);
 
-        Validator::extend('uniqueUrl', function($attribute, $value, $parameters) use ($pages) {
+        Validator::extend('uniqueUrl', function ($attribute, $value, $parameters) use ($pages) {
             $value = trim(strtolower($value));
 
             foreach ($pages as $existingPage) {
@@ -219,11 +219,11 @@ class Page extends ContentBase
             $fileName = 'index';
         }
 
-        $curName = trim($fileName).'.htm';
+        $curName = trim($fileName) . '.htm';
         $counter = 2;
 
-        while (File::exists($dir.'/'.$curName)) {
-            $curName = $fileName.'-'.$counter.'.htm';
+        while (File::exists($dir . '/' . $curName)) {
+            $curName = $fileName . '-' . $counter . '.htm';
             $counter++;
         }
 
@@ -483,7 +483,7 @@ class Page extends ContentBase
             $placeholderInfo = [
                 'title'  => $title,
                 'type'   => $type ?: 'html',
-                'ignore' => $ignore
+                'ignore' => $ignore,
             ];
 
             $result[$node->getAttribute('name')] = $placeholderInfo;
@@ -569,9 +569,9 @@ class Page extends ContentBase
                 continue;
             }
 
-            $result .= '{% put '.$code.' %}'.PHP_EOL;
-            $result .= $content.PHP_EOL;
-            $result .= '{% endput %}'.PHP_EOL;
+            $result .= '{% put ' . $code . ' %}' . PHP_EOL;
+            $result .= $content . PHP_EOL;
+            $result .= '{% endput %}' . PHP_EOL;
             $result .= PHP_EOL;
         }
 
@@ -615,7 +615,7 @@ class Page extends ContentBase
          * Process snippets
          */
         $markup = Snippet::processPageMarkup(
-            $this->getFileName().md5($placeholderName),
+            $this->getFileName() . md5($placeholderName),
             $this->theme,
             $placeholderContents
         );
@@ -643,7 +643,7 @@ class Page extends ContentBase
         $snippetComponents = Snippet::listPageComponents(
             $this->getFileName(),
             $this->theme,
-            $this->markup.$this->code
+            $this->markup . $this->code
         );
 
         $componentManager = ComponentManager::instance();
@@ -674,7 +674,7 @@ class Page extends ContentBase
      */
     protected static function getMenuCacheKey($theme)
     {
-        $key = crc32($theme->getPath()).'static-page-menu';
+        $key = crc32($theme->getPath()) . 'static-page-menu';
         /**
          * @event pages.page.getMenuCacheKey
          * Enables modifying the key used to reference cached Winter.Pages menu trees
@@ -730,14 +730,14 @@ class Page extends ContentBase
         switch ($type) {
             case 'all-static-pages':
                 $result = [
-                    'dynamicItems' => true
+                    'dynamicItems' => true,
                 ];
                 break;
             case 'static-page':
                 $result = [
                     'references'   => self::listStaticPageMenuOptions(),
                     'nesting'      => true,
-                    'dynamicItems' => true
+                    'dynamicItems' => true,
                 ];
                 break;
         }
@@ -810,7 +810,7 @@ class Page extends ContentBase
                 'items' => [],
             ];
 
-            $iterator = function($items) use (&$iterator, &$tree, $url, $getLocalizedUrls) {
+            $iterator = function ($items) use (&$iterator, &$tree, $url, $getLocalizedUrls) {
                 $branch = [];
 
                 foreach ($items as $itemName) {
@@ -860,7 +860,7 @@ class Page extends ContentBase
 
         $url = $translator->getPathInLocale($url, $locale);
 
-        return (new Router)->urlFromPattern($url);
+        return (new Router())->urlFromPattern($url);
     }
 
     /**
@@ -873,10 +873,9 @@ class Page extends ContentBase
     public static function getRichEditorTypeInfo($type)
     {
         if ($type == 'static-page') {
-
             $pages = self::listStaticPageMenuOptions();
 
-            $iterator = function($pages) use (&$iterator) {
+            $iterator = function ($pages) use (&$iterator) {
                 $result = [];
                 foreach ($pages as $pageFile => $page) {
                     $url = self::url($pageFile);
@@ -884,10 +883,9 @@ class Page extends ContentBase
                     if (is_array($page)) {
                         $result[$url] = [
                             'title' => array_get($page, 'title', []),
-                            'links' => $iterator(array_get($page, 'items', []))
+                            'links' => $iterator(array_get($page, 'items', [])),
                         ];
-                    }
-                    else {
+                    } else {
                         $result[$url] = $page;
                     }
                 }
@@ -923,10 +921,10 @@ class Page extends ContentBase
         }
 
         $menuTree = [
-            '--root-pages--' => []
+            '--root-pages--' => [],
         ];
 
-        $iterator = function($items, $parent, $level) use (&$menuTree, &$iterator) {
+        $iterator = function ($items, $parent, $level) use (&$menuTree, &$iterator) {
             $result = [];
 
             foreach ($items as $item) {
@@ -939,10 +937,10 @@ class Page extends ContentBase
                     'url'    => $pageUrl,
                     'title'  => array_get($viewBag, 'title'),
                     'mtime'  => $item->page->mtime,
-                    'items'  => $iterator($item->subpages, $pageCode, $level+1),
+                    'items'  => $iterator($item->subpages, $pageCode, $level + 1),
                     'parent' => $parent,
                     'localeUrls' => array_get($viewBag, 'localeUrl', []),
-                    'navigation_hidden' => array_get($viewBag, 'navigation_hidden')
+                    'navigation_hidden' => array_get($viewBag, 'navigation_hidden'),
                 ];
 
                 if ($level == 0) {
@@ -978,7 +976,7 @@ class Page extends ContentBase
         $pageList = new PageList($theme);
         $pageTree = $pageList->getPageTree(true);
 
-        $iterator = function($pages) use (&$iterator) {
+        $iterator = function ($pages) use (&$iterator) {
             $result = [];
 
             foreach ($pages as $pageInfo) {
@@ -987,11 +985,10 @@ class Page extends ContentBase
 
                 if (!$pageInfo->subpages) {
                     $result[$fileName] = $pageName;
-                }
-                else {
+                } else {
                     $result[$fileName] = [
                         'title' => $pageName,
-                        'items' => $iterator($pageInfo->subpages)
+                        'items' => $iterator($pageInfo->subpages),
                     ];
                 }
             }

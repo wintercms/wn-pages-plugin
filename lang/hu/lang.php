@@ -3,7 +3,7 @@
 return [
     'plugin' => [
         'name' => 'Oldalak',
-        'description' => 'Oldalak, menük, tartalmak és kódrészletek menedzselése.'
+        'description' => 'Oldalak, menük, tartalmak és kódrészletek menedzselése.',
     ],
     'page' => [
         'menu_label' => 'Oldalak',
@@ -22,7 +22,7 @@ return [
         'manage_pages' => 'Oldalak kezelése',
         'manage_menus' => 'Menük kezelése',
         'access_snippets' => 'Kódrészletek kezelése',
-        'manage_content' => 'Tartalom kezelése'
+        'manage_content' => 'Tartalom kezelése',
     ],
     'menu' => [
         'menu_label' => 'Menük',
@@ -38,7 +38,7 @@ return [
         'items' => 'Menüpont',
         'add_subitem' => 'Almenü hozzáadása',
         'code_required' => 'A Kód kötelező',
-        'invalid_code' => 'Érvénytelen a kód formátuma. Csak számokat, latin betűket és a következő szimbólumokat tartalmazhatja: _-'
+        'invalid_code' => 'Érvénytelen a kód formátuma. Csak számokat, latin betűket és a következő szimbólumokat tartalmazhatja: _-',
     ],
     'menuitem' => [
         'title' => 'Cím',
@@ -72,21 +72,21 @@ return [
         'external_link' => 'Külső hivatkozás',
         'external_link_comment' => 'A link új ablakban fog megjelenni.',
         'static_page' => 'Oldalak',
-        'all_static_pages' => 'Összes oldal'
+        'all_static_pages' => 'Összes oldal',
     ],
     'content' => [
         'menu_label' => 'Tartalom',
         'saved' => 'A tartalom mentése sikerült.',
-        'cant_save_to_dir' => 'A fájlok mentése a "static-pages" könyvtárba nem engedélyezett.'
+        'cant_save_to_dir' => 'A fájlok mentése a "static-pages" könyvtárba nem engedélyezett.',
     ],
     'sidebar' => [
         'add' => 'Hozzáadás',
-        'search' => 'Keresés...'
+        'search' => 'Keresés...',
     ],
     'object' => [
         'invalid_type' => 'Ismeretlen objektumtípus',
         'unauthorized_type' => 'Nem jogosult a következő objektum(ok) kezelésére: :type',
-        'not_found' => 'A kért objektum nem található.'
+        'not_found' => 'A kért objektum nem található.',
     ],
     'editor' => [
         'title' => 'Cím',
@@ -102,7 +102,7 @@ return [
         'hidden' => 'Rejtett',
         'hidden_comment' => 'A rejtett oldalakhoz csak a bejelentkezett kiszolgáló oldali felhasználók férhetnek hozzá.',
         'navigation_hidden' => 'Elrejtés a navigációban',
-        'navigation_hidden_comment' => 'Jelölje be ezt a jelölőnégyzetet ennek a oldalnak az automatikusan generált menükből és útkövetésekből való elrejtéséhez.'
+        'navigation_hidden_comment' => 'Jelölje be ezt a jelölőnégyzetet ennek a oldalnak az automatikusan generált menükből és útkövetésekből való elrejtéséhez.',
     ],
     'snippet' => [
         'partialtab' => 'Kódrészlet',
@@ -122,7 +122,7 @@ return [
         'column_type_dropdown' => 'Lenyíló lista',
         'not_found' => 'A(z) :code nevű kódrészlet nem található a témában.',
         'property_format_error' => 'A kód latin karakterrel kezdődhet és csak latin karaktereket és számokat tartalmazhat.',
-        'invalid_option_key' => 'Érvénytelen formátum: :key. Csak számokat, latin betűket és a következő szimbólumokat tartalmazhatja: _-'
+        'invalid_option_key' => 'Érvénytelen formátum: :key. Csak számokat, latin betűket és a következő szimbólumokat tartalmazhatja: _-',
     ],
     'component' => [
         'static_page_name' => 'Statikus oldal',
@@ -141,5 +141,5 @@ return [
         'static_breadcrumbs_description' => 'Kenyérmorzsa megjelenítése.',
         'child_pages_name' => 'Aloldalak',
         'child_pages_description' => 'Megjeleníti az aktuális oldal aloldalainak listáját.',
-    ]
+    ],
 ];

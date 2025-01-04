@@ -1,10 +1,12 @@
-<?php namespace Winter\Pages\Classes;
+<?php
+
+namespace Winter\Pages\Classes;
 
 use Cms\Classes\Meta;
-use Event;
-use Request;
-use SystemException;
-use Url;
+use Illuminate\Support\Facades\Request;
+use Winter\Storm\Exception\SystemException;
+use Winter\Storm\Support\Facades\Event;
+use Winter\Storm\Support\Facades\URL;
 use Winter\Storm\Support\Str;
 
 /**
@@ -71,7 +73,7 @@ class Menu extends Meta
         $code = trim($code);
 
         if (strlen($code)) {
-            $this->fileName = $code.'.yaml';
+            $this->fileName = $code . '.yaml';
             $this->attributes = array_merge($this->attributes, ['code' => $code]);
         }
 
@@ -148,11 +150,11 @@ class Menu extends Meta
         $currentUrl = Str::lower(Url::to($currentUrl));
 
         $activeMenuItem = $page->activeMenuItem ?: false;
-        $iterator = function($items) use ($currentUrl, &$iterator, $activeMenuItem) {
+        $iterator = function ($items) use ($currentUrl, &$iterator, $activeMenuItem) {
             $result = [];
 
             foreach ($items as $item) {
-                $parentReference = new MenuItemReference;
+                $parentReference = new MenuItemReference();
                 $parentReference->type = $item->type;
                 $parentReference->title = $item->title;
                 $parentReference->code = $item->code;
@@ -165,8 +167,7 @@ class Menu extends Meta
                 if ($item->type == 'url') {
                     $parentReference->url = $item->url;
                     $parentReference->isActive = $currentUrl == Str::lower(Url::to($item->url)) || $activeMenuItem === $item->code;
-                }
-                else {
+                } else {
                     /*
                      * If the item type is not URL, use the API to request the item type's provider to
                      * return the item URL, subitems and determine whether the item is active.
@@ -179,11 +180,11 @@ class Menu extends Meta
                     }
 
                     if (isset($itemInfo['items'])) {
-                        $itemIterator = function($items) use (&$itemIterator, $parentReference) {
+                        $itemIterator = function ($items) use (&$itemIterator, $parentReference) {
                             $result = [];
 
                             foreach ($items as $item) {
-                                $reference = new MenuItemReference;
+                                $reference = new MenuItemReference();
                                 $reference->type = isset($item['type']) ? $item['type'] : null;
                                 $reference->title = isset($item['title']) ? $item['title'] : '--no title--';
                                 $reference->url = isset($item['url']) ? $item['url'] : '#';
@@ -216,8 +217,7 @@ class Menu extends Meta
 
                 if (!$item->replace) {
                     $result[] = $parentReference;
-                }
-                else {
+                } else {
                     foreach ($parentReference->items as $subItem) {
                         $result[] = $subItem;
                     }
@@ -232,7 +232,7 @@ class Menu extends Meta
         /*
          * Populate the isChildActive property
          */
-        $hasActiveChild = function($items) use (&$hasActiveChild) {
+        $hasActiveChild = function ($items) use (&$hasActiveChild) {
             foreach ($items as $item) {
                 if ($item->isActive) {
                     return true;
@@ -245,7 +245,7 @@ class Menu extends Meta
             }
         };
 
-        $iterator = function($items) use (&$iterator, &$hasActiveChild) {
+        $iterator = function ($items) use (&$iterator, &$hasActiveChild) {
             foreach ($items as $item) {
                 $item->isChildActive = $hasActiveChild($item->items);
 
