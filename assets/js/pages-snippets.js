@@ -142,6 +142,8 @@
             $snippet
                 .addClass('loading')
                 .addClass('fr-draggable')
+                .removeClass('inspector-open') // Required if user saved content with inspector open
+                .removeClass('popover-highlight') // Required if user saved content with inspector open
                 .attr({
                     'data-inspector-css-class': 'hero',
                     'data-name': 'Loading...',
