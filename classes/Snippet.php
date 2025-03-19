@@ -325,12 +325,12 @@ class Snippet
 
     public static function processTemplateSettingsArray($settingsArray)
     {
-        if (!isset($settingsArray['viewBag']['snippetProperties']['TableData'])) {
+        if (!isset($settingsArray['viewBag']['snippetProperties'])) {
             return $settingsArray;
         }
 
         $properties = [];
-        $rows = $settingsArray['viewBag']['snippetProperties']['TableData'];
+        $rows = $settingsArray['viewBag']['snippetProperties'];
 
         foreach ($rows as $row) {
             $property = array_get($row, 'property');
