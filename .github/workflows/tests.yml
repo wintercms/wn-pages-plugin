@@ -13,13 +13,9 @@ jobs:
     strategy:
       max-parallel: 6
       matrix:
-        phpVersion: ['8.0', '8.1', '8.2', '8.3']
+        phpVersion: ['8.1', '8.2', '8.3', '8.4']
         winterRelease: ['develop']
         winterReleaseDir: ['develop']
-        include:
-          - phpVersion: '7.4'
-            winterRelease: 'v1.1.9'
-            winterReleaseDir: '1.1.9'
       fail-fast: false
     env:
       phpExtensions: mbstring, intl, gd, xml, sqlite
@@ -82,11 +78,5 @@ jobs:
       - name: Run linting
         run: ./vendor/bin/parallel-lint plugins/winter/pages
 
-      - name: Run unit tests (1.2/develop)
-        if: matrix.winterRelease != 'v1.1.9'
+      - name: Run unit tests
         run: php artisan winter:test -p Winter.Pages
-
-      - name: Run unit tests (1.1)
-        if: matrix.winterRelease == 'v1.1.9'
-        working-directory: plugins/winter/pages
-        run: ../../../vendor/bin/phpunit --bootstrap ../../../tests/bootstrap.php
