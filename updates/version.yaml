@@ -77,3 +77,10 @@
   - "Collapse all pages in the backend list of pages by default"
 "2.1.3": "Added Duplicate button"
 "2.1.4": "Fix support for snippets in the default backend skin"
+"2.1.5":
+  - "Fixes issue where translated page content was not duplicated when duplicating a page"
+  - "Fixes issue where the modified page counter was not working when updating a duplicated page"
+  - "Made the MenuItems FormWidget more flexible"
+  - "Apply Winter Coding Standards"
+  - "Fixed issue caused by saving content before closing open snippet inspectors"
+  - "Improved support for snippets defined in partials"
