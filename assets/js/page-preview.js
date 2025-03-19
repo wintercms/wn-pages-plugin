@@ -63,7 +63,7 @@
      * @param {Event} event
      */
     PagePreview.prototype.onDeviceClick = function (event) {
-        public const $clicked = $(event.currentTarget)
+        const $clicked = $(event.currentTarget)
 
         // Remove active class from other options
         this.$deviceSelector.find('a').removeClass('active')
