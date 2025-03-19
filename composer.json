@@ -28,8 +28,8 @@
         "source": "https://github.com/wintercms/wn-pages-plugin"
     },
     "require": {
-        "php": ">=7.2",
-        "composer/installers": "~1.0"
+        "composer/installers": "~1.0",
+        "winter/wn-backend-module": ">=1.2.7"
     },
     "replace": {
         "rainlab/pages-plugin": "~1.3"
