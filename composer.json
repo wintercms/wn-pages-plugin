@@ -29,7 +29,7 @@
     },
     "require": {
         "composer/installers": "~1.0",
-        "winter/wn-backend-module": ">=1.2.7"
+        "winter/wn-backend-module": "^1.2.8|dev-develop"
     },
     "replace": {
         "rainlab/pages-plugin": "~1.3"
