@@ -806,9 +806,9 @@ class Page extends ContentBase
         }
 
         if ($item->nesting || $item->type == 'all-static-pages') {
-            $result = [
+            $result = array_merge($result ?? [], [
                 'items' => [],
-            ];
+            ]);
 
             $iterator = function ($items) use (&$iterator, &$tree, $url, $getLocalizedUrls) {
                 $branch = [];
