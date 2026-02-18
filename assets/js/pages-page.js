@@ -599,7 +599,7 @@
 
         var extension = this.getContentExtension(pane),
             mode = 'html',
-            editor = $('[data-control=codeeditor]', pane)
+            $editor = $('[data-control=codeeditor]', pane)
 
         if (extension == 'html')
             extension = 'htm'
@@ -612,8 +612,11 @@
             $('[data-field-name=markup_html]', pane).show()
 
             if (!initialization && $(pane).data('prev-extension') != 'htm') {
-                var val = editor.codeEditor('getContent')
-                $('div[data-control=richeditor]', pane).richEditor('setContent', val)
+                var wrapper = $editor.data('oc.codeEditor')
+                if (wrapper) {
+                    var val = wrapper.getValue()
+                    $('div[data-control=richeditor]', pane).richEditor('setContent', val)
+                }
             }
         }
         else {
@@ -622,26 +625,44 @@
 
             if (!initialization && $(pane).data('prev-extension') == 'htm') {
                 var val = $('div[data-control=richeditor]', pane).richEditor('getContent')
-                editor.codeEditor('setContent', val)
+                var wrapper = $editor.data('oc.codeEditor')
+                if (wrapper) {
+                    wrapper.setValue(val)
+                }
             }
 
-            var modes = $.wn.codeEditorExtensionModes
+            var monacoExtensionModes = {
+                'htm': 'html',
+                'html': 'html',
+                'md': 'markdown',
+                'txt': 'plaintext',
+                'js': 'javascript',
+                'less': 'less',
+                'scss': 'scss',
+                'sass': 'scss',
+                'css': 'css'
+            }
 
-            if (modes[extension] !== undefined)
-                mode = modes[extension];
+            if (monacoExtensionModes[extension] !== undefined)
+                mode = monacoExtensionModes[extension]
 
             var setEditorMode = function() {
-                window.setTimeout(function(){
-                    editor.codeEditor('getEditorObject')
-                        .getSession()
-                        .setMode({ path: 'ace/mode/'+mode })
-                }, 200)
+                var wrapper = $editor.data('oc.codeEditor')
+                if (wrapper) {
+                    wrapper.setLanguage(mode)
+                }
             }
 
-            if (initialization)
-                editor.on('oc.codeEditorReady', setEditorMode)
-            else
+            if (initialization) {
+                window.Snowboard.on('backend.formwidget.codeeditor.create', function(widget) {
+                    if ($(widget.element).closest(pane).length > 0) {
+                        widget.setLanguage(mode)
+                    }
+                })
+            }
+            else {
                 setEditorMode()
+            }
         }
 
         if (!initialization)

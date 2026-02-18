@@ -189,10 +189,6 @@ class Index extends Controller
         $this->addJs('/plugins/winter/pages/assets/js/pages-snippets.js', 'Winter.Pages');
         $this->addCss('/plugins/winter/pages/assets/css/pages.css', 'Winter.Pages');
 
-        // Preload the code editor class as it could be needed
-        // before it loads dynamically.
-        $this->addJs('/modules/backend/formwidgets/codeeditor/assets/js/build-min.js', 'core');
-
         $this->bodyClass = 'compact-container';
         $this->pageTitle = 'winter.pages::lang.plugin.name';
         $this->pageTitleTemplate = Lang::get('winter.pages::lang.page.template_title');
@@ -776,6 +772,21 @@ class Index extends Controller
     {
         $widget = $this->makeObjectFormWidget($type, $object, $alias);
         $widget->bindToController();
+
+        // Prevent Froala richeditor from parsing raw content as HTML for non-HTML
+        // content files. The richeditor's valueFrom: markup causes it to receive the
+        // raw content value which triggers XSS when Froala calls jQuery .html().
+        if ($type === 'content') {
+            $widget->bindEvent('form.extendFields', function () use ($widget, $object) {
+                $extension = pathinfo($object->getFileName(), PATHINFO_EXTENSION);
+                if (!in_array($extension, ['htm', 'html'])) {
+                    $field = $widget->getField('markup_html');
+                    if ($field) {
+                        $field->value = '';
+                    }
+                }
+            });
+        }
 
         $this->vars['canCommit'] = $this->canCommitObject($object);
         $this->vars['canReset'] = $this->canResetObject($object);

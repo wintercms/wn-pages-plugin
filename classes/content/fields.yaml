@@ -23,12 +23,8 @@ secondaryTabs:
             stretch: true
             type: codeeditor
             language: html
-            theme: chrome
-            showGutter: false
-            highlightActiveLine: false
             fontSize: 13
             cssClass: pagesTextEditor
-            margin: 20
 
         markup_html:
             tab: cms::lang.editor.content
