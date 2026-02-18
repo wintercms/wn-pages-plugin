@@ -85,3 +85,6 @@
   - "Fixed issue caused by saving content before closing open snippet inspectors"
   - "Improved support for snippets defined in partials"
 "2.2.0": "Winter CMS v1.2.7+ is now required"
+"2.2.1":
+  - "Winter CMS v1.2.10+ is now required"
+  - "Fixed issue where menu items with nesting=true wouldn't resolve their own URL"
