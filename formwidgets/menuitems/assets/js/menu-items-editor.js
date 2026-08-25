@@ -95,7 +95,7 @@
                     $titleField.val(title)
                     
                     // Support for Winter.Translate
-                    var defaultLocale = $('[data-control="multilingual"]').data('default-locale')
+                    var defaultLocale = $('[data-default-locale]', self.$popupContainer).data('default-locale')
                     if (defaultLocale) {
                         $('[name="RLTranslate['+defaultLocale+'][title]"]', self.$popupContainer).val(title)
                     }
@@ -190,7 +190,7 @@
             }
         }
 
-        var defaultLocale = $('[data-control="multilingual"]').data('default-locale')
+        var defaultLocale = $('[data-default-locale]', $popupContainer).data('default-locale')
         $.each(properties, function(property, val) {
             if (property == 'viewBag') {
                 $.each(val, function(vbProperty, vbVal) {
@@ -258,7 +258,7 @@
                 var $input = $('[name="'+property+'"]', $popupContainer).not('[type=hidden]')
                 setPropertyOnElement($input, val)
                 // If the Winter.Translate default locale data locker fields are available make sure that they are properly populated
-                var $defaultLocaleField = $('[name="RLTranslate['+defaultLocale+']['+property+']"]', self.$popupContainer)
+                var $defaultLocaleField = $('[name="RLTranslate['+defaultLocale+']['+property+']"]', $popupContainer)
                 if ($defaultLocaleField) {
                     $defaultLocaleField.val($input.val());
                 }
@@ -416,7 +416,7 @@
             $(this).val($localeField.val())
         });
 
-        var defaultLocale = $('[data-control="multilingual"]').data('default-locale')
+        var defaultLocale = $('[data-default-locale]', self.$popupContainer).data('default-locale')
 
         $.each(propertyNames, function() {
             var propertyName = this,
