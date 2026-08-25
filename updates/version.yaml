@@ -88,3 +88,4 @@
 "2.2.1":
   - "Winter CMS v1.2.10+ is now required"
   - "Fixed issue where menu items with nesting=true wouldn't resolve their own URL"
+"2.2.2": "Fix support for Winter.Translate v2.4.0"
