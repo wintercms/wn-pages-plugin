@@ -7,6 +7,7 @@ use Backend\Models\UserRole;
 use Cms\Classes\Controller as CmsController;
 use Cms\Classes\Theme;
 use System\Classes\PluginBase;
+use Winter\Pages\Console\ScaffoldCommand;
 use Winter\Pages\Classes\Controller;
 use Winter\Pages\Classes\Page as StaticPage;
 use Winter\Pages\Classes\Router;
@@ -27,6 +28,14 @@ class Plugin extends PluginBase
             'homepage'    => 'https://github.com/wintercms/wn-pages-plugin',
             'replaces'    => ['RainLab.Pages' => '<= 1.4.10'],
         ];
+    }
+
+    /**
+     * Register services provided by this plugin
+     */
+    public function register(): void
+    {
+        $this->registerConsoleCommand('winter.pages.scaffold', ScaffoldCommand::class);
     }
 
     /**
