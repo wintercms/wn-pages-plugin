@@ -81,6 +81,12 @@
             self.$popupForm = self.$popupContainer.find('form')
             self.itemSaved = false
 
+            // The popup lives outside the editor's own form, so carry the object
+            // context over: requests fired from here need it to rebind the widget.
+            $('input[name="formWidgetAlias"], input[name="objectType"], input[name="objectPath"], input[name="theme"]', self.$el.closest('form'))
+                .clone()
+                .appendTo(self.$popupForm)
+
             var $titleField = $('input[name=title]', self.$popupContainer).focus().select()
             var $typeField = $('select[name=type]', self.$popupContainer).change(function(){
                 self.loadTypeInfo(false, true)
