@@ -692,10 +692,19 @@ class Page extends ContentBase
 
     /**
      * Returns whether the specified URLs are equal.
+     *
+     * Trailing slashes are normalized before comparing: Cms::url('/') and
+     * Url::to('/') disagree on whether the site root carries one
+     * (https://example.com vs https://example.com/), so a strict compare
+     * of their raw output only ever fails for the root page's own menu
+     * item — every other page has a real path segment where both helpers
+     * already agree, so this was invisible everywhere else.
      */
     protected static function urlsAreEqual($url, $other)
     {
-        return rawurldecode($url) === rawurldecode($other);
+        $normalize = fn ($value) => rtrim(rawurldecode($value), '/');
+
+        return $normalize($url) === $normalize($other);
     }
 
     /**
