@@ -780,7 +780,10 @@ class Page extends ContentBase
                 $localeUrls = $pageInfo['localeUrls'] ?? [];
 
                 foreach ($enabledLocales as $locale => $name) {
-                    $localeUrl = array_get($localeUrls, $locale) ?: $pageInfo['url'];
+                    // A locale without a URL of its own is served under the default
+                    // one. 'url' is the active locale's, so it is only the fallback
+                    // for a tree cached before 'defaultUrl' existed.
+                    $localeUrl = array_get($localeUrls, $locale) ?: ($pageInfo['defaultUrl'] ?? $pageInfo['url']);
                     $pageUrl = static::getLocalizedUrl($localeUrl, $locale);
                     if ($pageUrl) {
                         $localizedUrls[$locale] = Url::to($pageUrl);
@@ -932,9 +935,18 @@ class Page extends ContentBase
                 $pageCode = $item->page->getBaseFileName();
                 $pageUrl = Str::lower(RouterHelper::normalizeUrl(array_get($viewBag, 'url')));
 
+                // Winter.Translate rewrites viewBag.url to the active locale's URL
+                // when the page is fetched; the untranslated one is only reachable
+                // through the translated accessor for the default locale.
+                $defaultUrl = $item->page->methodExists('getViewBagUrlAttributeTranslated')
+                    ? Str::lower(RouterHelper::normalizeUrl(
+                        $item->page->getViewBagUrlAttributeTranslated(Translator::instance()->getDefaultLocale())
+                    ))
+                    : $pageUrl;
 
                 $itemData = [
                     'url'    => $pageUrl,
+                    'defaultUrl' => $defaultUrl,
                     'title'  => array_get($viewBag, 'title'),
                     'mtime'  => $item->page->mtime,
                     'items'  => $iterator($item->subpages, $pageCode, $level + 1),
