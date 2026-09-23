@@ -2,6 +2,7 @@
 
 namespace Winter\Pages;
 
+use Config;
 use Backend\Facades\Backend;
 use Backend\Models\UserRole;
 use Cms\Classes\Controller as CmsController;
@@ -222,6 +223,10 @@ class Plugin extends PluginBase
                 || !($formWidget->getController() instanceof Index)
                 || !($formWidget->model instanceof StaticPage)
             ) {
+                return;
+            }
+
+            if (!Config::get('winter.pages::allow_page_preview', true)) {
                 return;
             }
 
