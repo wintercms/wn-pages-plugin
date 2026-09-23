@@ -36,10 +36,16 @@ class MenuItems extends FormWidgetBase
     public $newItemTitle = 'winter.pages::lang.menuitem.new_item';
 
     /**
+     * The form widget used to edit a single menu item.
+     */
+    protected $itemFormWidget = null;
+
+    /**
      * {@inheritDoc}
      */
     public function init()
     {
+        $this->getItemFormWidget();
     }
 
     /**
@@ -69,11 +75,30 @@ class MenuItems extends FormWidgetBase
 
         $this->vars['emptyItem'] = $emptyItem;
 
+        $this->vars['itemFormWidget'] = $this->getItemFormWidget();
+    }
+
+    /**
+     * Returns the form widget used by the menu item editor popup. Made on init
+     * rather than at render time so the item form's own widgets are bound to the
+     * controller on AJAX requests too, allowing their handlers to run.
+     *
+     * @return \Backend\Widgets\Form
+     */
+    protected function getItemFormWidget()
+    {
+        if ($this->itemFormWidget !== null) {
+            return $this->itemFormWidget;
+        }
+
         $widgetConfig = $this->makeConfig('~/plugins/winter/pages/classes/menuitem/fields.yaml');
-        $widgetConfig->model = $menuItem;
+        $widgetConfig->model = new MenuItem();
         $widgetConfig->alias = $this->alias . 'MenuItem';
 
-        $this->vars['itemFormWidget'] = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
+        $widget = $this->makeWidget('Backend\Widgets\Form', $widgetConfig);
+        $widget->bindToController();
+
+        return $this->itemFormWidget = $widget;
     }
 
     /**
