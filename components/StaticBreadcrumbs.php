@@ -31,15 +31,8 @@ class StaticBreadcrumbs extends ComponentBase
 
     public function onRun()
     {
-        $url = $this->getRouter()->getUrl();
-
-        if (!strlen($url)) {
-            $url = '/';
-        }
-
         $theme = Theme::getActiveTheme();
-        $router = new Router($theme);
-        $page = $router->findByUrl($url);
+        $page = $this->controller->getPage()?->apiBag['staticPage'] ?? null;
 
         if ($page) {
             $tree = StaticPageClass::buildMenuTree($theme);
