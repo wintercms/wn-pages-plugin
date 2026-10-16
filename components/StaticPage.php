@@ -73,24 +73,14 @@ class StaticPage extends ComponentBase
 
     public function onRun()
     {
-        $url = $this->getRouter()->getUrl();
-
-        if (!strlen($url)) {
-            $url = '/';
-        }
-
         if ($this->isMaintenanceModeEnabled()) {
             return;
         }
 
-        if (isset($this->controller->getPage()->apiBag['staticPage'])) {
-            $this->pageObject = $this->page['page'] = $this->controller->getPage()->apiBag['staticPage'];
-        } else {
-            $router = new Router(Theme::getActiveTheme());
-            $this->pageObject = $this->page['page'] = $router->findByUrl($url);
-        }
+        $this->pageObject = $this->controller->getPage()?->apiBag['staticPage'] ?? null;
 
         if ($this->pageObject) {
+            $this->page['page'] = $this->pageObject;
             $this->title = $this->page['title'] = array_get($this->pageObject->viewBag, 'title');
             $this->extraData = $this->page['extraData'] = $this->defineExtraData();
         }
