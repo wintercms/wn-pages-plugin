@@ -89,3 +89,11 @@
   - "Winter CMS v1.2.10+ is now required"
   - "Fixed issue where menu items with nesting=true wouldn't resolve their own URL"
 "2.2.2": "Fix support for Winter.Translate v2.4.0"
+"2.3.0":
+  - "PHP 8.1+ is now required"
+  - "Added a config option to disable the page preview feature"
+  - "Added the scaffold:winter.pages command to generate demo content"
+  - "Fixed AJAX handlers of form widgets in the menu item editor popup (e.g. Winter.Translate's ML controls)"
+  - "Fixed localized URLs of pages that have no URL for a locale pointing to the active locale's URL"
+  - "Static page components now use the page set by cms.router.beforeRoute instead of resolving it again"
+  - "Added missing Italian translations"
