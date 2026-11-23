@@ -399,7 +399,8 @@
             request.done(function() {
                 self.revealSidebarItem(type, path)
             }).fail(function() {
-                self.setUrl(null, null)
+                // Another tab may have been opened while the request was pending; let it own the URL
+                self.updateUrlFromPane($('> div.tab-content > div.tab-pane.active', self.$masterTabs))
             })
         }
     }
