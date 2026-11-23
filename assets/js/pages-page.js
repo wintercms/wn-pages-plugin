@@ -374,7 +374,8 @@
         if (!type && !path)
             return
 
-        if (!sections.hasOwnProperty(type) || !path) {
+        // Tab lookups build attribute selectors from the path; reject characters that would break them
+        if (!sections.hasOwnProperty(type) || !path || /["\\\r\n\f]/.test(path)) {
             this.setUrl(null, null)
             return
         }
