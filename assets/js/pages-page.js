@@ -22,6 +22,7 @@
         this.snippetManager = new $.wn.pages.snippetManager(this.$masterTabs)
 
         this.registerHandlers()
+        this.openObjectFromUrl()
     }
 
     PagesPage.prototype.registerHandlers = function() {
@@ -169,6 +170,7 @@
 
             this.$pageTree.treeView('markActive', dataId)
             $('[data-control=filelist]', this.$sidePanel).fileList('markActive', dataId)
+            this.updateUrlFromPane($($(e.target).attr('data-target')))
             $(window).trigger('resize')
         } else if ($tabControl.hasClass('secondary')) {
             // TODO: Focus the code or rich editor here
@@ -182,6 +184,7 @@
         this.$pageTree.treeView('markActive', null)
         $('[data-control=filelist]', this.$sidePanel).fileList('markActive', null)
         this.setPageTitle('')
+        this.setUrl(null, null)
     }
 
     /*
@@ -247,6 +250,10 @@
         if (context.handler == 'onSave' && (!data['X_WINTER_ERROR_FIELDS'] && !data['X_WINTER_ERROR_MESSAGE']))
             $form.trigger('unchange.oc.changeMonitor')
 
+        // A new object gets its path on the first save, so the URL can now point to it
+        if (context.handler == 'onSave' && $tabPane.hasClass('active'))
+            this.updateUrlFromPane($tabPane)
+
         // Reload the form if the server has requested it
         if (data.forceReload) {
             this.reloadForm($form)
@@ -304,16 +311,7 @@
      * If the item is already opened, activate its tab in the editor.
      */
     PagesPage.prototype.onSidebarItemClick = function(e) {
-        var self = this,
-            $item = $(e.relatedTarget),
-            $form = $item.closest('form'),
-            theme = $('input[name=theme]', $form).val(),
-            data = {
-                type: $form.data('object-type'),
-                theme: theme,
-                path: $item.data('item-path')
-            },
-            tabId = data.type + '-' + data.theme + '-' + data.path
+        var $item = $(e.relatedTarget)
 
         if ($item.data('type') == 'snippet') {
             this.snippetManager.onSidebarSnippetClick($item)
@@ -321,27 +319,152 @@
             return
         }
 
+        this.openObject($item.closest('form').data('object-type'), $item.data('item-path'))
+
+        return false
+    }
+
+    /*
+     * Opens an object in the editor. If the object is already opened, activates its tab.
+     * Returns the AJAX request promise, or null if no request was needed.
+     */
+    PagesPage.prototype.openObject = function(type, path) {
+        var self = this,
+            $form = $('form[data-object-type=' + type + ']', this.$sidePanel),
+            data = {
+                type: type,
+                theme: $('input[name=theme]', $form).val(),
+                path: path
+            },
+            tabId = data.type + '-' + data.theme + '-' + data.path
+
         /*
          * Find if the tab is already opened
          */
 
-         if (this.masterTabsObj.goTo(tabId))
-            return false
+        if (this.masterTabsObj.goTo(tabId))
+            return null
 
         /*
          * Open a new tab
          */
 
         $.wn.stripeLoadIndicator.show()
-        $form.request('onOpen', {
+
+        return $form.request('onOpen', {
             data: data
         }).done(function(data) {
             self.$masterTabs.ocTab('addTab', data.tabTitle, data.tab, tabId, $form.data('type-icon'))
         }).always(function() {
             $.wn.stripeLoadIndicator.hide()
         })
+    }
 
-        return false
+    /*
+     * Opens the object referenced by the "type" and "path" URL query parameters, if any.
+     */
+    PagesPage.prototype.openObjectFromUrl = function() {
+        var params = new URLSearchParams(window.location.search),
+            type = params.get('type'),
+            path = params.get('path'),
+            sections = {page: 'pages', menu: 'menus', content: 'content'},
+            sidePanelTab = $('[data-control=layout-sidepanel]').data('oc.sidePanelTab'),
+            self = this
+
+        if (!type && !path)
+            return
+
+        // Tab lookups build attribute selectors from the path; reject characters that would break them
+        if (!sections.hasOwnProperty(type) || !path || /["\\\r\n\f]/.test(path)) {
+            this.setUrl(null, null)
+            return
+        }
+
+        // The sidebar section is only rendered when the user has access to the object type
+        if (!$('form[data-object-type=' + type + ']', this.$sidePanel).length) {
+            $.wn.flashMsg({
+                text: String(this.$masterTabs.data('unauthorized-message')).replace(':type', type),
+                'class': 'error'
+            })
+            this.setUrl(null, null)
+            return
+        }
+
+        if (sidePanelTab)
+            sidePanelTab.displayTab($('#layout-sidenav li[data-menu-item=' + sections[type] + ']'))
+
+        var request = this.openObject(type, path)
+
+        if (request) {
+            request.done(function() {
+                self.revealSidebarItem(type, path)
+            }).fail(function() {
+                // Another tab may have been opened while the request was pending; let it own the URL
+                self.updateUrlFromPane($('> div.tab-content > div.tab-pane.active', self.$masterTabs))
+            })
+        }
+    }
+
+    /*
+     * Expands any collapsed sidebar groups (parent pages, content folders) containing the given object,
+     * so the active item is visible.
+     */
+    PagesPage.prototype.revealSidebarItem = function(type, path) {
+        var $form = $('form[data-object-type=' + type + ']', this.$sidePanel),
+            dataId = type + '-' + $('input[name=theme]', $form).val() + '-' + path,
+            $item = $('li', $form).filter(function() {
+                return $(this).attr('data-id') === dataId
+            })
+
+        $($item.parents('li[data-status=collapsed]').get().reverse()).each(function() {
+            var $group = $(this),
+                $control = $group.closest('[data-control=treeview], [data-control=filelist]')
+
+            if ($control.data('control') == 'treeview')
+                $control.treeView('expandGroup', $group)
+            else
+                $control.fileList('expandGroup', $group)
+        })
+    }
+
+    /*
+     * Points the URL to the object edited in the given master tab pane,
+     * or to the bare editor URL if the object is not saved yet.
+     */
+    PagesPage.prototype.updateUrlFromPane = function($pane) {
+        var $form = $('> form', $pane),
+            type = $('> input[name=objectType]', $form).val(),
+            path = $('> input[name=objectPath]', $form).val()
+
+        if (type && path)
+            this.setUrl(type, path)
+        else
+            this.setUrl(null, null)
+    }
+
+    /*
+     * Replaces the "type" and "path" URL query parameters, preserving any others.
+     * Passing null removes them.
+     */
+    PagesPage.prototype.setUrl = function(type, path) {
+        if (!window.history || !window.history.replaceState)
+            return
+
+        var url = new URL(window.location.href)
+
+        if (type && path) {
+            url.searchParams.set('type', type)
+            url.searchParams.set('path', path)
+        } else {
+            url.searchParams.delete('type')
+            url.searchParams.delete('path')
+        }
+
+        // Slashes are valid in a query string, keep them readable for subfolder paths
+        var newUrl = url.toString().replace(/%2F/gi, '/')
+
+        if (newUrl !== window.location.href)
+            window.history.replaceState(window.history.state, '', newUrl)
     }
 
     /*
